@@ -22,7 +22,8 @@ const OnboardingPage = () => {
           </p>
         </div>
         <KeywordList />
-        <div
+        <div className={'h-[100px]'} />
+        {/* <div
           aria-hidden
           className={'flex flex-col items-start justify-center gap-4'}
         >
@@ -35,7 +36,7 @@ const OnboardingPage = () => {
           >
             {' '}
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
