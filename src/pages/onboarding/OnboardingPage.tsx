@@ -14,10 +14,10 @@ const OnboardingPage = () => {
         }
       >
         <div className={'flex flex-col items-start justify-center gap-4'}>
-          <h2 className={`${textStyles.title1} text-title`}>
+          <h2 className={`${textStyles.title1} `}>
             어떤 목적으로 웹을 사용하시나요?
           </h2>
-          <p className={`${textStyles.sub1} text-[var(--color-muted)]`}>
+          <p className={`${textStyles.sub1} `}>
             Memoir가 그 흔적을 담아, 하루를 이야기로 정리해드릴게요.
           </p>
         </div>

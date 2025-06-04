@@ -1,5 +1,3 @@
-import daisyui from 'daisyui';
-
 const config = {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
@@ -29,27 +27,7 @@ const config = {
       },
     },
   },
-  plugins: [daisyui],
-  daisyui: {
-    themes: [
-      {
-        'memoir-theme': {
-          primary: '#c5c7ff',
-          secondary: '#ffe684',
-          accent: '#a3a7ff',
-          neutral: '#eeeeee',
-          'base-100': '#ffffff',
-          'base-200': '#f3f5f7',
-          'base-300': '#e3e3e3',
-          'base-content': '#1c1c1c',
-          info: '#a3a7ff',
-          success: '#a3ffa3',
-          warning: '#ffe684',
-          error: '#ff7070',
-        },
-      },
-    ],
-  },
+  plugins: [],
 };
 
 export default config;

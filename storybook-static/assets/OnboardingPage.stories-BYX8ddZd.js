@@ -1,0 +1,5 @@
+import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{t as r}from"./KeywordButton-BNkKaW1e.js";import{K as n}from"./KeywordList-DzkIk1fQ.js";import"./index-D4lIrffr.js";const i=()=>e.jsx("div",{className:"flex flex-col items-center justify-center max-w-[85vw] mx-auto h-dvh",children:e.jsxs("div",{className:"m-full h-fit flex flex-col items-start justify-center gap-25",children:[e.jsxs("div",{className:"flex flex-col items-start justify-center gap-4",children:[e.jsx("h2",{className:`${r.title1} `,children:"어떤 목적으로 웹을 사용하시나요?"}),e.jsx("p",{className:`${r.sub1} `,children:"Memoir가 그 흔적을 담아, 하루를 이야기로 정리해드릴게요."})]}),e.jsx(n,{}),e.jsx("div",{className:"h-[100px]"})]})});i.__docgenInfo={description:"",methods:[],displayName:"OnboardingPage"};const x={title:"onboarding/OnboardingPage",component:i,tags:["autodocs"]},s={args:{}};var a,t,o;s.parameters={...s.parameters,docs:{...(a=s.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  args: {
+    // Add your default args here
+  }
+}`,...(o=(t=s.parameters)==null?void 0:t.docs)==null?void 0:o.source}}};const p=["Primary"];export{s as Primary,p as __namedExportsOrder,x as default};

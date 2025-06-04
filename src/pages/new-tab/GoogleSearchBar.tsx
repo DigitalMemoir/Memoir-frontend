@@ -2,7 +2,7 @@ const GoogleSearchBar = () => {
   return (
     <label
       className={
-        'input w-full max-w-[900px] h-36 py-6 px-14 \
+        'w-full max-w-[900px] h-36 py-6 px-14 \
         flex items-center justify-between bg-white rounded-[50px] \
         shadow-[0px_0px_8px_0px_rgba(0,0,0,0.20)]'
       }

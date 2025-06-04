@@ -24,7 +24,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <div data-theme={'memoir-theme'} className={'min-h-screen bg-white'}>
+      <div className={'bg-white'}>
         <Story />
       </div>
     ),
