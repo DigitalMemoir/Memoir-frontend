@@ -12,7 +12,7 @@ const KeywordList = () => {
   return (
     <div
       className={
-        'flex flex-row items-center justify-start gap-8 w-full h-full p-4 \
+        'flex flex-row items-center justify-start gap-8 w-full h-full \
         flex-wrap'
       }
     >

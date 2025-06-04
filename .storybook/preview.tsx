@@ -22,6 +22,13 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div data-theme={'memoir-theme'} className={'min-h-screen bg-white'}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;

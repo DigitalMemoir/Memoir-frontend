@@ -1,36 +1,53 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 @plugin "daisyui/theme" {
-  name: "memoirTheme";
+  name: 'memoir-theme';
   default: true;
   prefersdark: false;
   color-scheme: light;
 
+  /* Base colors */
   --color-base-100: #f3f5f7; /* BG1 */
   --color-base-200: #eeeeee; /* G0 */
   --color-base-300: #e3e3e3; /* G1 */
   --color-base-content: #1c1c1c; /* Title1 */
 
+  /* Primary (Brand Colors) */
   --color-primary: #c5c7ff; /* M2 */
   --color-primary-content: #1c1c1c;
+  --color-primary-focus: #e2e3ff; /* M1 (lightest) */
 
+  /* Secondary (Accent Yellow) */
   --color-secondary: #ffe684; /* S1 */
   --color-secondary-content: #1c1c1c;
 
+  /* Accent (Deepest Brand Color) */
   --color-accent: #8387ff; /* M4 */
   --color-accent-content: #ffffff;
 
+  /* Neutral (for base text) */
   --color-neutral: #3f3f3f; /* Text1 */
   --color-neutral-content: #ffffff;
 
-  --color-info: #a3a7ff;
+  /* Sub Text / Muted */
+  --color-muted: #6c6c6c; /* Sub Text 1 */
+  --color-gray-2: #cccccc; /* G2 */
+  --color-gray-3: #b3b3b3; /* G3 */
+
+  /* Info/Success/Warning/Error */
+  --color-info: #a3a7ff; /* M3 */
   --color-success: #a3e4b0;
   --color-warning: #ffe684;
   --color-error: #f87272;
 
-  /* optional: typography & effects */
+  /* Optional: Typography & Effects */
   --radius-box: 0.5rem;
   --radius-selector: 0.75rem;
   --depth: 1;
   --noise: 0;
+}
+
+html {
+  background-color: white;
+  min-height: 100dvh;
 }
