@@ -1,5 +1,73 @@
 @import 'tailwindcss';
-@tailwind utilities;
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 400 700;
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css')
+    format('woff2');
+}
+
+:root {
+  --font-pretendard: 'Pretendard Variable', sans-serif;
+}
+
+input::-webkit-search-cancel-button,
+input::-webkit-search-decoration,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration {
+  display: none;
+}
+
+@theme {
+  --font-pretendard: 'Pretendard Variable', sans-serif;
+
+  /* Grayscale */
+  --color-gray-0: #eeeeee;
+  --color-gray-1: #e3e3e3;
+  --color-gray-2: #cccccc;
+  --color-gray-3: #b3b3b3;
+
+  /* Background */
+  --color-background-light: #f3f5f7;
+
+  /* Whites */
+  --color-white: #ffffff;
+
+  /* Text Colors */
+  --color-text-title: #1c1c1c;
+  --color-text-body: #3f3f3f;
+  --color-text-subtle: #6c6c6c;
+
+  /* Brand Colors */
+  --color-primary-100: #e2e3ff;
+  --color-primary-200: #c5c7ff;
+  --color-primary-300: #a3a7ff;
+  --color-primary-400: #8387ff;
+
+  /* Accent */
+  --color-accent-yellow: #ffe684;
+
+  /* Info/Success/Warning/Error */
+  --color-info: #a3a7ff;
+  --color-success: #a3e4b0;
+  --color-warning: #ffe684;
+  --color-error: #f87272;
+
+  /* Button Shadows */
+  --shadow-button-1: 0 0 5px 0 #00000026; /* 버튼 그림자 1 */
+  --shadow-button-2: 0 0 8px 0 #00000033; /* 버튼 그림자 2 */
+
+  /* Select Shadow */
+  --shadow-select-1: 0 0 10px 0 #a3a7ff66; /* 셀렉트 포커스 그림자 */
+
+  /* Side Shadows */
+  --shadow-side-1: 5px 0 10px 3px #0000000d; /* 사이드 그림자 1 */
+  --shadow-side-2: 0 5px 10px 3px #0000000d; /* 사이드 그림자 2 */
+
+  /* General Shadow */
+  --shadow-default-1: 0 0 15px 0 #00000026; /* 그림자 1 */
+}
 
 html {
   background-color: white;
