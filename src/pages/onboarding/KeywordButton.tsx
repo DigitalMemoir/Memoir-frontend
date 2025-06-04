@@ -1,4 +1,5 @@
 import textStyles from '../../styles/textStyles';
+import { motion } from 'motion/react';
 
 const KeywordButton = ({
   icon,
@@ -16,7 +17,9 @@ const KeywordButton = ({
   const unselectedStyle = 'bg-white shadow-[0px_0px_15px_0px_rgba(0,0,0,0.15)]';
 
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       className={`w-[280px] h-auto aspect-[28/18] box-border p-8 rounded-[20px] border-0 \
         ${selected ? selectedStyle : unselectedStyle}`}
       onClick={onClick}
@@ -27,7 +30,7 @@ const KeywordButton = ({
         <span className={'inline-block'}>{icon}</span>
         <p>{keyword}</p>
       </div>
-    </button>
+    </motion.button>
   );
 };
 
