@@ -10,7 +10,7 @@ const Bookmark = ({ href }: { href: string }) => {
       href={href}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={'inline-block w-fit h-fit p-8 shadow-default-1 rounded-full'}
+      className={'inline w-fit h-fit p-8 shadow-default-1 rounded-full '}
     >
       <img
         src={faviconUrl}
