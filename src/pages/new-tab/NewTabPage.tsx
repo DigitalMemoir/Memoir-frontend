@@ -1,3 +1,4 @@
+import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
 import GoogleSearchBar from './GoogleSearchBar';
 
@@ -22,6 +23,7 @@ const NewTabPage = () => {
         {bookmarks.map((bookmark, index) => (
           <Bookmark key={index} href={bookmark} />
         ))}
+        {bookmarks.length <= 8 && <AddBookmark />}
       </div>
     </div>
   );
