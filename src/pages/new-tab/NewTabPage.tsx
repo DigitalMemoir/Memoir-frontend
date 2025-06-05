@@ -2,6 +2,13 @@ import Bookmark from './Bookmark';
 import GoogleSearchBar from './GoogleSearchBar';
 
 const NewTabPage = () => {
+  const bookmarks = [
+    'https://www.google.com',
+    'https://www.youtube.com',
+    'https://www.github.com',
+    'https://www.notion.so',
+    'https://www.wikipedia.org',
+  ];
   return (
     <div className={'flex flex-col items-center justify-center h-dvh gap-12'}>
       <GoogleSearchBar />
@@ -12,11 +19,9 @@ const NewTabPage = () => {
           justify-items-center'
         }
       >
-        <Bookmark href={'https://www.google.com'} />
-        <Bookmark href={'https://www.youtube.com'} />
-        <Bookmark href={'https://www.github.com'} />
-        <Bookmark href={'https://www.notion.so'} />
-        <Bookmark href={'https://www.wikipedia.org'} />
+        {bookmarks.map((bookmark, index) => (
+          <Bookmark key={index} href={bookmark} />
+        ))}
       </div>
     </div>
   );

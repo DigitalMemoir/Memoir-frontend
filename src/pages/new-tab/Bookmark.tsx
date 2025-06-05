@@ -10,12 +10,15 @@ const Bookmark = ({ href }: { href: string }) => {
       href={href}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={'inline w-fit h-fit p-8 shadow-default-1 rounded-full '}
+      className={
+        'w-24 h-24 shadow-default-1 rounded-full p-8 \
+        flex flex-col justify-center items-center box-border'
+      }
     >
       <img
         src={faviconUrl}
         alt={`${href} favicon`}
-        className={'w-16 h-16 rounded-full'}
+        className={'w-full h-full object-cover'}
         loading={'lazy'}
         draggable={'false'}
       />

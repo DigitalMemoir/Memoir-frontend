@@ -38,16 +38,16 @@ const GoogleSearchBar = () => {
         `}
       onSubmit={handleSubmit}
     >
-      <img src={'/googleIcon.svg'} className={'w-16 h-16'} />
+      <img src={'/googleIcon.svg'} className={'w-16 h-16 z-10'} />
       <input
         onKeyDown={handleKeyDown}
         type={'search'}
         ref={inputRef}
         className={`absolute top-0 left-0 right-0 bottom-0 
           ${baseStyles} rounded-[50px] shadow-button-2
-          pl-28 pr-27 py-4
+          pl-33 pr-27 py-4
           focus:outline focus:ring-2 focus:ring-primary-200 focus:shadow-select-1
-          ${textStyles.title4} text-text-subtle focus:text-text-body `}
+          ${textStyles.title3_1} text-text-title `}
       />
       <button
         type={'submit'}
