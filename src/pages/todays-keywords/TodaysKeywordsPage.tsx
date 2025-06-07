@@ -2,6 +2,7 @@ import GoogleSearchBar from '../../components/GoogleSearchBar';
 import SearchIcon from '../../assets/icons/search.png';
 import textStyles from '../../styles/textStyles';
 import Keyword from './Keyword';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const TodaysKeywordsPage = () => {
   const keywords = [
@@ -24,38 +25,63 @@ const TodaysKeywordsPage = () => {
 
   const nineKeywords = keywords.slice(0, 9);
 
+  const containerVariants = {
+    animate: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
+
   return (
-    <div
-      className={
-        'flex flex-col items-start justify-center w-fit h-full mx-auto gap-4'
-      }
-    >
-      <GoogleSearchBar />
+    <AnimatePresence>
       <div
         className={
-          'flex flex-col items-start justify-start w-full gap-20 pl-9 mt-30 max-w-[740px]'
+          'flex flex-col items-start justify-center w-fit h-full mx-auto gap-4'
         }
       >
-        <div className={'flex flex-col items-start justify-start gap-4 w-full'}>
-          <img src={SearchIcon} alt={'Search Icon'} className={'w-12 h-12'} />
-          <h2 className={`${textStyles.title1} text-text-title`}>
-            오늘의 키워드
-          </h2>
-          <p className={`${textStyles.sub1} text-text-subtle`}>
-            Memoir가 사용자님의 ‘오늘의 키워드’ 를 뽑아봤어요.
-          </p>
-        </div>
-        <div
+        <GoogleSearchBar />
+        <motion.div
           className={
-            'grid grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4 w-full mb-20 max-w-[978px] min-w-[600px]'
+            'flex flex-col items-start justify-start w-full gap-20 pl-9 mt-30 max-w-[740px]'
           }
+          variants={containerVariants}
+          initial={'initial'}
+          animate={'animate'}
+          exit={'exit'}
         >
-          {nineKeywords.map((keyword, idx) => (
-            <Keyword keyword={keyword} idx={idx} key={idx} />
-          ))}
-        </div>
+          <motion.div
+            variants={itemVariants}
+            className={'flex flex-col items-start justify-start gap-4 w-full'}
+          >
+            <img src={SearchIcon} alt={'Search Icon'} className={'w-12 h-12'} />
+            <h2 className={`${textStyles.title1} text-text-title`}>
+              오늘의 키워드
+            </h2>
+            <p className={`${textStyles.sub1} text-text-subtle`}>
+              Memoir가 사용자님의 ‘오늘의 키워드’ 를 뽑아봤어요.
+            </p>
+          </motion.div>
+          <div
+            className={
+              'grid grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4 w-full mb-20 max-w-[978px] min-w-[600px]'
+            }
+          >
+            {nineKeywords.map((keyword, idx) => (
+              <motion.div key={idx} variants={itemVariants}>
+                <Keyword keyword={keyword} idx={idx} key={idx} />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 };
 
