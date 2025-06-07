@@ -1,12 +1,13 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import textStyles from '../../styles/textStyles';
+import textStyles from '../styles/textStyles';
 import type React from 'react';
 import { useRef } from 'react';
 
 const GoogleSearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const baseStyles = 'w-full  max-w-[978px] min-w-[600px] h-[5vw] min-h-25 ';
+  const baseStyles =
+    'w-[51vw] max-w-[978px] min-w-[600px] h-[5vw] min-h-25 rounded-full ';
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -34,7 +35,7 @@ const GoogleSearchBar = () => {
   return (
     <form
       className={`relative ${baseStyles} py-6 px-10
-        flex items-center justify-between bg-white rounded-full
+        flex items-center justify-between bg-white 
         `}
       onSubmit={handleSubmit}
     >

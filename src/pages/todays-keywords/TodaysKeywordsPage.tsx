@@ -1,0 +1,62 @@
+import GoogleSearchBar from '../../components/GoogleSearchBar';
+import SearchIcon from '../../assets/icons/search.png';
+import textStyles from '../../styles/textStyles';
+import Keyword from './Keyword';
+
+const TodaysKeywordsPage = () => {
+  const keywords = [
+    '오늘의 날씨',
+    '오늘의 뉴스',
+    '오늘의 키워드',
+    '오늘의 일정',
+    '오늘의 명언',
+    '오늘의 기분',
+    '오늘의 음악',
+    '오늘의 영화',
+    '오늘의 책',
+    '오늘의 운동',
+    '오늘의 요리',
+    '오늘의 여행',
+    '오늘의 취미',
+    '오늘의 게임',
+    '오늘의 패션',
+  ];
+
+  const nineKeywords = keywords.slice(0, 9);
+
+  return (
+    <div
+      className={
+        'flex flex-col items-start justify-center w-fit h-full mx-auto gap-4'
+      }
+    >
+      <GoogleSearchBar />
+      <div
+        className={
+          'flex flex-col items-start justify-start w-full gap-20 pl-9 mt-30 max-w-[740px]'
+        }
+      >
+        <div className={'flex flex-col items-start justify-start gap-4 w-full'}>
+          <img src={SearchIcon} alt={'Search Icon'} className={'w-12 h-12'} />
+          <h2 className={`${textStyles.title1} text-text-title`}>
+            오늘의 키워드
+          </h2>
+          <p className={`${textStyles.sub1} text-text-subtle`}>
+            Memoir가 사용자님의 ‘오늘의 키워드’ 를 뽑아봤어요.
+          </p>
+        </div>
+        <div
+          className={
+            'grid grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4 w-full mb-20 max-w-[978px] min-w-[600px]'
+          }
+        >
+          {nineKeywords.map((keyword, idx) => (
+            <Keyword keyword={keyword} idx={idx} key={idx} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TodaysKeywordsPage;

@@ -1,6 +1,6 @@
 import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
-import GoogleSearchBar from './GoogleSearchBar';
+import GoogleSearchBar from '../../components/GoogleSearchBar';
 
 const NewTabPage = () => {
   const bookmarks = [

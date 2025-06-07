@@ -23,7 +23,7 @@ const Keyword = ({ idx, keyword }: { idx: number; keyword: string }) => {
   return (
     <div
       className={clsx(
-        'flex flex-row items-center justify-center w-56 h-16',
+        'flex flex-row items-center justify-center w-56 h-16 box-border',
         'border rounded-2xl',
         textStyles.title3,
         'py-4 px-2 rounded-2xl cursor-default',
