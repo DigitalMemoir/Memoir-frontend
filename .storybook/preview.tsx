@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react-vite';
 import '../src/index.css';
+import { HashRouter } from 'react-router-dom';
 
 const preview: Preview = {
   parameters: {
@@ -25,7 +26,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <div className={'bg-white'}>
-        <Story />
+        <HashRouter>
+          <Story />
+        </HashRouter>
       </div>
     ),
   ],

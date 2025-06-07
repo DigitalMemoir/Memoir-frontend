@@ -1,5 +1,8 @@
 import { Bars3Icon } from '@heroicons/react/16/solid';
 import { motion, AnimatePresence } from 'framer-motion';
+import { menuList } from './menuList';
+import MenuItem from './MenuItem';
+import { useLocation } from 'react-router-dom';
 
 const Drawer = ({
   isOpen,
@@ -8,6 +11,10 @@ const Drawer = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const location = useLocation();
+
+  const selectedEndpoint = location.pathname || '';
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -32,6 +39,22 @@ const Drawer = ({
           >
             <Bars3Icon className={'w-5 h-4 color-black '} />
           </motion.button>
+          <div
+            className={
+              'flex flex-col items-center justify-center gap-4 \
+              absolute top-62 w-full h-fit mx-auto'
+            }
+          >
+            {menuList.map((item) => (
+              <MenuItem
+                key={item.title}
+                icon={item.icon}
+                title={item.title}
+                endpoint={item.endpoint}
+                selected={selectedEndpoint.startsWith(item.endpoint)}
+              />
+            ))}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
