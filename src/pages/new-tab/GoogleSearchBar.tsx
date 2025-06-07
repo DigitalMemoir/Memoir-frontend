@@ -6,7 +6,7 @@ import { useRef } from 'react';
 const GoogleSearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const baseStyles = 'w-full max-w-[50vw] min-w-[600px] h-[5vw] min-h-25 ';
+  const baseStyles = 'w-full  max-w-[978px] min-w-[600px] h-[5vw] min-h-25 ';
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -46,7 +46,7 @@ const GoogleSearchBar = () => {
         className={`absolute top-0 left-0 right-0 bottom-0 
           ${baseStyles} rounded-[50px] shadow-button-2
           pl-33 pr-27 py-4
-          focus:outline focus:ring-2 focus:ring-primary-200 focus:shadow-select-1
+          focus:outline-0 focus:shadow-button-2
           ${textStyles.title3_1} text-text-title `}
       />
       <button
