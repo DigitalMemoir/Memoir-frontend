@@ -27,9 +27,9 @@ const Event = (arg: EventContentArg) => {
         colorClass,
         'w-full h-5 pl-3',
         'flex flex-row items-center justify-start',
-        // 'font-medium text-[10.4px] font-pretendard',
         textStyles.sub2,
-        'text-text-body'
+        'text-text-body',
+        'cursor-default'
       )}
     >
       {arg.event.title}
