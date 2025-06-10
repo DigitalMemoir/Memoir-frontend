@@ -4,3 +4,32 @@
   padding-top: 1rem;
   padding-left: 1.25rem;
 }
+
+.fc-day-today {
+  background-color: transparent !important;
+}
+
+.fc .fc-daygrid-day-events {
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 1rem;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  height: 1.375rem !important;
+}
+
+.fc .fc-event {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  height: 1.375rem !important;
+  height: 1.375rem !important;
+  border-radius: 0.25rem !important;
+}
+
+.fc-event-main {
+  height: 1.375rem !important;
+}
