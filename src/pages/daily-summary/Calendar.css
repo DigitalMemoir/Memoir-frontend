@@ -1,0 +1,6 @@
+.fc .fc-daygrid-day-top {
+  flex-direction: row !important;
+  width: 100% !important;
+  padding-top: 1rem;
+  padding-left: 1.25rem;
+}
