@@ -42,7 +42,7 @@ const Event = (props: IEventProps) => {
         {props.event.title}
       </div>
       {props.popupOpen && (
-        <div className={'absolute top-[100%] left-0'}>
+        <div className={'absolute top-[100%] left-0 z-500'}>
           <Popup
             dateString={props.event.startStr}
             tailYPosition={'top'}
