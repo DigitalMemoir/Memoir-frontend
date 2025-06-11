@@ -1,12 +1,7 @@
 import type { EventContentArg } from '@fullcalendar/core/index.js';
 import clsx from 'clsx';
 import textStyles from '../../../styles/textStyles';
-import Popup from '../Popup';
-
-interface IEventProps extends EventContentArg {
-  popupOpen?: boolean;
-}
-
+import React from 'react';
 const colorPalette = [
   'bg-[#FFF3BD]',
   'bg-[#CFFFCF]',
@@ -14,6 +9,10 @@ const colorPalette = [
   'bg-[#B9F6FF]',
   'bg-[#DEC1FF]',
 ];
+
+interface IEventProps extends EventContentArg {
+  isPopupOpen?: boolean;
+}
 
 const getColorClass = (key: string): string => {
   let hash = 0;
@@ -24,11 +23,13 @@ const getColorClass = (key: string): string => {
   return colorPalette[index];
 };
 
-const Event = (props: IEventProps) => {
-  const colorClass = getColorClass(props.event.title);
-  return (
-    <>
+const Event = React.forwardRef<HTMLDivElement, IEventProps>(
+  ({ event: { title }, isPopupOpen }, _forwardedRef) => {
+    const colorClass = getColorClass(title);
+
+    return (
       <div
+        ref={_forwardedRef}
         className={clsx(
           colorClass,
           'w-full h-5 pl-3',
@@ -36,22 +37,16 @@ const Event = (props: IEventProps) => {
           textStyles.sub2,
           'text-text-body',
           'cursor-default',
-          'absolute'
+          'absolute',
+          isPopupOpen ? 'z-[10]' : 'z-[1]'
         )}
       >
-        {props.event.title}
+        {title}
       </div>
-      {props.popupOpen && (
-        <div className={'absolute top-[100%] left-0 z-500'}>
-          <Popup
-            dateString={props.event.startStr}
-            tailYPosition={'top'}
-            tailXPosition={'left'}
-          />
-        </div>
-      )}
-    </>
-  );
-};
+    );
+  }
+);
+
+Event.displayName = 'Event';
 
 export default Event;

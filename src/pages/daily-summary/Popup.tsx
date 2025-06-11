@@ -32,7 +32,7 @@ const Popup: React.FC<IPopupProps> = ({
       className={clsx(
         'relative w-[34rem] h-[20rem] bg-white p-6 shadow-lg flex flex-col gap-6',
         tailClasses,
-        'z-500'
+        'z-[500]'
       )}
     >
       <p className={`${textStyles.text2_2} text-text-subtle`}>

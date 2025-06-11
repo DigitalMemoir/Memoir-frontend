@@ -7,9 +7,12 @@ import Day from './Calendar/Day';
 import './Calendar.css';
 import type { IEvent } from '../../types/ICalendar';
 import Event from './Calendar/Event';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Header from './Calendar/Header';
 import dayjs from 'dayjs';
+import type { EventContentArg } from '@fullcalendar/core/index.js';
+import { createRoot } from 'react-dom/client';
+import Popup from './Popup';
 
 const events: Array<IEvent> = [
   { title: 'Meeting', start: new Date('2025-6-1'), allDay: true },
@@ -41,7 +44,70 @@ const events: Array<IEvent> = [
 const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [title, setTitle] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const eventRefs = useRef<Record<string, HTMLDivElement>>({});
+
+  const [selectedDateStr, setSelectedDateStr] = useState<string | null>(null);
+
+  // 날짜 셀 클릭 시
+  const handleDateClick = (info: DateClickArg) => {
+    const api = calendarRef.current?.getApi();
+    if (!api) return;
+
+    console.log('날짜 클릭:', info.dateStr);
+
+    // 그 날짜에 이벤트가 하나라도 있으면 selectedDateStr에, 없으면 null
+    const exists = api
+      .getEvents()
+      .some((ev) => ev.start!.toISOString().slice(0, 10) === info.dateStr);
+
+    setSelectedDateStr(exists ? info.dateStr : null);
+  };
+
+  useLayoutEffect(() => {
+    if (!selectedDateStr) return;
+
+    const el = eventRefs.current[selectedDateStr];
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const wrapper = document.createElement('div');
+    Object.assign(wrapper.style, {
+      position: 'fixed',
+      top: `${rect.bottom}px`,
+      left: `${rect.left + rect.width / 2}px`,
+      transform: 'translateX(-50%)',
+      zIndex: '10000',
+    });
+    document.body.appendChild(wrapper);
+
+    const root = createRoot(wrapper);
+    root.render(
+      <Popup
+        dateString={selectedDateStr}
+        tailYPosition={'top'}
+        // 왼쪽/오른쪽 꼬리 판단
+        tailXPosition={
+          rect.left + rect.width / 2 < window.innerWidth / 2 ? 'left' : 'right'
+        }
+      />
+    );
+
+    return () => {
+      root.unmount();
+      wrapper.remove();
+    };
+  }, [selectedDateStr]);
+
+  const renderEventContent = (arg: EventContentArg) => {
+    return (
+      <Event
+        ref={(el) => {
+          if (el) eventRefs.current[arg.event.startStr] = el;
+        }}
+        {...arg}
+      />
+    );
+  };
 
   useEffect(() => {
     const api = calendarRef.current?.getApi();
@@ -72,24 +138,6 @@ const Calendar = () => {
     calendarRef.current?.getApi().next();
   };
 
-  // 날짜 클릭 시: 그 날짜의 이벤트들을 찾아 state에 저장
-  const handleDateClick = (info: DateClickArg) => {
-    const api = calendarRef.current?.getApi();
-    if (!api) return;
-    console.log('Clicked date:', info.dateStr);
-    // YYYY-MM-DD 기준으로 필터
-    const eventsOnDate = api
-      .getEvents()
-      .filter((e) => e.startStr.startsWith(info.dateStr))
-      .map((e) => e.startStr);
-
-    if (eventsOnDate.length > 0) {
-      setSelectedDate(info.dateStr);
-    } else {
-      setSelectedDate('');
-    }
-  };
-
   return (
     <div>
       <Header goPrev={goPrev} goNext={goNext} title={title} />
@@ -105,9 +153,7 @@ const Calendar = () => {
         dayCellContent={Day}
         events={events}
         eventDisplay={'block'}
-        eventContent={(arg) => (
-          <Event popupOpen={selectedDate === arg.event.startStr} {...arg} />
-        )}
+        eventContent={renderEventContent}
         titleFormat={{
           year: 'numeric',
           month: 'long',

@@ -30,6 +30,7 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <div className={'bg-white'}>
+        <div id={'portal-root'} />
         <HashRouter>
           <Story />
         </HashRouter>
