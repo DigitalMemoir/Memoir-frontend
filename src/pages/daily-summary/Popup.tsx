@@ -4,11 +4,7 @@ import textStyles from '../../styles/textStyles';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import './Popup.css';
-interface IPopupProps {
-  dateString: string;
-  tailYPosition: 'top' | 'bottom';
-  tailXPosition: 'left' | 'right';
-}
+import type { IPopupProps } from '../../types/ICalendar';
 
 const tailYPositionClasses: Record<IPopupProps['tailYPosition'], string> = {
   top: 'arrow_box_top',

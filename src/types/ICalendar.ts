@@ -3,3 +3,9 @@ export interface IEvent {
   start: Date;
   allDay?: boolean;
 }
+
+export interface IPopupProps {
+  dateString: string;
+  tailYPosition: 'top' | 'bottom';
+  tailXPosition: 'left' | 'right';
+}
