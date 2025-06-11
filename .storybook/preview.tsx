@@ -1,6 +1,10 @@
 import type { Preview } from '@storybook/react-vite';
 import '../src/index.css';
 import { HashRouter } from 'react-router-dom';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+dayjs.locale('ko');
 
 const preview: Preview = {
   parameters: {

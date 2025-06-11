@@ -19,6 +19,8 @@ input::-webkit-search-results-decoration {
   display: none;
 }
 
+/* hover:bg-gray-1/20 */
+
 @theme {
   --font-pretendard: 'Pretendard Variable', sans-serif;
 
