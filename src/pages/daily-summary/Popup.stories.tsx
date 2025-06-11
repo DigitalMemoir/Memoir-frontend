@@ -7,19 +7,48 @@ const meta: Meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    backgrounds: {
-      default: 'dark',
-      values: [{ name: 'dark', value: '#1a1a1a' }],
-    },
   },
+  decorators: [
+    (Story) => (
+      <div className={'w-full h-full bg-black dark:bg-black'}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const TopLeft: Story = {
   args: {
     dateString: '2025-06-29',
+    tailYPosition: 'top',
+    tailXPosition: 'left',
+  },
+};
+
+export const TopRight: Story = {
+  args: {
+    dateString: '2025-06-29',
+    tailYPosition: 'top',
+    tailXPosition: 'right',
+  },
+};
+
+export const BottomLeft: Story = {
+  args: {
+    dateString: '2025-06-29',
+    tailYPosition: 'bottom',
+    tailXPosition: 'left',
+  },
+};
+
+export const BottomRight: Story = {
+  args: {
+    dateString: '2025-06-29',
+    tailYPosition: 'bottom',
+    tailXPosition: 'right',
   },
 };
