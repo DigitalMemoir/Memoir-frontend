@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Memoir",
+  "version": "0.0.0",
+  "description": "A simple React app as a Chrome extension",
+  "chrome_url_overrides": {
+    "newtab": "src/newtab/index.html"
+  },
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["____API_URL__/**"],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/newtab/index.html",
+        "src/popup/index.html"
+      ],
+      "matches": ["chrome-extension://*/*"]
+    }
+  ]
+}
