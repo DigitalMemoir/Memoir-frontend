@@ -81,7 +81,12 @@ const Calendar = () => {
       .getEvents()
       .some((ev) => ev.start!.toISOString().slice(0, 10) === info.dateStr);
 
-    setSelectedDateStr(exists ? info.dateStr : null);
+    if (!exists) {
+      closePopup();
+      return;
+    }
+
+    setSelectedDateStr(info.dateStr);
   };
 
   useLayoutEffect(() => {
@@ -121,7 +126,6 @@ const Calendar = () => {
           }
         : {
             // 오른쪽 절반: 팝업을 요소 오른쪽에
-            // right: `${window.innerWidth - rect.right - 160}px`,
             right: `${window.innerWidth - rect.right - 280}px`,
           };
 
@@ -133,11 +137,6 @@ const Calendar = () => {
       ...yPosition,
     });
 
-    console.log('팝업 위치:');
-    console.log('top', wrapper.style.top);
-    console.log('bottom', wrapper.style.bottom);
-    console.log('left', wrapper.style.left);
-    console.log('right', wrapper.style.right);
     document.body.appendChild(wrapper);
 
     const root = createRoot(wrapper);
