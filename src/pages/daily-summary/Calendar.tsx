@@ -7,7 +7,13 @@ import Day from './Calendar/Day';
 import './Calendar.css';
 import type { IEvent } from '../../types/ICalendar';
 import Event from './Calendar/Event';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import Header from './Calendar/Header';
 import dayjs from 'dayjs';
 import type { EventContentArg } from '@fullcalendar/core/index.js';
@@ -48,12 +54,26 @@ const Calendar = () => {
 
   const [selectedDateStr, setSelectedDateStr] = useState<string | null>(null);
 
+  const closePopup = useCallback(() => {
+    setSelectedDateStr(null);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', closePopup);
+    return () => {
+      window.removeEventListener('scroll', closePopup);
+    };
+  }, [closePopup]);
+
   // 날짜 셀 클릭 시
   const handleDateClick = (info: DateClickArg) => {
     const api = calendarRef.current?.getApi();
     if (!api) return;
 
-    console.log('날짜 클릭:', info.dateStr);
+    if (selectedDateStr === info.dateStr) {
+      closePopup();
+      return;
+    }
 
     // 그 날짜에 이벤트가 하나라도 있으면 selectedDateStr에, 없으면 null
     const exists = api
