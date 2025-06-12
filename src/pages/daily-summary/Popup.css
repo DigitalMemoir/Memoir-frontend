@@ -3,7 +3,7 @@
 .arrow_box_bottom {
   position: relative;
   background: #fff;
-  border: 1px solid #b3b3b3;
+  border: 1px solid #e3e3e3;
   z-index: 10;
 }
 
@@ -15,7 +15,7 @@
   /* 위쪽 → 아래쪽으로 향하는 삼각형 */
   border-width: 0 21px 21px 21px; /* top right bottom left */
   border-style: solid;
-  border-color: transparent transparent #b3b3b3 transparent;
+  border-color: transparent transparent #e3e3e3 transparent;
   z-index: 9;
 }
 .arrow_box_top::after {
@@ -36,7 +36,7 @@
   /* 아래쪽 → 위쪽으로 향하는 삼각형 */
   border-width: 21px 21px 0 21px;
   border-style: solid;
-  border-color: #b3b3b3 transparent transparent transparent;
+  border-color: #e3e3e3 transparent transparent transparent;
   z-index: 9;
 }
 .arrow_box_bottom::after {
