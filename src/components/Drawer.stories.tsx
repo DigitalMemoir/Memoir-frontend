@@ -26,6 +26,9 @@ const ModalWithTrigger = () => {
       <button onClick={() => setOpen(true)}>모달 열기</button>
       <Drawer
         isOpen={open}
+        onOpen={() => {
+          setOpen(true);
+        }}
         onClose={() => {
           setOpen(false);
         }}

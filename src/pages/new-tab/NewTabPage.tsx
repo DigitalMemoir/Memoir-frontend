@@ -17,7 +17,7 @@ const NewTabPage = () => {
   return (
     <div
       className={
-        'flex flex-col items-center justify-start h-dvh gap-20 pt-[300px]'
+        'flex flex-col items-center justify-start h-full gap-20 pt-[134px]'
       }
     >
       <GoogleSearchBar />
