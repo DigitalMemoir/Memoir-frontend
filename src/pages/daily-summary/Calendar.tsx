@@ -121,17 +121,16 @@ const Calendar = () => {
     const xPosition: React.CSSProperties =
       tailXPosition === 'left'
         ? {
-            // 왼쪽 절반: 팝업을 요소 왼쪽에
             left: `${rect.left + 160}px`,
+            transform: 'translateX(-50%)',
           }
         : {
-            // 오른쪽 절반: 팝업을 요소 오른쪽에
-            right: `${window.innerWidth - rect.right - 280}px`,
+            right: `${window.innerWidth - rect.right}px`,
+            transform: 'translateX(25%)',
           };
 
     Object.assign(wrapper.style, {
       position: 'fixed',
-      transform: 'translateX(-50%)',
       zIndex: '10000',
       ...xPosition,
       ...yPosition,
