@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import textStyles from '../styles/textStyles';
 import type React from 'react';
 import { useRef } from 'react';
+import googleIcon from '../assets/icons/googleIcon.svg';
 
 const GoogleSearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +40,7 @@ const GoogleSearchBar = () => {
         `}
       onSubmit={handleSubmit}
     >
-      <img src={'/googleIcon.svg'} className={'w-16 h-16 z-10'} />
+      <img src={googleIcon} className={'w-16 h-16 z-10'} />
       <input
         onKeyDown={handleKeyDown}
         type={'search'}
