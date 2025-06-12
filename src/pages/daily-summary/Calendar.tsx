@@ -107,11 +107,11 @@ const Calendar = () => {
       tailYPosition === 'top'
         ? {
             // 화면 상단 절반: 팝업을 요소 아래에
-            top: `${rect.bottom + 28}px`,
+            top: `${rect.bottom + rect.height + 8}px`,
           }
         : {
             // 화면 하단 절반: 팝업을 요소 위에
-            bottom: `${window.innerHeight - rect.top + 44}px`,
+            bottom: `${window.innerHeight - rect.top + rect.height + 8}px`,
           };
 
     // 팝업 x 위치 계산

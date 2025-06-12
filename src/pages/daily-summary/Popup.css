@@ -1,27 +1,50 @@
-.arrow_box_top:after {
-  bottom: 100%;
-  border: solid transparent;
-  content: '';
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-color: rgba(255, 255, 255, 0);
-  border-bottom-color: #000000;
-  border-width: 20px;
-  margin-left: -20px;
+/* 공통: 컨테이너 */
+.arrow_box_top,
+.arrow_box_bottom {
+  position: relative;
+  background: #fff;
+  border: 1px solid #b3b3b3;
+  z-index: 10;
 }
 
-.arrow_box_bottom:after {
-  top: 100%;
-  border: solid transparent;
+/* ↓ 위쪽 꼬리(팝업 바로 아래) */
+.arrow_box_top::before {
   content: '';
-  height: 0;
-  width: 0;
   position: absolute;
-  pointer-events: none;
-  border-color: rgba(255, 255, 255, 0);
-  border-top-color: #000000;
-  border-width: 20px;
-  margin-left: -20px;
+  bottom: 100%;
+  /* 위쪽 → 아래쪽으로 향하는 삼각형 */
+  border-width: 0 21px 21px 21px; /* top right bottom left */
+  border-style: solid;
+  border-color: transparent transparent #b3b3b3 transparent;
+  z-index: 9;
+}
+.arrow_box_top::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  border-width: 0 20px 20px 20px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+  z-index: 21;
+}
+
+/* ↑ 아래쪽 꼬리(팝업 바로 위) */
+.arrow_box_bottom::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  /* 아래쪽 → 위쪽으로 향하는 삼각형 */
+  border-width: 21px 21px 0 21px;
+  border-style: solid;
+  border-color: #b3b3b3 transparent transparent transparent;
+  z-index: 9;
+}
+.arrow_box_bottom::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  border-width: 20px 20px 0 20px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+  z-index: 21;
 }
