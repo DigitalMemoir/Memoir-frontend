@@ -183,7 +183,7 @@ const Calendar = () => {
       const currentDate = view.currentStart;
 
       // Day.js로 포맷팅
-      const formatted = dayjs(currentDate).format('MMMM, YYYY');
+      const formatted = dayjs(currentDate).locale('en').format('MMMM, YYYY');
       setTitle(formatted); // "May, 2025"
     };
 
