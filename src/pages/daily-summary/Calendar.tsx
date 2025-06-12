@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import type { EventContentArg } from '@fullcalendar/core/index.js';
 import { createRoot } from 'react-dom/client';
 import Popup from './Popup';
+import { AnimatePresence } from 'motion/react';
 
 const events: Array<IEvent> = [
   { title: 'Meeting', start: new Date('2025-6-1'), allDay: true },
@@ -141,16 +142,21 @@ const Calendar = () => {
 
     const root = createRoot(wrapper);
     root.render(
-      <Popup
-        dateString={selectedDateStr}
-        tailYPosition={tailYPosition}
-        tailXPosition={tailXPosition}
-      />
+      <AnimatePresence>
+        <Popup
+          dateString={selectedDateStr}
+          tailYPosition={tailYPosition}
+          tailXPosition={tailXPosition}
+        />
+      </AnimatePresence>
     );
 
     return () => {
-      root.unmount();
-      wrapper.remove();
+      // exit 애니메이션(0.15s)이 끝나고 DOM 제거
+      setTimeout(() => {
+        root.unmount();
+        wrapper.remove();
+      }, 150);
     };
   }, [selectedDateStr]);
 

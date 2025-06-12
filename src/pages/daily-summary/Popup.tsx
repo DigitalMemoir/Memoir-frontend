@@ -16,6 +16,12 @@ const tailXPositionClasses: Record<IPopupProps['tailXPosition'], string> = {
   right: 'after:right-[10rem]',
 };
 
+const popupVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, scale: 0.8, transition: { duration: 0.15 } },
+};
+
 const Popup: React.FC<IPopupProps> = ({
   dateString,
   tailXPosition,
@@ -28,7 +34,11 @@ const Popup: React.FC<IPopupProps> = ({
   );
 
   return (
-    <div
+    <motion.div
+      initial={'initial'}
+      animate={'animate'}
+      exit={'exit'}
+      variants={popupVariants}
       className={clsx(
         'relative w-[34rem] h-[20rem] bg-white p-6 shadow-lg flex flex-col gap-6',
         tailClasses,
@@ -67,7 +77,7 @@ const Popup: React.FC<IPopupProps> = ({
           자세히보기
         </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
