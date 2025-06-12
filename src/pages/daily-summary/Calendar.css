@@ -33,3 +33,8 @@
 .fc-event-main {
   height: 1.375rem !important;
 }
+
+.fc .fc-cell-shaded,
+.fc .fc-day-disabled {
+  background-color: white !important;
+}
