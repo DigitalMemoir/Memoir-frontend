@@ -10,13 +10,13 @@ export const menuList: Array<{
 }> = [
   {
     icon: SearchIcon,
-    title: '검색',
-    endpoint: '/search',
+    title: '오늘의 키워드',
+    endpoint: '/todays-keyword',
   },
   {
     icon: RobotIcon,
-    title: 'AI',
-    endpoint: '/ai',
+    title: 'AI 일일 요약',
+    endpoint: '/daily-summary',
   },
   {
     icon: ClockIcon,
@@ -25,7 +25,7 @@ export const menuList: Array<{
   },
   {
     icon: NetworkIcon,
-    title: '네트워크 상태',
-    endpoint: '/network',
+    title: '오늘 방문 사이트',
+    endpoint: '/visited-sites',
   },
 ];

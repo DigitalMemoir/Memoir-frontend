@@ -1,6 +1,5 @@
 import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
-import GoogleSearchBar from '../../components/GoogleSearchBar';
 
 const NewTabPage = () => {
   const bookmarks = [
@@ -15,12 +14,7 @@ const NewTabPage = () => {
     length: bookmarks.length < 5 ? 5 - bookmarks.length : 0,
   });
   return (
-    <div
-      className={
-        'flex flex-col items-center justify-start h-full gap-20 pt-[134px]'
-      }
-    >
-      <GoogleSearchBar />
+    <div className={'flex flex-col items-center justify-start h-full pt-20'}>
       <div
         className={
           'flex flex-row flex-wrap justify-between \

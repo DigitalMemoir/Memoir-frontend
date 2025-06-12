@@ -1,4 +1,3 @@
-import GoogleSearchBar from '../../components/GoogleSearchBar';
 import SearchIcon from '../../assets/icons/search.png';
 import textStyles from '../../styles/textStyles';
 import Keyword from './Keyword';
@@ -41,15 +40,10 @@ const TodaysKeywordsPage = () => {
 
   return (
     <AnimatePresence>
-      <div
-        className={
-          'flex flex-col items-start justify-center w-fit h-full mx-auto gap-4'
-        }
-      >
-        <GoogleSearchBar />
+      <div className={'w-fit h-full box-border pt-30'}>
         <motion.div
           className={
-            'flex flex-col items-start justify-start w-full gap-20 pl-9 mt-30 max-w-[740px]'
+            'pl-9 max-w-[740px] h-full flex flex-col items-start justify-start gap-20 box-border'
           }
           variants={containerVariants}
           initial={'initial'}
@@ -70,7 +64,7 @@ const TodaysKeywordsPage = () => {
           </motion.div>
           <div
             className={
-              'grid grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4 w-full mb-20 max-w-[978px] min-w-[600px]'
+              'grid grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4 w-full max-w-[978px] min-w-[600px]'
             }
           >
             {nineKeywords.map((keyword, idx) => (
