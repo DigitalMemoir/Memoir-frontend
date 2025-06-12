@@ -71,24 +71,60 @@ const Calendar = () => {
 
     const rect = el.getBoundingClientRect();
     const wrapper = document.createElement('div');
+
+    // 팝업 y 위치 계산
+    const centerY = rect.top + rect.height / 2;
+    // 뷰포트 중앙과 비교
+    const tailYPosition = centerY < window.innerHeight / 2 ? 'top' : 'bottom';
+
+    const yPosition: React.CSSProperties =
+      tailYPosition === 'top'
+        ? {
+            // 화면 상단 절반: 팝업을 요소 아래에
+            top: `${rect.bottom + 28}px`,
+          }
+        : {
+            // 화면 하단 절반: 팝업을 요소 위에
+            bottom: `${window.innerHeight - rect.top + 44}px`,
+          };
+
+    // 팝업 x 위치 계산
+    const tailXPosition =
+      rect.left + rect.width / 2 < window.innerWidth / 2 ? 'left' : 'right';
+
+    const xPosition: React.CSSProperties =
+      tailXPosition === 'left'
+        ? {
+            // 왼쪽 절반: 팝업을 요소 왼쪽에
+            left: `${rect.left + 160}px`,
+          }
+        : {
+            // 오른쪽 절반: 팝업을 요소 오른쪽에
+            // right: `${window.innerWidth - rect.right - 160}px`,
+            right: `${window.innerWidth - rect.right - 280}px`,
+          };
+
     Object.assign(wrapper.style, {
       position: 'fixed',
-      top: `${rect.bottom}px`,
-      left: `${rect.left + rect.width / 2}px`,
       transform: 'translateX(-50%)',
       zIndex: '10000',
+      ...xPosition,
+      ...yPosition,
     });
+
+    console.log('팝업 위치:');
+    console.log('top', wrapper.style.top);
+    console.log('bottom', wrapper.style.bottom);
+    console.log('left', wrapper.style.left);
+    console.log('right', wrapper.style.right);
     document.body.appendChild(wrapper);
 
     const root = createRoot(wrapper);
     root.render(
       <Popup
         dateString={selectedDateStr}
-        tailYPosition={'top'}
-        // 왼쪽/오른쪽 꼬리 판단
-        tailXPosition={
-          rect.left + rect.width / 2 < window.innerWidth / 2 ? 'left' : 'right'
-        }
+        tailYPosition={tailYPosition}
+        tailXPosition={tailXPosition}
       />
     );
 

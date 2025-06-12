@@ -7,7 +7,7 @@
   position: absolute;
   pointer-events: none;
   border-color: rgba(255, 255, 255, 0);
-  border-bottom-color: #ffffff;
+  border-bottom-color: #000000;
   border-width: 20px;
   margin-left: -20px;
 }
@@ -21,7 +21,7 @@
   position: absolute;
   pointer-events: none;
   border-color: rgba(255, 255, 255, 0);
-  border-top-color: #ffffff;
+  border-top-color: #000000;
   border-width: 30px;
   margin-left: -30px;
 }
