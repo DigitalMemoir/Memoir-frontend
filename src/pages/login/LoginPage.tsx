@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
+import { motion } from 'framer-motion';
 
 const LoginPage = () => {
   return (
@@ -32,13 +33,16 @@ const LoginPage = () => {
           <br />
           Memoir 에서 오늘을 시작하세요!
         </h4>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className={clsx(
             'box-border border-[1px] border-[#747775]',
             'font-roboto font-medium text-[#1F1F1F] text-[2rem]',
             'w-1/2 min-w-75 h-auto aspect-6/1 py-2.5 px-3 rounded-full',
             'flex flex-row items-center justify-center gap-11',
-            'bg-white'
+            'bg-white',
+            'hover:cursor-pointer'
           )}
         >
           <img
@@ -47,7 +51,7 @@ const LoginPage = () => {
             className={'inline-block w-10 h-10 '}
           />
           Google 계정으로 계속하기
-        </button>
+        </motion.button>
       </div>
     </div>
   );
