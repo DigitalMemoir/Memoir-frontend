@@ -118,17 +118,22 @@ const Calendar = () => {
     const tailXPosition =
       rect.left + rect.width / 2 < window.innerWidth / 2 ? 'left' : 'right';
 
+    const arrowOffset = 160;
+    const centerX = rect.left + rect.width / 2;
+    console.log('centerX', centerX);
+
     const xPosition: React.CSSProperties =
       tailXPosition === 'left'
         ? {
-            left: `${rect.left + 160}px`,
-            transform: 'translateX(-50%)',
+            left: centerX - arrowOffset + 'px',
           }
         : {
-            right: `${window.innerWidth - rect.right}px`,
-            transform: 'translateX(25%)',
+            left: centerX - (524 - arrowOffset) + 'px',
           };
 
+    console.log('window.innerWidth', window.innerWidth);
+    console.log('rect.right', rect.right);
+    console.log('xPosition', xPosition?.left);
     Object.assign(wrapper.style, {
       position: 'fixed',
       zIndex: '10000',
