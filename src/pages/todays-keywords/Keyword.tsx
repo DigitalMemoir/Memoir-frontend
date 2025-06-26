@@ -2,22 +2,29 @@ import clsx from 'clsx';
 import textStyles from '../../styles/textStyles';
 
 const Keyword = ({ idx, keyword }: { idx: number; keyword: string }) => {
-  const colors: Array<string> = [
-    'primary-400',
-    'primary-300',
-    'primary-200',
-    'gray-2',
-    'gray-2',
-    'gray-2',
-    'gray-2',
-    'gray-2',
-    'gray-2',
-  ];
+  const getBorderTextClasses = (idx: number): string => {
+    switch (idx) {
+      case 0:
+        return 'border-primary-400 text-primary-400';
+      case 1:
+        return 'border-primary-300 text-primary-300';
+      case 2:
+        return 'border-primary-200 text-primary-200';
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      default:
+        return 'border-gray-2 text-gray-2';
+    }
+  };
 
-  const color = colors[idx];
+  const colorClasses = getBorderTextClasses(idx);
 
   console.log(
-    `Keyword component rendered with idx: ${idx}, keyword: ${keyword}, color: ${color}`
+    `Keyword component rendered with idx: ${idx}, keyword: ${keyword}, colorClasses: ${colorClasses}`
   );
 
   return (
@@ -27,8 +34,7 @@ const Keyword = ({ idx, keyword }: { idx: number; keyword: string }) => {
         'border rounded-2xl',
         textStyles.title3,
         'py-4 px-2 rounded-2xl cursor-default',
-        `border-${color}`,
-        `text-${color}`
+        colorClasses
       )}
     >
       {keyword}
