@@ -204,27 +204,30 @@ const Calendar = () => {
   };
 
   return (
-    <div>
+    <div className={'w-full h-full flex flex-col items-center'}>
       <Header goPrev={goPrev} goNext={goNext} title={title} />
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView={'dayGridMonth'}
-        timeZone={'Asia/Seoul'}
-        dayHeaders={false}
-        headerToolbar={false}
-        showNonCurrentDates={false}
-        fixedWeekCount={false}
-        dayCellContent={Day}
-        events={events}
-        eventDisplay={'block'}
-        eventContent={renderEventContent}
-        titleFormat={{
-          year: 'numeric',
-          month: 'long',
-        }}
-        dateClick={handleDateClick}
-      />
+      <div className={'h-full w-auto aspect-[4/3] box-border pb-30'}>
+        <FullCalendar
+          height={'100%'}
+          ref={calendarRef}
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView={'dayGridMonth'}
+          timeZone={'Asia/Seoul'}
+          dayHeaders={false}
+          headerToolbar={false}
+          showNonCurrentDates={false}
+          fixedWeekCount={false}
+          dayCellContent={Day}
+          events={events}
+          eventDisplay={'block'}
+          eventContent={renderEventContent}
+          titleFormat={{
+            year: 'numeric',
+            month: 'long',
+          }}
+          dateClick={handleDateClick}
+        />
+      </div>
     </div>
   );
 };

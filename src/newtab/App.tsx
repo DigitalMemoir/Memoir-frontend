@@ -4,16 +4,24 @@ import NewTabPage from '../pages/new-tab/NewTabPage';
 import OnboardingPage from '../pages/onboarding/OnboardingPage';
 import DefaultLayout from '../layouts/DefaultLayout';
 import TodaysKeywordsPage from '../pages/todays-keywords/TodaysKeywordsPage';
+import Calendar from '../pages/daily-summary/Calendar';
+import NoSearchbarLayout from '../layouts/NoSearchbarLayout';
+import RootLayout from '../layouts/RootLayout';
 
 function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route element={<DefaultLayout />}>
-          <Route path={'/'} element={<NewTabPage />} />
-          <Route path={'/todays-keyword'} element={<TodaysKeywordsPage />} />
+        <Route element={<RootLayout />}>
+          <Route element={<DefaultLayout />}>
+            <Route path={'/'} element={<NewTabPage />} />
+            <Route path={'/todays-keyword'} element={<TodaysKeywordsPage />} />
+          </Route>
+          <Route element={<NoSearchbarLayout />}>
+            <Route path={'/daily-summary'} element={<Calendar />} />
+          </Route>
+          <Route path={'/onboarding'} element={<OnboardingPage />} />
         </Route>
-        <Route path={'/onboarding'} element={<OnboardingPage />} />
       </Routes>
     </HashRouter>
   );

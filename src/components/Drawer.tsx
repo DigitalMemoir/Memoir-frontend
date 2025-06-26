@@ -2,7 +2,7 @@ import { Bars3Icon } from '@heroicons/react/16/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { menuList } from './menuList';
 import MenuItem from './MenuItem';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from '../assets/icons/memoir-logo.png';
 
 const DrawerButton = ({ onClick }: { onClick: () => void }) => {
@@ -12,11 +12,15 @@ const DrawerButton = ({ onClick }: { onClick: () => void }) => {
         onClick={onClick}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={'w-9 h-9 px-0.5 py-1.5 bg-white hover:bg-gray-1/20'}
+        className={
+          'w-9 h-9 px-0.5 py-1.5 bg-white hover:bg-gray-1/20 hover:cursor-pointer'
+        }
       >
         <Bars3Icon className={'w-8 h-6 color-black '} />
       </motion.button>
-      <img src={Logo} alt={'Memoir Logo'} className={'w-[144px] h-[32px]'} />
+      <Link to={'/'}>
+        <img src={Logo} alt={'Memoir Logo'} className={'w-[144px] h-[32px]'} />
+      </Link>
     </div>
   );
 };
