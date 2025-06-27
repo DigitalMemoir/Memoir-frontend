@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 import type { EventContentArg } from '@fullcalendar/core/index.js';
 import { createRoot } from 'react-dom/client';
 import Popup from './Popup';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 
 const events: Array<IEvent> = [
   { title: 'Meeting', start: new Date('2025-6-1'), allDay: true },
@@ -204,7 +204,12 @@ const Calendar = () => {
   };
 
   return (
-    <div className={'w-full h-full flex flex-col items-center'}>
+    <motion.div
+      className={'w-full h-full flex flex-col items-center'}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+    >
       <Header goPrev={goPrev} goNext={goNext} title={title} />
       <div className={'h-full w-auto aspect-[4/3] box-border pb-30'}>
         <FullCalendar
@@ -228,7 +233,7 @@ const Calendar = () => {
           dateClick={handleDateClick}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
