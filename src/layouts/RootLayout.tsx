@@ -2,10 +2,10 @@ import Drawer from '../components/Drawer';
 import BellIcon from '../assets/icons/Bell.svg';
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useDrawer } from '../states/useDrawer';
+import { useDrawerStore } from '../states/useDrawerStore';
 
 const RootLayout = () => {
-  const { isOpen, openDrawer, closeDrawer } = useDrawer();
+  const { isOpen, openDrawer, closeDrawer } = useDrawerStore();
 
   return (
     <motion.div

@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
-interface IUseDrawer {
+interface IUseDrawerStore {
   isOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
 }
 
-export const useDrawer = create<IUseDrawer>((set) => ({
+export const useDrawerStore = create<IUseDrawerStore>((set) => ({
   isOpen: false,
   openDrawer: () => set({ isOpen: true }),
   closeDrawer: () => set({ isOpen: false }),
