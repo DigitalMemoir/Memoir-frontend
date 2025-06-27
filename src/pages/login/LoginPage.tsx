@@ -2,8 +2,32 @@ import clsx from 'clsx';
 import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
 import { motion } from 'framer-motion';
+import axios, { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
+
+interface ILoginResponse {
+  token: string;
+}
 
 const LoginPage = () => {
+  const handleLogin = async () => {
+    const response = await axios.post(`${import.meta.env}/login`);
+    return response.data;
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: handleLogin,
+    onSuccess: (data: ILoginResponse) => {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('isLoggedIn', 'true');
+      window.location.href = '/';
+    },
+    onError: (error: AxiosError) => {
+      console.error('Login failed:', error);
+      alert('로그인에 실패했습니다. 다시 시도해주세요.');
+    },
+  });
+
   return (
     <div
       className={clsx(
@@ -44,6 +68,7 @@ const LoginPage = () => {
             'bg-white',
             'hover:cursor-pointer'
           )}
+          onClick={() => mutate()}
         >
           <img
             src={googleIcon}
