@@ -1,15 +1,21 @@
 import { create } from 'zustand';
+import { getAccessTokenFromCookie } from '../lib/axiosInstance';
 
-interface IAuthStore {
+interface AuthState {
   isLoggedIn: boolean;
-  userId: string | null;
-  setIsLoggedIn: (_isLoggedIn: boolean) => void;
-  setUserId: (_userId: string | null) => void;
+  setIsLoggedIn: (value: boolean) => void;
+  checkLoginStatus: () => void;
 }
 
-export const useAuthStore = create<IAuthStore>((set) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   isLoggedIn: false,
-  userId: null,
-  setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
-  setUserId: (userId) => set({ userId }),
+  setIsLoggedIn: (value) => set({ isLoggedIn: value }),
+  checkLoginStatus: () => {
+    try {
+      const token = getAccessTokenFromCookie();
+      set({ isLoggedIn: !!token });
+    } catch (e) {
+      console.error('checkLoginStatus error:', e); // ✅ 디버깅용
+    }
+  },
 }));

@@ -9,10 +9,17 @@ import NoSearchbarLayout from '../layouts/NoSearchbarLayout';
 import RootLayout from '../layouts/RootLayout';
 import LoginPage from '../pages/login/LoginPage';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '../states/useAuthStore';
+import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
 
 function App() {
+  const checkLoginStatus = useAuthStore((state) => state.checkLoginStatus);
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <HashRouter>
