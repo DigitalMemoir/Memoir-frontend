@@ -11,7 +11,7 @@ interface ILoginResponse {
 
 const LoginPage = () => {
   const handleLogin = async () => {
-    const response = await axios.post(`${import.meta.env}/login`);
+    const response = await axios.post(`/api/login`);
     return response.data;
   };
 
