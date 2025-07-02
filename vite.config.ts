@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { resolve } from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 
 export default defineConfig(({ mode }) => {
@@ -32,7 +33,7 @@ export default defineConfig(({ mode }) => {
     ],
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'src'), // ✅ 여기가 핵심!
+        '@': resolve(__dirname, 'src'),
       },
     },
     root: resolve(__dirname, 'src'),
@@ -49,12 +50,9 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 3000,
-      proxy: {
-        '/back-api': {
-          target: API_URL,
-          changeOrigin: true,
-          secure: false,
-        },
+      https: {
+        key: fs.readFileSync(resolve(__dirname, 'localhost-key.pem')),
+        cert: fs.readFileSync(resolve(__dirname, 'localhost.pem')),
       },
     },
   };
