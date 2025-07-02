@@ -27,7 +27,7 @@ const KeywordButton = ({
       <div
         className={`flex flex-col items-start gap-4 w-full h-full justify-start ${textStyles.title2}`}
       >
-        <span className={'inline-block'}>{icon}</span>
+        <img src={icon} alt={keyword} className={'w-9 h-9 inline-block'} />
         <p>{keyword}</p>
       </div>
     </motion.button>

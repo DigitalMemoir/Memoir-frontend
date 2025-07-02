@@ -3,10 +3,6 @@ import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
 import { motion } from 'framer-motion';
 
-interface ILoginResponse {
-  token: string;
-}
-
 const LoginPage = () => {
   const handleLogin = () =>
     (window.location.href = `${import.meta.env.VITE_API_URL}`);

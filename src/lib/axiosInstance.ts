@@ -6,7 +6,7 @@ export const getAccessTokenFromCookie = (): string | null => {
 };
 
 let axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: '/back-api',
   withCredentials: false,
 });
 

@@ -1,28 +1,36 @@
 import { keywords } from './keywords';
 import KeywordButton from './KeywordButton';
-import { useState } from 'react';
 
-const KeywordList = () => {
-  const [selected, setSelected] = useState(-1);
-
-  const handleKeywordClick = (index: number) => {
-    setSelected(index);
+const KeywordList = ({
+  setSelected,
+  selected,
+}: {
+  setSelected: React.Dispatch<React.SetStateAction<Array<string>>>;
+  selected: Array<string>;
+}) => {
+  const handleKeywordClick = (type: string) => {
+    setSelected((prev) => {
+      if (prev.includes(type)) {
+        return prev.filter((i) => i !== type); // 이미 선택된 경우 선택 해제
+      } else {
+        return [...prev, type]; // 새로 선택된 경우 추가
+      }
+    });
   };
 
   return (
     <div
       className={
-        'flex flex-row items-center justify-start gap-8 w-full h-full \
-        flex-wrap'
+        'grid grid-cols-3 items-center justify-start gap-8 w-full h-full'
       }
     >
-      {keywords.map((keyword, idx) => (
+      {keywords.map((keyword) => (
         <KeywordButton
           key={keyword.keyword}
           icon={keyword.icon}
           keyword={keyword.keyword}
-          selected={selected === idx}
-          onClick={() => handleKeywordClick(idx)}
+          selected={selected.includes(keyword.type)}
+          onClick={() => handleKeywordClick(keyword.type)}
         />
       ))}
     </div>
