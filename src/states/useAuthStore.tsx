@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { getAccessTokenFromCookie } from '../lib/axiosInstance';
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -7,15 +6,18 @@ interface AuthState {
   checkLoginStatus: () => void;
 }
 
+// http only 쿠키이므로 이후 수정 필요
 export const useAuthStore = create<AuthState>((set) => ({
   isLoggedIn: false,
   setIsLoggedIn: (value) => set({ isLoggedIn: value }),
   checkLoginStatus: () => {
-    try {
-      const token = getAccessTokenFromCookie();
-      set({ isLoggedIn: !!token });
-    } catch (e) {
-      console.error('checkLoginStatus error:', e); // ✅ 디버깅용
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('accessToken='));
+    if (token) {
+      set({ isLoggedIn: true });
+    } else {
+      set({ isLoggedIn: false });
     }
   },
 }));

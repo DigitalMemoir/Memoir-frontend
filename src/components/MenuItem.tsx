@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import textStyles from '../styles/textStyles';
 import { motion } from 'framer-motion';
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 const MenuItem = ({
   icon,
