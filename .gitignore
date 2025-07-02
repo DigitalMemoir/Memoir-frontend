@@ -27,3 +27,6 @@ build
 .env
 
 *storybook.log
+
+localhost-key.pem
+localhost.pem
