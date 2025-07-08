@@ -4,11 +4,17 @@ import KeywordList from './KeywordList';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import axiosInstance from '../../lib/axiosInstance';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useAuthStore } from '../../states/useAuthStore';
 
 const OnboardingPage = () => {
   const [selected, setSelected] = useState<Array<string>>([]);
+  const { login } = useAuthStore();
+
+  useEffect(() => {
+    login();
+  }, []);
 
   const handleSetKeywords = async () => {
     await axiosInstance.post('/api/users/category', {
