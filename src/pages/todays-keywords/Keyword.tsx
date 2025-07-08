@@ -23,14 +23,10 @@ const Keyword = ({ idx, keyword }: { idx: number; keyword: string }) => {
 
   const colorClasses = getBorderTextClasses(idx);
 
-  console.log(
-    `Keyword component rendered with idx: ${idx}, keyword: ${keyword}, colorClasses: ${colorClasses}`
-  );
-
   return (
     <div
       className={clsx(
-        'flex flex-row items-center justify-center w-56 h-16 box-border',
+        'flex flex-row items-center justify-center w-[11.67vw] h-auto min-w-[180px] aspect-[7/2] box-border',
         'border rounded-2xl',
         textStyles.title3,
         'py-4 px-2 rounded-2xl cursor-default',

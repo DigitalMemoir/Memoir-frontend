@@ -16,11 +16,11 @@ const LoginPage = () => {
     >
       <div
         className={clsx(
-          'w-3/5 min-w-[600px] h-auto aspect-[610/249] py-20 mx-auto',
+          'w-3/5 min-w-[600px] h-auto aspect-[610/249] py-[7.4vh]  mx-auto',
           'bg-gradient-to-b from-white to-[#EEEFFF]',
           'shadow-default-1',
           'rounded-4xl',
-          'flex flex-col items-center justify-between '
+          'flex flex-col items-center justify-between'
         )}
       >
         <h4
@@ -41,8 +41,8 @@ const LoginPage = () => {
           whileTap={{ scale: 0.95 }}
           className={clsx(
             'box-border border-[1px] border-[#747775]',
-            'font-roboto font-medium text-[#1F1F1F] text-[2rem]',
-            'w-1/2 min-w-75 h-auto aspect-6/1 py-2.5 px-3 rounded-full',
+            'font-roboto font-medium text-[#1F1F1F] text-[clamp(1.25rem,2.96vh,2rem)] break-keep text-nowrap',
+            'w-[35vw] min-w-100 h-auto aspect-6/1 py-2.5 px-3 rounded-full',
             'flex flex-row items-center justify-center gap-11',
             'bg-white',
             'hover:cursor-pointer'
@@ -52,7 +52,7 @@ const LoginPage = () => {
           <img
             src={googleIcon}
             alt={'Google Logo'}
-            className={'inline-block w-10 h-10 '}
+            className={'inline-block h-[3.7vh] min-h-4 aspect-1/1'}
           />
           Google 계정으로 계속하기
         </motion.button>

@@ -42,10 +42,12 @@ const OnboardingPage = () => {
       >
         <div
           className={
-            'w-full h-fit flex flex-col items-start justify-center gap-25'
+            'w-full h-fit flex flex-col items-start justify-center gap-[9.63vh]'
           }
         >
-          <div className={'flex flex-col items-start justify-center gap-4'}>
+          <div
+            className={'flex flex-col items-start justify-center gap-[1.48vh]'}
+          >
             <h2 className={`${textStyles.title1} `}>
               어떤 목적으로 웹을 사용하시나요?
             </h2>
@@ -66,7 +68,7 @@ const OnboardingPage = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             className={clsx(
-              'w-[160px] h-40 rounded-full flex-shrink-0 min-w-[160px] bg-white shadow-button-2 box-border',
+              'w-[8.33vw] h-auto aspect-square rounded-full flex-shrink-0 bg-white shadow-button-2 box-border',
               'flex flex-row items-center justify-center',
               'hover:cursor-pointer hover:bg-gray-1/20'
             )}
@@ -78,7 +80,7 @@ const OnboardingPage = () => {
               mutate();
             }}
           >
-            <ChevronRightIcon className={'h-10 inline-block mr-2'} />
+            <ChevronRightIcon className={'h-[3.7vh] inline-block'} />
           </motion.button>
         )}
       </div>

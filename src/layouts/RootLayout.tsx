@@ -16,10 +16,13 @@ const RootLayout = () => {
       <div
         className={'absolute top-13 right-9 flex flex-row items-center gap-10'}
       >
-        <img src={BellIcon} className={'w-11 h-11 px-0.5  text-gray-3'} />
+        <img
+          src={BellIcon}
+          className={'w-[2.08vw] h-[4.07vh] px-0.5 text-gray-3'}
+        />
         <img
           src={'https://picsum.photos/80'}
-          className={'w-20 h-20 rounded-full'}
+          className={'w-[4.17vw] h-auto aspect-square rounded-full'}
         />
       </div>
       <Outlet />

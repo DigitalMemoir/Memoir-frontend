@@ -1,5 +1,6 @@
 import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
+import { bookmarkBaseStyle } from './BookmarkStyle.module';
 
 const NewTabPage = () => {
   const bookmarks = [
@@ -27,7 +28,11 @@ const NewTabPage = () => {
         ))}
         {bookmarks.length <= 5 && <AddBookmark />}
         {extras.map((_, index) => (
-          <div key={index} aria-hidden className={'w-24 h-24'} />
+          <div
+            key={index}
+            aria-hidden
+            className={`${bookmarkBaseStyle} bg-transparent`}
+          />
         ))}
       </div>
     </div>

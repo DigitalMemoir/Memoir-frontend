@@ -7,7 +7,7 @@ const NoSearchbarLayout = () => {
 
   return (
     <motion.div
-      className={`w-screen h-screen box-border pt-18 overflow-hidden`}
+      className={`w-screen h-screen box-border pt-[6.67vh] overflow-hidden`}
       transition={{ duration: 0.3 }}
     >
       <motion.main

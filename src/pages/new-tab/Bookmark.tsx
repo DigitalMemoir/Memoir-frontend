@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { bookmarkBaseStyle } from './BookmarkStyle.module';
 
 const Bookmark = ({ href }: { href: string }) => {
   const isExtension = window.location.protocol === 'chrome-extension:';
@@ -10,10 +12,10 @@ const Bookmark = ({ href }: { href: string }) => {
       href={href}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={
-        'w-24 h-24 shadow-default-1 rounded-full p-8 \
-        flex flex-col justify-center items-center box-border'
-      }
+      className={clsx(
+        bookmarkBaseStyle,
+        'flex flex-col justify-center items-center box-border'
+      )}
     >
       <img
         src={faviconUrl}

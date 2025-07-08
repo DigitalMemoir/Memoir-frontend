@@ -8,7 +8,7 @@ const GoogleSearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const baseStyles =
-    'w-[51vw] max-w-[978px] min-w-[600px] h-[5vw] min-h-25 rounded-full ';
+    'w-[51vw] max-w-[978px] min-w-[600px] h-[5vw] min-h-[68.7px] rounded-full ';
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -40,7 +40,10 @@ const GoogleSearchBar = () => {
         `}
       onSubmit={handleSubmit}
     >
-      <img src={googleIcon} className={'w-16 h-16 z-10'} />
+      <img
+        src={googleIcon}
+        className={'w-[3.33vw] min-w-10 h-auto aspect-square z-10'}
+      />
       <input
         onKeyDown={handleKeyDown}
         type={'search'}
@@ -57,7 +60,11 @@ const GoogleSearchBar = () => {
           'flex items-center justify-center p-3 rounded-full  hover:bg-[#efefef] z-10'
         }
       >
-        <MagnifyingGlassIcon className={'w-10 h-10 text-gray-2'} />
+        <MagnifyingGlassIcon
+          className={
+            'w-[3.7vw] max-w-10 min-w-6 h-auto aspect-square text-gray-2'
+          }
+        />
       </button>
     </form>
   );

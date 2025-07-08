@@ -8,7 +8,7 @@ const DefaultLayout = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    setPt(pathname === '/' ? '304px' : '168px');
+    setPt(pathname === '/' ? '28.15vh' : '15.56vh');
 
     return () => {};
   }, [pathname]);

@@ -20,14 +20,18 @@ const KeywordButton = ({
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={`w-[280px] h-auto aspect-[28/18] box-border p-8 rounded-[20px] border-0 \
+      className={`w-[14.58vw] min-w-40 h-auto aspect-[28/18] box-border p-[1.67vw] rounded-[20px] border-0 \
         ${selected ? selectedStyle : unselectedStyle}`}
       onClick={onClick}
     >
       <div
-        className={`flex flex-col items-start gap-4 w-full h-full justify-start ${textStyles.title2}`}
+        className={`flex flex-col items-start gap-[1.48vh] w-full h-full justify-start ${textStyles.title2}`}
       >
-        <img src={icon} alt={keyword} className={'w-9 h-9 inline-block'} />
+        <img
+          src={icon}
+          alt={keyword}
+          className={'w-[1.88vw] min-w-5 h-auto aspect-square inline-block'}
+        />
         <p>{keyword}</p>
       </div>
     </motion.button>
