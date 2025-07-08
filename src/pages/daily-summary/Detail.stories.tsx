@@ -5,6 +5,7 @@ const meta: Meta = {
   title: 'daily-summary/Detail',
   component: Detail,
   tags: ['autodocs'],
+  decorators: [(Story) => <Story />],
 };
 
 export default meta;

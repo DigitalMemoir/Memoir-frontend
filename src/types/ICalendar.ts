@@ -9,3 +9,8 @@ export interface IPopupProps {
   tailYPosition: 'top' | 'bottom';
   tailXPosition: 'left' | 'right';
 }
+
+export interface IDailyKeyword {
+  keyword: string;
+  frequency: number;
+}
