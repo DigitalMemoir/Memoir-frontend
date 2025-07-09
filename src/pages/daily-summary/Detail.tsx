@@ -1,8 +1,27 @@
 import clsx from 'clsx';
 import Keywords from './Detail/Keywords';
 import Summary from './Detail/Summary';
+import Statistics from './Detail/Statistics';
 
 const Detail = () => {
+  const activities = {
+    totalUsageTimeMinutes: 185,
+    activityProportions: [
+      {
+        category: '업무, 프로젝트',
+        percentage: 27,
+      },
+      {
+        category: '공부, 학습',
+        percentage: 65,
+      },
+      {
+        category: '쇼핑',
+        percentage: 8,
+      },
+    ],
+  };
+  // Mock data for activities;
   return (
     <div
       className={clsx(
@@ -24,6 +43,10 @@ const Detail = () => {
       />
       <div className={'flex flex-col items-start justify-start gap-9 w-full'}>
         <Summary summary="오늘은 React와 Storybook을 사용하여 컴포넌트를 개발하고, JavaScript와 CSS를 활용하여 스타일링을 적용했습니다. 또한, 테스트 케이스를 작성하여 코드의 안정성을 높였습니다." />
+        <Statistics
+          totalUsageTimeMinutes={activities.totalUsageTimeMinutes}
+          activityProportions={activities.activityProportions}
+        />
       </div>
     </div>
   );

@@ -14,3 +14,13 @@ export interface IDailyKeyword {
   keyword: string;
   frequency: number;
 }
+
+export interface IActivityProportion {
+  category: string;
+  percentage: number;
+}
+
+export interface IStatistics {
+  totalUsageTimeMinutes: number;
+  activityProportions: Array<IActivityProportion>;
+}
