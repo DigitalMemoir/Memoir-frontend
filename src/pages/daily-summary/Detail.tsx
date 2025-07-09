@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Keywords from './Detail/Keywords';
 import Summary from './Detail/Summary';
 import Statistics from './Detail/Statistics';
+import Timeline from './Detail/Timeline';
 
 const Detail = () => {
   const activities = {
@@ -21,7 +22,33 @@ const Detail = () => {
       },
     ],
   };
-  // Mock data for activities;
+
+  const dailyTimeline = [
+    {
+      time: '09:00',
+      description: 'Spring Boot @Transactional 이해와 사용법 학습',
+    },
+    {
+      time: '11:00',
+      description: 'GitHub - openai/openai-java 프로젝트 확인',
+    },
+    {
+      time: '13:00',
+      description: 'YouTube - Spring Security 기초 강의 시청',
+    },
+    {
+      time: '15:00',
+      description: 'Stack Overflow - CORS 에러 해결 방법 학습',
+    },
+    {
+      time: '17:00',
+      description: '쿠팡에서 개발자 장비 특가 확인',
+    },
+    {
+      time: '19:00',
+      description: 'Notion을 이용한 프로젝트 회의록 작성',
+    },
+  ];
   return (
     <div
       className={clsx(
@@ -47,6 +74,7 @@ const Detail = () => {
           totalUsageTimeMinutes={activities.totalUsageTimeMinutes}
           activityProportions={activities.activityProportions}
         />
+        <Timeline timelines={dailyTimeline} />
       </div>
     </div>
   );

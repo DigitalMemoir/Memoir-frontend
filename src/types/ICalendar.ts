@@ -24,3 +24,8 @@ export interface IStatistics {
   totalUsageTimeMinutes: number;
   activityProportions: Array<IActivityProportion>;
 }
+
+export interface ITimeLine {
+  time: string;
+  description: string;
+}
