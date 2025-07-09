@@ -11,7 +11,7 @@ const Contents = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className={'flex flex-col items-start justify-start gap-6 w-full'}>
+    <section className={'flex flex-col items-start justify-start gap-6 w-full'}>
       <div className={'flex flex-row items-center justify-start gap-4'}>
         <img
           src={icon}
@@ -21,7 +21,7 @@ const Contents = ({
         <h4 className={textStyles.text1}>{title}</h4>
       </div>
       {children}
-    </div>
+    </section>
   );
 };
 

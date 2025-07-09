@@ -16,11 +16,18 @@ export const useAuthStore = create<AuthState>((set) => ({
     const fullHash = window.location.hash;
     const queryParams = new URLSearchParams(window.location.search);
     const token = queryParams.get('token');
+    const newUser = queryParams.get('newUser');
     const { set: setLocalStorage } = useLocalStorage();
     if (token) {
       setLocalStorage('accessToken', token);
+      if (newUser == 'true')
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + '#/onboarding'
+        );
+      else history.replaceState(null, '', window.location.pathname + fullHash);
     }
-    window.location.href = `${window.location.origin}${window.location.pathname}${fullHash}`;
     set({ isLoggedIn: true });
   },
   logout: () => {

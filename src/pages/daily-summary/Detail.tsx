@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Keywords from './Detail/Keywords';
+import Summary from './Detail/Summary';
 
 const Detail = () => {
   return (
@@ -8,7 +9,7 @@ const Detail = () => {
         'z-50 fixed bottom-0 right-0',
         'w-[26vw] min-w-[300px] h-[84.91vh] shadow-button-2 bg-white rounded-tl-[80px]',
         'flex flex-col items-start justify-start',
-        'pl-20 pt-24 pr-16'
+        'pl-20 pt-24 pr-8 gap-12'
       )}
     >
       <Keywords
@@ -21,6 +22,9 @@ const Detail = () => {
           { keyword: 'Testing', frequency: 1 },
         ]}
       />
+      <div className={'flex flex-col items-start justify-start gap-9 w-full'}>
+        <Summary summary="오늘은 React와 Storybook을 사용하여 컴포넌트를 개발하고, JavaScript와 CSS를 활용하여 스타일링을 적용했습니다. 또한, 테스트 케이스를 작성하여 코드의 안정성을 높였습니다." />
+      </div>
     </div>
   );
 };

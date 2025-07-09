@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
 import { bookmarkBaseStyle } from './BookmarkStyle.module';
+import { useAuthStore } from '../../states/useAuthStore';
 
 const NewTabPage = () => {
   const bookmarks = [
@@ -10,6 +12,12 @@ const NewTabPage = () => {
     'https://www.notion.so',
     'https://www.wikipedia.org',
   ];
+
+  const { login } = useAuthStore();
+
+  useEffect(() => {
+    login();
+  }, []);
 
   const extras = Array.from({
     length: bookmarks.length < 5 ? 5 - bookmarks.length : 0,
