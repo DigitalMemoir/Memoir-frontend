@@ -1,5 +1,4 @@
 import axios from 'axios';
-import useLocalStorage from '../hooks/useLocalStorage';
 
 let axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -7,7 +6,7 @@ let axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = useLocalStorage().get<string>('accessToken');
+  const token = localStorage.getItem('accessToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
