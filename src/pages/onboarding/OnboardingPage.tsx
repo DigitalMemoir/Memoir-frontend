@@ -7,10 +7,12 @@ import axiosInstance from '../../lib/axiosInstance';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../../states/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 const OnboardingPage = () => {
   const [selected, setSelected] = useState<Array<string>>([]);
   const { login } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     login();
@@ -25,7 +27,7 @@ const OnboardingPage = () => {
   const { mutate } = useMutation({
     mutationFn: handleSetKeywords,
     onSuccess: () => {
-      window.location.href = '/';
+      navigate('/');
     },
     onError: (error) => {
       console.error('Error setting keywords:', error);

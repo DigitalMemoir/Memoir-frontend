@@ -9,9 +9,9 @@ function useLocalStorage() {
     }
   };
 
-  const set = <T = string>(key: string, value: T): void => {
+  const set = (key: string, value: string): void => {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(key, value);
     } catch (error) {
       console.error(`Error setting localStorage key “${key}”:`, error);
     }

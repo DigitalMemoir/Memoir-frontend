@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const LoginPage = () => {
   const handleLogin = () =>
-    (window.location.href = `${import.meta.env.VITE_API_URL}`);
+    (window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`);
 
   return (
     <div
