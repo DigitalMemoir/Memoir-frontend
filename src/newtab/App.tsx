@@ -11,6 +11,7 @@ import LoginPage from '../pages/login/LoginPage';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../states/useAuthStore';
 import { useEffect } from 'react';
+import VisitedSites from '../pages/visited-sites/VisitedSites';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ function App() {
                 path={'/todays-keyword'}
                 element={<TodaysKeywordsPage />}
               />
+              <Route path={'/visited-sites'} element={<VisitedSites />} />
             </Route>
             <Route element={<NoSearchbarLayout />}>
               <Route path={'/daily-summary'} element={<Calendar />} />
