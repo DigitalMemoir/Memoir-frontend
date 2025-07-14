@@ -4,18 +4,18 @@
   "version": "0.0.0",
   "description": "A simple React app as a Chrome extension",
   "chrome_url_overrides": {
-    "newtab": "src/newtab/index.html"
+    "newtab": "newtab/index.html"
   },
   "action": {
-    "default_popup": "src/popup/index.html"
+    "default_popup": "popup/index.html"
   },
-  "permissions": ["storage"],
-  "host_permissions": ["____API_URL__/**"],
+  "permissions": ["storage", "scripting", "clipboardWrite", "history"],
+  "host_permissions": ["__API_URL__/*"],
   "web_accessible_resources": [
     {
       "resources": [
-        "src/newtab/index.html",
-        "src/popup/index.html"
+        "newtab/index.html",
+        "popup/index.html"
       ],
       "matches": ["chrome-extension://*/*"]
     }
