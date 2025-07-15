@@ -1,13 +1,10 @@
 import type { ChartData } from 'chart.js';
 import type { IHourlyBreakdown } from '../../types/IUsage';
-import dayjs from 'dayjs';
 
 export const getChartDataFromActivityStats = (
-  hourlyData: IHourlyBreakdown[]
+  hourlyData: IHourlyBreakdown[],
+  rangeStart: number = 0
 ): ChartData<'bar'> => {
-  const nowHour = dayjs().hour();
-  const rangeStart =
-    nowHour < 6 ? 0 : nowHour < 12 ? 6 : nowHour < 18 ? 12 : 18;
   const hourRange = Array.from({ length: 6 }, (_, i) => rangeStart + i);
 
   const categoryList = [
