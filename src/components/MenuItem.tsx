@@ -17,7 +17,7 @@ const MenuItem = ({
 }) => {
   const baseStyles =
     'w-[12.08vw] h-auto aspect-[29/8] min-w-[182px] rounded-2xl p-4 flex flex-row items-center justify-start gap-4 ';
-  const selectedStyles = `bg-primary-100/50 text-primary-400 ${textStyles.title3}`;
+  const selectedStyles = `bg-primary-100/50 text-primary-400 ${textStyles.title3} break-keep`;
   const unselectedStyles = `text-text-body ${textStyles.title3_1}`;
 
   const styles = selected ? selectedStyles : unselectedStyles;
@@ -30,7 +30,7 @@ const MenuItem = ({
       className={baseStyles + styles}
     >
       <img src={icon} className={'w-4 h-4'} />
-      <div>{title}</div>
+      <span>{title}</span>
     </MotionLink>
   );
 };

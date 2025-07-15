@@ -1,5 +1,6 @@
-import type { IActivityStatsResponse } from '../../types/IUsage';
+import type { Category, IActivityStatsResponse } from '../../types/IUsage';
 import Statistics from './Statistics';
+import TotalTimes from './TotalTimes';
 
 const data: IActivityStatsResponse = {
   activityStats: {
@@ -86,8 +87,24 @@ const data: IActivityStatsResponse = {
 
 const UsagePage = () => {
   return (
-    <div className={'flex flex-col items-center w-full pt-[7.41vh]'}>
+    <div
+      className={
+        'flex flex-col items-center mt-[7.41vh] w-[51vw] max-w-[978px] min-w-[600px]'
+      }
+    >
       <Statistics hourlyData={data.activityStats.hourlyActivityBreakdown} />
+      <div className={'flex flex-row items-center gap-6 mt-10'}>
+        {data.activityStats.categorySummaries
+          .sort((a, b) => (a.totalTimeMinutes > b.totalTimeMinutes ? -1 : 1))
+          .slice(0, 3)
+          .map((summary) => (
+            <TotalTimes
+              key={summary.category}
+              category={summary.category}
+              minutes={summary.totalTimeMinutes}
+            />
+          ))}
+      </div>
     </div>
   );
 };

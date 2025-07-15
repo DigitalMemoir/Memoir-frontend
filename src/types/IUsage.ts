@@ -5,7 +5,7 @@ export interface IActivityStats {
 }
 
 export interface ICategorySummary {
-  category: string;
+  category: Category;
   totalTimeMinutes: number;
 }
 

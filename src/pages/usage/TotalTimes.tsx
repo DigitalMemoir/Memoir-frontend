@@ -18,16 +18,16 @@ const TotalTimes = ({
     <div
       className={clsx(
         'flex flex-col items-start justify-center gap-2 box-border',
-        'w-[250px] h-[152px] py-10 px-12 shadow-button-1 rounded-[20px]'
+        'w-[13.02vw] aspect-[250/152] min-w-[180px] py-10 px-12 shadow-button-1 rounded-[20px]'
       )}
     >
       <span
         style={{
           color: categoryColors[category],
         }}
-        className={clsx(textStyles.title3)}
+        className={clsx(textStyles.title3, 'break-keep')}
       >
-        {category}
+        {category.split(',')[0]}
       </span>
       <span className={clsx(textStyles.title3_1)}>{formattedTime}</span>
     </div>

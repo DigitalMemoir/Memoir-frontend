@@ -27,7 +27,7 @@ const Statistics = ({ hourlyData }: { hourlyData: IHourlyBreakdown[] }) => {
   return (
     <div
       className={
-        'py-10 px-7 flex flex-row gap-20 items-center shadow-button-1 rounded-[20px]'
+        'py-10 px-7 flex flex-row gap-20 items-center shadow-button-1 rounded-[20px] w-full'
       }
     >
       <button
