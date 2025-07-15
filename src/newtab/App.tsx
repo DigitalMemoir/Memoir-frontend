@@ -21,6 +21,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import UsagePage from '../pages/usage/UsagePage';
 
 ChartJS.register(
   BarElement,
@@ -51,6 +52,7 @@ function App() {
                 element={<TodaysKeywordsPage />}
               />
               <Route path={'/visited-sites'} element={<VisitedSites />} />
+              <Route path={'/usage'} element={<UsagePage />} />
             </Route>
             <Route element={<NoSearchbarLayout />}>
               <Route path={'/daily-summary'} element={<Calendar />} />
