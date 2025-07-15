@@ -1,5 +1,6 @@
 import type { ChartData } from 'chart.js';
 import type { IHourlyBreakdown } from '../../types/IUsage';
+import { categoryColors } from '../../styles/categoryColors';
 
 export const getChartDataFromActivityStats = (
   hourlyData: IHourlyBreakdown[],
@@ -14,16 +15,6 @@ export const getChartDataFromActivityStats = (
     '쇼핑',
     '콘텐츠 소비',
   ] as const;
-
-  type CategoryType = (typeof categoryList)[number];
-
-  const CATEGORY_COLORS: Record<CategoryType, string> = {
-    '공부, 학습': '#FFD943',
-    '업무, 프로젝트': '#846554',
-    '뉴스, 정보 탐색': '#B5D3FF',
-    쇼핑: '#FFA6BF',
-    '콘텐츠 소비': '#CAFD6B',
-  };
 
   // 해당 시간대의 데이터를 모두 0으로 초기화된 형태로 생성
   const hourDataMap: Record<number, IHourlyBreakdown> = {};
@@ -55,7 +46,7 @@ export const getChartDataFromActivityStats = (
   const datasets = categoryList.map((category) => ({
     label: category,
     data: sortedHourlyData.map((d) => d.categoryMinutes?.[category] ?? 0),
-    backgroundColor: CATEGORY_COLORS[category],
+    backgroundColor: categoryColors[category],
     stack: 'activity',
     borderRadius: sortedHourlyData.map((_, i) =>
       topCategoryPerHour[i] === category

@@ -24,3 +24,10 @@ export interface IHourlyBreakdown {
 export interface IActivityStatsResponse {
   activityStats: IActivityStats;
 }
+
+export type Category =
+  | '공부, 학습'
+  | '업무, 프로젝트'
+  | '뉴스, 정보 탐색'
+  | '쇼핑'
+  | '콘텐츠 소비';

@@ -86,7 +86,7 @@ const data: IActivityStatsResponse = {
 
 const UsagePage = () => {
   return (
-    <div>
+    <div className={'flex flex-col items-center w-full pt-[7.41vh]'}>
       <Statistics hourlyData={data.activityStats.hourlyActivityBreakdown} />
     </div>
   );

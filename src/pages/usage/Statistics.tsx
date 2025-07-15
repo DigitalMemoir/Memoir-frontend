@@ -40,10 +40,11 @@ const Statistics = ({ hourlyData }: { hourlyData: IHourlyBreakdown[] }) => {
       >
         <ChevronLeftIcon className={'text-gray-2 h-6 stroke-3'} />
       </button>
-      <div className={'w-full max-w-[696px]'}>
+      <div className={'w-full h-auto aspect-[2/1]'}>
         <Bar
           data={chartData}
           options={{
+            maintainAspectRatio: false,
             responsive: true,
             plugins: {
               legend: {
