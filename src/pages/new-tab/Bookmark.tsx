@@ -1,12 +1,10 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { bookmarkBaseStyle } from './BookmarkStyle.module';
+import { getURLFavicon } from '../../utils/getURLFavicon';
 
 const Bookmark = ({ href }: { href: string }) => {
-  const isExtension = window.location.protocol === 'chrome-extension:';
-  const faviconUrl = isExtension
-    ? `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(href)}`
-    : `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(href)}`;
+  const faviconUrl = getURLFavicon(href);
   return (
     <motion.a
       href={href}

@@ -1,11 +1,10 @@
 import clsx from 'clsx';
 import textStyles from '../../styles/textStyles';
+import { getURLFavicon } from '../../utils/getURLFavicon';
 
 const VisitedSite = ({ domain, title }: { domain: string; title: string }) => {
-  const isExtension = window.location.protocol === 'chrome-extension:';
-  const faviconUrl = isExtension
-    ? `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(domain)}`
-    : `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(domain)}`;
+  const faviconUrl = getURLFavicon(domain);
+
   return (
     <a className={'flex flex-row justify-start items-center gap-4 flex-nowrap'}>
       <img

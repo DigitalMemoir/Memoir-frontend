@@ -14,7 +14,7 @@ export async function getBrowsingHistory(
   if (isChrome) {
     return new Promise((resolve) => {
       chrome.history.search(
-        { text: '', startTime: start, endTime: end, maxResults: 1000 },
+        { text: '', startTime: start, endTime: end, maxResults: 100 },
         async (items) => {
           const results = await Promise.all(
             items.map(async (item) => {
