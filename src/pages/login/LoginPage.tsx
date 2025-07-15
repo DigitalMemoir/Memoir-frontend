@@ -16,11 +16,11 @@ const LoginPage = () => {
     >
       <div
         className={clsx(
-          'w-3/5 min-w-[600px] h-auto aspect-[610/249] py-[7.4vh]  mx-auto',
+          'w-3/5 min-w-[600px] h-auto aspect-[610/249] py-[7.4vh] mx-auto box-border',
           'bg-gradient-to-b from-white to-[#EEEFFF]',
           'shadow-default-1',
           'rounded-4xl',
-          'flex flex-col items-center justify-between'
+          'flex flex-col items-center justify-between gap-8'
         )}
       >
         <h4
@@ -52,7 +52,8 @@ const LoginPage = () => {
           <img
             src={googleIcon}
             alt={'Google Logo'}
-            className={'inline-block h-[3.7vh] min-h-4 aspect-1/1'}
+            // className={'inline-block h-[3.7vh] min-h-4 aspect-1/1'}
+            className={'inline-block h-[3.7vh] min-h-10 aspect-1/1'}
           />
           Google 계정으로 계속하기
         </motion.button>
