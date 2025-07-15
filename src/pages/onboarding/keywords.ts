@@ -7,7 +7,7 @@ import shoppingBagIcon from '@/assets/icons/shoppingbag.png';
 const keywords: Array<{
   icon: string;
   keyword: string;
-  type: 'WORK' | 'STUDY' | 'SHOPPING' | 'NEWS' | 'CONTENTS' | 'SHOPPING';
+  type: 'WORK' | 'STUDY' | 'SHOPPING' | 'NEWS' | 'CONTENTS';
 }> = [
   {
     icon: pencilIcon,

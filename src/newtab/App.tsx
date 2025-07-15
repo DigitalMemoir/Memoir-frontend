@@ -12,6 +12,24 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../states/useAuthStore';
 import { useEffect } from 'react';
 import VisitedSites from '../pages/visited-sites/VisitedSites';
+import {
+  Chart as ChartJS,
+  BarElement,
+  BarController,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  BarElement,
+  BarController,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
 
 const queryClient = new QueryClient();
 

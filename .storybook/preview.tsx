@@ -8,6 +8,26 @@ import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 dayjs.locale('ko');
 
+// chart.ts (or main.ts)
+import {
+  Chart as ChartJS,
+  BarElement,
+  BarController,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  BarElement,
+  BarController,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
+
 const preview: Preview = {
   parameters: {
     controls: {
