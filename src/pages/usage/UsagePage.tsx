@@ -1,4 +1,4 @@
-import type { Category, IActivityStatsResponse } from '../../types/IUsage';
+import type { IActivityStatsResponse } from '../../types/IUsage';
 import Statistics from './Statistics';
 import TotalTimes from './TotalTimes';
 
