@@ -1,8 +1,8 @@
 function useLocalStorage() {
-  const get = <T = string>(key: string): T | null => {
+  const get = (key: string): string | null => {
     try {
       const value = localStorage.getItem(key);
-      return value ? (JSON.parse(value) as T) : null;
+      return value ?? null;
     } catch (error) {
       console.error(`Error getting localStorage key “${key}”:`, error);
       return null;

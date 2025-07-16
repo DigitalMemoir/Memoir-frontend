@@ -9,7 +9,7 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   isLoggedIn: false,
   setIsLoggedIn: (value) => set({ isLoggedIn: value }),
   login: () => {
@@ -18,6 +18,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     const token = queryParams.get('token');
     const newUser = queryParams.get('newUser');
     const { set: setLocalStorage } = useLocalStorage();
+    if (get().isLoggedIn) return;
     if (token) {
       setLocalStorage('accessToken', token);
       if (newUser == 'true')
@@ -37,7 +38,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   checkLoginStatus: () => {
     const { get: getLocalStorage } = useLocalStorage();
-    const accessToken = getLocalStorage<string>('accessToken');
+    const accessToken = getLocalStorage('accessToken');
     set({ isLoggedIn: !!accessToken });
   },
 }));

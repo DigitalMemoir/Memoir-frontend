@@ -1,27 +1,41 @@
 import { useEffect } from 'react';
 import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
-import { bookmarkBaseStyle } from './BookmarkStyle.module';
 import { useAuthStore } from '../../states/useAuthStore';
+import axiosInstance from '../../lib/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 
 const NewTabPage = () => {
-  const bookmarks = [
-    'https://www.google.com',
-    'https://www.youtube.com',
-    'https://www.github.com',
-    'https://www.notion.so',
-    'https://www.wikipedia.org',
-  ];
-
   const { login } = useAuthStore();
+
+  const getBookmarks = async (): Promise<Array<string>> => {
+    const res = await axiosInstance.get('/api/bookmarks');
+    return res.data.data;
+  };
+
+  const {
+    data: bookmarks,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['bookmarks'],
+    queryFn: getBookmarks,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     login();
   }, []);
 
-  const extras = Array.from({
-    length: bookmarks.length < 5 ? 5 - bookmarks.length : 0,
-  });
+  if (isLoading || !bookmarks) {
+    return <div>Loading...</div>;
+  }
+
+  console.log('Bookmarks:', bookmarks);
+  if (error) {
+    console.error('Error fetching bookmarks:', error);
+    return <div>Error loading bookmarks</div>;
+  }
   return (
     <div className={'flex flex-col items-center justify-start h-full pt-20'}>
       <div
@@ -31,17 +45,11 @@ const NewTabPage = () => {
           '
         }
       >
-        {bookmarks.map((bookmark, index) => (
-          <Bookmark key={index} href={bookmark} />
-        ))}
+        {bookmarks.length > 0 &&
+          bookmarks.map((bookmark, index) => (
+            <Bookmark key={index} href={bookmark} />
+          ))}
         {bookmarks.length <= 5 && <AddBookmark />}
-        {extras.map((_, index) => (
-          <div
-            key={index}
-            aria-hidden
-            className={`${bookmarkBaseStyle} bg-transparent`}
-          />
-        ))}
       </div>
     </div>
   );
