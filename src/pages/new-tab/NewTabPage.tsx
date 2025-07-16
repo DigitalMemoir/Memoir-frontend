@@ -26,7 +26,7 @@ const NewTabPage = () => {
     <div className={'flex flex-col items-center justify-start h-full pt-20'}>
       <div
         className={
-          'flex flex-row flex-wrap justify-between \
+          'flex flex-row flex-wrap justify-between items-start \
           w-full max-w-[978px] min-w-[600px]\
           '
         }
