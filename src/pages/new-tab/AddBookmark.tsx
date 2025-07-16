@@ -5,6 +5,8 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import Portal from '../../components/Portal';
 import textStyles from '../../styles/textStyles';
+import axiosInstance from '../../lib/axiosInstance';
+import { useMutation } from '@tanstack/react-query';
 
 const AddBookmark = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -18,6 +20,29 @@ const AddBookmark = () => {
   );
   const linkValidationRegex =
     /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w- ./?%&=]*)?$/;
+
+  const handleSubmit = async () => {
+    await axiosInstance.post('/api/bookmarks', {
+      url: url.trim(),
+    });
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: handleSubmit,
+    onSuccess: () => {
+      setOpenModal(false);
+      setUrl('');
+      setError(false);
+      window.location.reload(); // Refresh to show the new bookmark
+    },
+    onError: (error) => {
+      console.error(
+        '북마크 생성에 실패하였습니다. 다시 시도하여주세요.',
+        error
+      );
+      setError(true);
+    },
+  });
 
   const validateLink = (url: string) => {
     if (linkValidationRegex.test(url) && url.length <= 300 && url.length > 0) {
@@ -66,6 +91,12 @@ const AddBookmark = () => {
           >
             <form
               onClick={(e) => e.stopPropagation()}
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!error && validateLink(url)) {
+                  mutate();
+                }
+              }}
               className={clsx(
                 'w-[52vw] h-fit min-w-[600px] p-10 bg-white rounded-[20px] shadow-button-2',
                 'fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/3 z-1001'

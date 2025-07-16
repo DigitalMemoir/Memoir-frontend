@@ -4,6 +4,7 @@ import Bookmark from './Bookmark';
 import { useAuthStore } from '../../states/useAuthStore';
 import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
+import { bookmarkBaseStyle } from './BookmarkStyle.module';
 
 const NewTabPage = () => {
   const { login } = useAuthStore();
@@ -31,11 +32,15 @@ const NewTabPage = () => {
     return <div>Loading...</div>;
   }
 
-  console.log('Bookmarks:', bookmarks);
   if (error) {
     console.error('Error fetching bookmarks:', error);
     return <div>Error loading bookmarks</div>;
   }
+
+  const extras = Array.from({
+    length: bookmarks.length < 5 ? 5 - bookmarks.length : 0,
+  });
+
   return (
     <div className={'flex flex-col items-center justify-start h-full pt-20'}>
       <div
@@ -50,6 +55,13 @@ const NewTabPage = () => {
             <Bookmark key={index} href={bookmark} />
           ))}
         {bookmarks.length <= 5 && <AddBookmark />}
+        {extras.map((_, index) => (
+          <div
+            key={index}
+            aria-hidden
+            className={`${bookmarkBaseStyle} bg-transparent shadow-none`}
+          />
+        ))}
       </div>
     </div>
   );

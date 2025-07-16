@@ -4,12 +4,33 @@ import { bookmarkBaseStyle } from './BookmarkStyle.module';
 import { getURLFavicon } from '../../utils/getURLFavicon';
 import textStyles from '../../styles/textStyles';
 import { useState } from 'react';
+import axiosInstance from '../../lib/axiosInstance';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Bookmark = ({ href }: { href: string }) => {
   const [showDelBtn, setShowDelBtn] = useState(false);
   const faviconUrl = getURLFavicon(href);
   const handleHover = () => setShowDelBtn(true);
   const handleLeave = () => setShowDelBtn(false);
+
+  const queryClient = useQueryClient();
+
+  const handleDelete = async () => {
+    await axiosInstance.delete(`/api/bookmarks`, {
+      data: { url: href },
+    });
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: handleDelete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
+    },
+    onError: (error) => {
+      console.error('북마크를 삭제하지 못했습니다. 다시 시도해주세요.', error);
+    },
+  });
+
   return (
     <motion.div
       className={'flex flex-col items-center justify-center gap-6'}
@@ -45,7 +66,7 @@ const Bookmark = ({ href }: { href: string }) => {
           )}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => window.open(href, '_blank')} // 임시 코드
+          onClick={() => mutate()} // 임시 코드
         >
           삭제
         </motion.button>
