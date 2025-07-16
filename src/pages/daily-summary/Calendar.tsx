@@ -20,6 +20,8 @@ import type { EventContentArg } from '@fullcalendar/core/index.js';
 import { createRoot } from 'react-dom/client';
 import Popup from './Popup';
 import { AnimatePresence, motion } from 'motion/react';
+import axiosInstance from '../../lib/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 
 const events: Array<IEvent> = [
   { title: 'Meeting', start: new Date('2025-6-1'), allDay: true },
@@ -202,6 +204,47 @@ const Calendar = () => {
   const goNext = () => {
     calendarRef.current?.getApi().next();
   };
+
+  const getData = async (date: string) => {
+    const formatDate = dayjs(date).format('YYYY-MM');
+    const res = await axiosInstance.get(`/api/monthly/${formatDate}`);
+    return res.data.data.calendarData.map(
+      (event: { title: string; date: string }) => ({
+        title: event.title,
+        start: new Date(event.date),
+        allDay: true,
+      })
+    );
+  };
+
+  const {
+    data: events,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['calendar', title],
+    queryFn: () => getData(title),
+    refetchOnWindowFocus: false,
+    retry: false,
+    enabled: !!calendarRef.current && !!title,
+  });
+
+  if (isLoading) {
+    return (
+      <div className={'w-full h-full flex items-center justify-center'}>
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error('Error fetching calendar data:', error);
+    return (
+      <div className={'w-full h-full flex items-center justify-center'}>
+        Error loading calendar
+      </div>
+    );
+  }
 
   return (
     <motion.div
