@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { showErrorToast } from '../components/Toast/showToast';
 
 export default function CopyVisitedPagesButton() {
   const [copied, setCopied] = useState(false);
@@ -25,6 +26,9 @@ export default function CopyVisitedPagesButton() {
             })
             .catch((err) => {
               setError('클립보드 복사 실패');
+              showErrorToast(
+                '방문 기록을 클립보드에 복사하지 못했어요.\n다시 시도해주세요.'
+              );
               console.error(err);
             });
         } catch (e) {

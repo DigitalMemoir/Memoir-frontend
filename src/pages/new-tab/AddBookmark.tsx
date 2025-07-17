@@ -7,6 +7,7 @@ import Portal from '../../components/Portal';
 import textStyles from '../../styles/textStyles';
 import axiosInstance from '../../lib/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 const AddBookmark = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -40,6 +41,7 @@ const AddBookmark = () => {
         '북마크 생성에 실패하였습니다. 다시 시도하여주세요.',
         error
       );
+      showErrorToast('북마크를 추가하지 못했어요.\n다시 시도해주세요.');
       setError(true);
     },
   });

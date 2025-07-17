@@ -6,6 +6,7 @@ import textStyles from '../../styles/textStyles';
 import { useState } from 'react';
 import axiosInstance from '../../lib/axiosInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 const Bookmark = ({ href }: { href: string }) => {
   const [showDelBtn, setShowDelBtn] = useState(false);
@@ -27,7 +28,8 @@ const Bookmark = ({ href }: { href: string }) => {
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
     },
     onError: (error) => {
-      console.error('북마크를 삭제하지 못했습니다. 다시 시도해주세요.', error);
+      showErrorToast('북마크를 삭제하지 못했어요.\n다시 시도해주세요.');
+      console.error('북마크 삭제 실패:', error);
     },
   });
 

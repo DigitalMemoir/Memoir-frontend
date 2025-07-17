@@ -6,6 +6,7 @@ import './Popup.css';
 import type { IPopupProps, ISummaryResponse } from '../../types/ICalendar';
 import { useEffect, useState } from 'react';
 import { useGenerateDateSummary } from './api/useGenerateDateSummary';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 const tailYPositionClasses: Record<IPopupProps['tailYPosition'], string> = {
   top: 'arrow_box_top',
@@ -25,6 +26,7 @@ const popupVariants = {
 
 const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
   const [data, setData] = useState<ISummaryResponse | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const day = dayjs(dateString);
   const formattedDate = day.format('YYYY.MM.DD (dd)');
   const tailClasses = clsx(
@@ -40,7 +42,8 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
         setData(response);
       })
       .catch((error) => {
-        console.error('Error fetching daily summary:', error);
+        showErrorToast(`요약을 불러오지 못했어요.\n다시 시도해주세요.`);
+        console.error('Error fetching summary:', error);
       });
   });
 
@@ -68,7 +71,7 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
         </div>
         <p className={clsx(textStyles.text2, 'text-text-body')}>
           {(data !== null && data?.data.summaryText.join(' ')) ||
-            '요약을 불러오는 중...'}
+            (error ? '오류가 발생했어요.' : '요약을 불러오는 중...')}
         </p>
       </div>
 

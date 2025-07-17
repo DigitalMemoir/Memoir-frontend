@@ -18,9 +18,6 @@ export const useGenerateDateSummary = () => {
 
   const { mutateAsync } = useMutation<ISummaryResponse, Error, string>({
     mutationFn: generateDateSummary,
-    onError: (error) => {
-      console.error('일일 요약 생성에 실패하였습니다.', error);
-    },
     retry: false,
   });
 

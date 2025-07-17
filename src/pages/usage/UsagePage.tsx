@@ -6,6 +6,7 @@ import Statistics from './Statistics';
 import TotalTimes from './TotalTimes';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 const UsagePage = () => {
   const [data, setData] = useState<IActivityStatsResponse | undefined>(
@@ -30,7 +31,9 @@ const UsagePage = () => {
       setData(data.data);
     },
     onError: (error) => {
-      console.error('오늘의 분석 기록을 가져오지 못했어요.');
+      showErrorToast(
+        '오늘의 분석 기록을 가져오지 못했어요.\n다시 시도해주세요.'
+      );
       console.error(error);
     },
   });

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../../states/useAuthStore';
 import { useNavigate } from 'react-router-dom';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 const OnboardingPage = () => {
   const [selected, setSelected] = useState<Array<string>>([]);
@@ -31,7 +32,7 @@ const OnboardingPage = () => {
     },
     onError: (error) => {
       console.error('Error setting keywords:', error);
-      alert('키워드 설정에 실패했습니다. 다시 시도해주세요.');
+      showErrorToast('키워드 설정에 실패했어요.\n다시 시도해주세요.');
     },
   });
 

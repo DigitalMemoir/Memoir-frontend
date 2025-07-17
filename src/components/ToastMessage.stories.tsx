@@ -31,13 +31,14 @@ const meta: Meta = {
                 ),
                 {
                   position: 'top-right',
-                  duration: 3000,
+                  duration: 300000,
                   style: {
-                    width: '358px',
-                    height: '72px',
-                    padding: '24px',
-                    paddingRight: '12px',
-                    backgroundColor: '#8387ff',
+                    width: 'fit-content',
+                    height: 'fit-content',
+                    margin: '0',
+                    boxShadow: 'none',
+                    maxWidth: '352px',
+                    backgroundColor: 'transparent',
                   },
                   icon: null,
                 }

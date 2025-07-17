@@ -5,6 +5,7 @@ import { useAuthStore } from '../../states/useAuthStore';
 import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import { bookmarkBaseStyle } from './BookmarkStyle.module';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 const NewTabPage = () => {
   const { login } = useAuthStore();
@@ -34,6 +35,7 @@ const NewTabPage = () => {
 
   if (error) {
     console.error('Error fetching bookmarks:', error);
+    showErrorToast('북마크를 불러오지 못했어요.\n다시 시도해주세요.');
     return <div>Error loading bookmarks</div>;
   }
 

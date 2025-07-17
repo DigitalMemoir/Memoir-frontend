@@ -26,6 +26,10 @@ import {
 } from '@tanstack/react-query';
 import { useGenerateDateSummary } from './api/useGenerateDateSummary';
 import { getCalendarData } from './api/getCalendarData';
+import {
+  showInfoToast,
+  showLoadingToast,
+} from '../../components/Toast/showToast';
 
 const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
@@ -67,16 +71,25 @@ const Calendar = () => {
     if (!exists) {
       if (!loadingDateStr.includes(info.dateStr)) {
         setLoadingDateStr((prev) => [...prev, info.dateStr]);
-        mutateAsync(info.dateStr).then(() => {
-          setLoadingDateStr((prev) =>
-            prev.filter((date) => date !== info.dateStr)
-          );
-          queryClient.invalidateQueries({
-            queryKey: ['calendar', title],
-          });
+        showLoadingToast({
+          loadingMsg: `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약을 생성 중입니다.`,
+          successMsg: `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약이 생성되었습니다.`,
+          errorMsg: `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약 생성에 실패했습니다.`,
+          asyncFn: async () => {
+            await mutateAsync(info.dateStr).then(() => {
+              setLoadingDateStr((prev) =>
+                prev.filter((date) => date !== info.dateStr)
+              );
+              queryClient.invalidateQueries({
+                queryKey: ['calendar', title],
+              });
+            });
+          },
         });
       } else {
-        // 로딩중이라고 토스트 띄우기!
+        showInfoToast(
+          `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약이 이미 생성 중입니다.`
+        );
       }
       closePopup();
       return;
@@ -222,7 +235,6 @@ const Calendar = () => {
   }
 
   if (error) {
-    console.error('Error fetching calendar data:', error);
     return (
       <div className={'w-full h-full flex items-center justify-center'}>
         Error loading calendar
