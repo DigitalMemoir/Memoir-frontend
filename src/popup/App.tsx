@@ -1,12 +1,7 @@
 import './App.css';
-import CopyVisitedPagesButton from '../utils/CopyData';
 
 function App() {
-  return (
-    <>
-      <CopyVisitedPagesButton />
-    </>
-  );
+  return <></>;
 }
 
 export default App;
