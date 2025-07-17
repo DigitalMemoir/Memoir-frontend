@@ -1,28 +1,54 @@
+import dayjs from 'dayjs';
 import SearchIcon from '../../assets/icons/search.png';
+import axiosInstance from '../../lib/axiosInstance';
 import textStyles from '../../styles/textStyles';
+import { getBrowsingHistory } from '../../utils/getBrowsingHistory';
 import Keyword from './Keyword';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import type { IKeywordResponse } from '../../types/ITodaysKeywords';
+import type { IVisitedPage } from '../../types/IVisitedPages';
+import { showErrorToast } from '../../components/Toast/showToast';
+
+// 하나의 방문 페이지를 나타내는 인터페이스 임시!
+export interface VisitedPage {
+  title: string;
+  url: string;
+  visitCount: number;
+  duration: number;
+}
 
 const TodaysKeywordsPage = () => {
-  const keywords = [
-    '오늘의 날씨',
-    '오늘의 뉴스',
-    '오늘의 키워드',
-    '오늘의 일정',
-    '오늘의 명언',
-    '오늘의 기분',
-    '오늘의 음악',
-    '오늘의 영화',
-    '오늘의 책',
-    '오늘의 운동',
-    '오늘의 요리',
-    '오늘의 여행',
-    '오늘의 취미',
-    '오늘의 게임',
-    '오늘의 패션',
-  ];
+  const today = dayjs().format('YYYY-MM-DD');
+  const getTodaysKeywords = async () => {
+    const browsingHistory = await getBrowsingHistory(
+      dayjs().format('YYYY-MM-DD')
+    );
 
-  const nineKeywords = keywords.slice(0, 9);
+    const requestBody = browsingHistory.map((page: IVisitedPage) => ({
+      title: page.title,
+      url: page.url,
+      visitCount: page.visitCount,
+      duration: page.durationSeconds,
+    }));
+
+    const response = await axiosInstance.post('/api/keywords/analyze', {
+      visitedPages: requestBody,
+    });
+    return response.data.data;
+  };
+
+  const {
+    data: keywords,
+    isLoading,
+    error,
+  } = useQuery<IKeywordResponse>({
+    queryKey: ['todaysKeywords', today],
+    queryFn: getTodaysKeywords,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: 0,
+  });
 
   const containerVariants = {
     animate: {
@@ -37,6 +63,27 @@ const TodaysKeywordsPage = () => {
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
+
+  if (error) {
+    showErrorToast('오늘의 키워드를 불러오지 못했어요.\n다시 시도해주세요.');
+    return (
+      <div className={'w-fit h-full box-border pt-[11.11vh]'}>
+        <p className={`${textStyles.sub1} text-text-subtle`}>
+          키워드를 불러오는 데 실패했어요. 다시 시도해주세요.
+        </p>
+      </div>
+    );
+  }
+
+  if (isLoading || !keywords) {
+    return (
+      <div className={'w-fit h-full box-border pt-[11.11vh]'}>
+        <p className={`${textStyles.sub1} text-text-subtle`}>
+          오늘의 키워드를 불러오는 중이에요...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <AnimatePresence>
@@ -67,9 +114,9 @@ const TodaysKeywordsPage = () => {
             </p>
           </motion.div>
           <div className={'grid grid-cols-3 gap-y-6 gap-x-4'}>
-            {nineKeywords.map((keyword, idx) => (
+            {keywords.data.keywordFrequencies.map((keyword, idx) => (
               <motion.div key={idx} variants={itemVariants}>
-                <Keyword keyword={keyword} idx={idx} key={idx} />
+                <Keyword keyword={keyword.keyword} idx={idx} key={idx} />
               </motion.div>
             ))}
           </div>
