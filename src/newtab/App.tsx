@@ -22,6 +22,7 @@ import {
   Legend,
 } from 'chart.js';
 import UsagePage from '../pages/usage/UsagePage';
+import { Toaster } from 'react-hot-toast';
 
 ChartJS.register(
   BarElement,
@@ -41,28 +42,31 @@ function App() {
     checkLoginStatus();
   }, []);
   return (
-    <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <Routes>
-          <Route element={<RootLayout />}>
-            <Route element={<DefaultLayout />}>
-              <Route path={'/'} element={<NewTabPage />} />
-              <Route
-                path={'/todays-keyword'}
-                element={<TodaysKeywordsPage />}
-              />
-              <Route path={'/visited-sites'} element={<VisitedSites />} />
-              <Route path={'/usage'} element={<UsagePage />} />
+    <>
+      <QueryClientProvider client={queryClient}>
+        <HashRouter>
+          <Routes>
+            <Route element={<RootLayout />}>
+              <Route element={<DefaultLayout />}>
+                <Route path={'/'} element={<NewTabPage />} />
+                <Route
+                  path={'/todays-keyword'}
+                  element={<TodaysKeywordsPage />}
+                />
+                <Route path={'/visited-sites'} element={<VisitedSites />} />
+                <Route path={'/usage'} element={<UsagePage />} />
+              </Route>
+              <Route element={<NoSearchbarLayout />}>
+                <Route path={'/daily-summary'} element={<Calendar />} />
+              </Route>
             </Route>
-            <Route element={<NoSearchbarLayout />}>
-              <Route path={'/daily-summary'} element={<Calendar />} />
-            </Route>
-          </Route>
-          <Route path={'/onboarding'} element={<OnboardingPage />} />
-          <Route path={'/login'} element={<LoginPage />} />
-        </Routes>
-      </HashRouter>
-    </QueryClientProvider>
+            <Route path={'/onboarding'} element={<OnboardingPage />} />
+            <Route path={'/login'} element={<LoginPage />} />
+          </Routes>
+        </HashRouter>
+      </QueryClientProvider>
+      <Toaster />
+    </>
   );
 }
 

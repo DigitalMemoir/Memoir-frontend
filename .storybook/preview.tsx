@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import duration from 'dayjs/plugin/duration';
+import { Toaster } from 'react-hot-toast';
 
 dayjs.extend(duration);
 dayjs.locale('ko');
@@ -53,6 +54,7 @@ const preview: Preview = {
     (Story) => (
       <div className={'bg-white'}>
         <div id={'portal-root'} />
+        <Toaster />
         <HashRouter>
           <Story />
         </HashRouter>
