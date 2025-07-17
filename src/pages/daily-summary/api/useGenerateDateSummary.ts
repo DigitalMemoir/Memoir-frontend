@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { getBrowsingHistory } from '../../../utils/getBrowsingHistory';
 import axiosInstance from '../../../lib/axiosInstance';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import type { ISummaryResponse } from '../../../types/ICalendar';
 
 export const useGenerateDateSummary = () => {

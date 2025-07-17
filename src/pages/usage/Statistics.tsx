@@ -27,7 +27,7 @@ const Statistics = ({ hourlyData }: { hourlyData: IHourlyBreakdown[] }) => {
   return (
     <div
       className={
-        'py-10 px-7 flex flex-row gap-20 items-center shadow-button-1 rounded-[20px] w-full'
+        'py-10 px-7 flex flex-row items-center justify-between shadow-button-1 rounded-[20px] w-full'
       }
     >
       <button
@@ -40,7 +40,7 @@ const Statistics = ({ hourlyData }: { hourlyData: IHourlyBreakdown[] }) => {
       >
         <ChevronLeftIcon className={'text-gray-2 h-6 stroke-3'} />
       </button>
-      <div className={'w-full h-auto aspect-[2/1]'}>
+      <div className={'w-full min-h-42 aspect-[116/45]'}>
         <Bar
           data={chartData}
           options={{
@@ -63,7 +63,6 @@ const Statistics = ({ hourlyData }: { hourlyData: IHourlyBreakdown[] }) => {
                 grid: {
                   color: '#e3e3e3',
                 },
-
                 ticks: {
                   color: '#b3b3b3',
                   font: {
