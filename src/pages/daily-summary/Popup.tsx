@@ -1,10 +1,11 @@
-import React from 'react';
 import dayjs from 'dayjs';
 import textStyles from '../../styles/textStyles';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import './Popup.css';
-import type { IPopupProps } from '../../types/ICalendar';
+import type { IPopupProps, ISummaryResponse } from '../../types/ICalendar';
+import { useEffect, useState } from 'react';
+import { useGenerateDateSummary } from './api/useGenerateDateSummary';
 
 const tailYPositionClasses: Record<IPopupProps['tailYPosition'], string> = {
   top: 'arrow_box_top',
@@ -22,16 +23,26 @@ const popupVariants = {
   exit: { opacity: 0, scale: 0.8, transition: { duration: 0.15 } },
 };
 
-const Popup: React.FC<IPopupProps> = ({
-  dateString,
-  tailXPosition,
-  tailYPosition,
-}) => {
-  const formattedDate = dayjs(dateString).format('YYYY.MM.DD (dd)');
+const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
+  const [data, setData] = useState<ISummaryResponse | null>(null);
+  const day = dayjs(dateString);
+  const formattedDate = day.format('YYYY.MM.DD (dd)');
   const tailClasses = clsx(
     tailXPositionClasses[tailXPosition],
     tailYPositionClasses[tailYPosition]
   );
+
+  const mutateAsync = useGenerateDateSummary();
+
+  useEffect(() => {
+    mutateAsync(dateString)
+      .then((response) => {
+        setData(response);
+      })
+      .catch((error) => {
+        console.error('Error fetching daily summary:', error);
+      });
+  });
 
   return (
     <motion.div
@@ -55,7 +66,10 @@ const Popup: React.FC<IPopupProps> = ({
           <div className={'w-2.5 h-2.5 bg-primary-400 rounded-full'} />
           <p className={`${textStyles.text2_1} text-primary-400`}>AI 요약</p>
         </div>
-        <p className={clsx(textStyles.text2, 'text-text-body')}>내용요약</p>
+        <p className={clsx(textStyles.text2, 'text-text-body')}>
+          {(data !== null && data?.data.summaryText.join(' ')) ||
+            '요약을 불러오는 중...'}
+        </p>
       </div>
 
       <hr className={'border-gray-200'} />

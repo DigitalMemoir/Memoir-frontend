@@ -5,7 +5,6 @@ import interactionPlugin, {
 } from '@fullcalendar/interaction';
 import Day from './Calendar/Day';
 import './Calendar.css';
-import type { IEvent } from '../../types/ICalendar';
 import Event from './Calendar/Event';
 import React, {
   useCallback,
@@ -20,42 +19,23 @@ import type { EventContentArg } from '@fullcalendar/core/index.js';
 import { createRoot } from 'react-dom/client';
 import Popup from './Popup';
 import { AnimatePresence, motion } from 'motion/react';
-import axiosInstance from '../../lib/axiosInstance';
-import { useQuery } from '@tanstack/react-query';
-
-const events: Array<IEvent> = [
-  { title: 'Meeting', start: new Date('2025-6-1'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-2'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-3'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-4'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-5'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-6'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-7'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-8'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-9'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-10'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-11'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-12'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-13'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-14'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-15'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-16'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-17'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-18'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-19'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-20'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-21'), allDay: true },
-  { title: 'Meeting', start: new Date('2025-6-22'), allDay: true },
-  { title: 'Meeting1', start: new Date('2025-6-29'), allDay: true },
-  { title: 'Meeting2', start: new Date('2025-6-30'), allDay: true },
-];
+import {
+  QueryClientProvider,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { useGenerateDateSummary } from './api/useGenerateDateSummary';
+import { getCalendarData } from './api/getCalendarData';
 
 const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [title, setTitle] = useState<string>('');
   const eventRefs = useRef<Record<string, HTMLDivElement>>({});
+  const queryClient = useQueryClient();
 
   const [selectedDateStr, setSelectedDateStr] = useState<string | null>(null);
+  const [loadingDateStr, setLoadingDateStr] = useState<Array<string>>([]);
+  const mutateAsync = useGenerateDateSummary();
 
   const closePopup = useCallback(() => {
     setSelectedDateStr(null);
@@ -70,6 +50,7 @@ const Calendar = () => {
 
   // 날짜 셀 클릭 시
   const handleDateClick = (info: DateClickArg) => {
+    console.log('handleDateClick', info.dateStr);
     const api = calendarRef.current?.getApi();
     if (!api) return;
 
@@ -84,6 +65,19 @@ const Calendar = () => {
       .some((ev) => ev.start!.toISOString().slice(0, 10) === info.dateStr);
 
     if (!exists) {
+      if (!loadingDateStr.includes(info.dateStr)) {
+        setLoadingDateStr((prev) => [...prev, info.dateStr]);
+        mutateAsync(info.dateStr).then(() => {
+          setLoadingDateStr((prev) =>
+            prev.filter((date) => date !== info.dateStr)
+          );
+          queryClient.invalidateQueries({
+            queryKey: ['calendar', title],
+          });
+        });
+      } else {
+        // 로딩중이라고 토스트 띄우기!
+      }
       closePopup();
       return;
     }
@@ -148,11 +142,13 @@ const Calendar = () => {
     const root = createRoot(wrapper);
     root.render(
       <AnimatePresence>
-        <Popup
-          dateString={selectedDateStr}
-          tailYPosition={tailYPosition}
-          tailXPosition={tailXPosition}
-        />
+        <QueryClientProvider client={queryClient}>
+          <Popup
+            dateString={selectedDateStr}
+            tailYPosition={tailYPosition}
+            tailXPosition={tailXPosition}
+          />
+        </QueryClientProvider>
       </AnimatePresence>
     );
 
@@ -205,25 +201,13 @@ const Calendar = () => {
     calendarRef.current?.getApi().next();
   };
 
-  const getData = async (date: string) => {
-    const formatDate = dayjs(date).format('YYYY-MM');
-    const res = await axiosInstance.get(`/api/monthly/${formatDate}`);
-    return res.data.data.calendarData.map(
-      (event: { title: string; date: string }) => ({
-        title: event.title,
-        start: new Date(event.date),
-        allDay: true,
-      })
-    );
-  };
-
   const {
     data: events,
     isLoading,
     error,
   } = useQuery({
     queryKey: ['calendar', title],
-    queryFn: () => getData(title),
+    queryFn: () => getCalendarData(title),
     refetchOnWindowFocus: false,
     retry: false,
     enabled: !!calendarRef.current && !!title,

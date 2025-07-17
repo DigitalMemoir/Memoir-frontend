@@ -1,3 +1,5 @@
+import type { IHourlyBreakdown } from './IUsage';
+
 export interface IEvent {
   title: string;
   start: Date;
@@ -28,4 +30,35 @@ export interface IStatistics {
 export interface ITimeLine {
   time: string;
   description: string;
+}
+
+export interface ITopKeywords {
+  keyword: string;
+  frequency: number;
+}
+
+export interface IDailyKeyword {
+  time: string;
+  description: string;
+}
+
+export interface ICategorySummaries {
+  category: string;
+  totalTimeMinutes: number;
+}
+
+export interface ISummaryResponse {
+  code: number;
+  msg: string;
+  data: {
+    date: string;
+    topKeywords: ITopKeywords;
+    dailyTimeline: Array<IDailyKeyword>;
+    summaryText: Array<string>;
+    activityStats: {
+      totalUsageTimeMinutes: number;
+      categorySummaries: Array<ICategorySummaries>;
+      hourlyActivityBreakdown: Array<IHourlyBreakdown>;
+    };
+  };
 }
