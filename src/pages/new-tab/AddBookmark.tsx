@@ -6,8 +6,11 @@ import { useState } from 'react';
 import Portal from '../../components/Portal';
 import textStyles from '../../styles/textStyles';
 import axiosInstance from '../../lib/axiosInstance';
-import { useMutation } from '@tanstack/react-query';
-import { showErrorToast } from '../../components/Toast/showToast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../components/Toast/showToast';
 
 const AddBookmark = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -28,13 +31,18 @@ const AddBookmark = () => {
     });
   };
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: handleSubmit,
     onSuccess: () => {
       setOpenModal(false);
       setUrl('');
       setError(false);
-      window.location.reload(); // Refresh to show the new bookmark
+      showSuccessToast('북마크를 추가했어요.');
+      queryClient.invalidateQueries({
+        queryKey: ['bookmarks'],
+      });
     },
     onError: (error) => {
       console.error(

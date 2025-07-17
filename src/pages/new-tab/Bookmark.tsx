@@ -6,7 +6,10 @@ import textStyles from '../../styles/textStyles';
 import { useState } from 'react';
 import axiosInstance from '../../lib/axiosInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { showErrorToast } from '../../components/Toast/showToast';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../components/Toast/showToast';
 
 const Bookmark = ({ href }: { href: string }) => {
   const [showDelBtn, setShowDelBtn] = useState(false);
@@ -25,6 +28,7 @@ const Bookmark = ({ href }: { href: string }) => {
   const { mutate } = useMutation({
     mutationFn: handleDelete,
     onSuccess: () => {
+      showSuccessToast('북마크를 삭제했어요.');
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
     },
     onError: (error) => {

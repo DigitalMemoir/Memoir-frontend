@@ -8,7 +8,10 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../../states/useAuthStore';
 import { useNavigate } from 'react-router-dom';
-import { showErrorToast } from '../../components/Toast/showToast';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../components/Toast/showToast';
 
 const OnboardingPage = () => {
   const [selected, setSelected] = useState<Array<string>>([]);
@@ -28,6 +31,7 @@ const OnboardingPage = () => {
   const { mutate } = useMutation({
     mutationFn: handleSetKeywords,
     onSuccess: () => {
+      showSuccessToast('키워드를 설정했어요.\n메인 페이지로 이동합니다.');
       navigate('/');
     },
     onError: (error) => {

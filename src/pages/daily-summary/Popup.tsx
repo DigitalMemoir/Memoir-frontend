@@ -42,6 +42,7 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
         setData(response);
       })
       .catch((error) => {
+        setError(true);
         showErrorToast(`요약을 불러오지 못했어요.\n다시 시도해주세요.`);
         console.error('Error fetching summary:', error);
       });
