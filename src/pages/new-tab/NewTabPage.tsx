@@ -6,6 +6,7 @@ import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import { bookmarkBaseStyle } from './BookmarkStyle.module';
 import { showErrorToast } from '../../components/Toast/showToast';
+import Loading from '../../components/Loading';
 
 const NewTabPage = () => {
   const { login } = useAuthStore();
@@ -29,10 +30,6 @@ const NewTabPage = () => {
     login();
   }, []);
 
-  if (isLoading || !bookmarks) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     console.error('Error fetching bookmarks:', error);
     showErrorToast('북마크를 불러오지 못했어요.\n다시 시도해주세요.');
@@ -40,7 +37,7 @@ const NewTabPage = () => {
   }
 
   const extras = Array.from({
-    length: bookmarks.length < 5 ? 5 - bookmarks.length : 0,
+    length: bookmarks && bookmarks.length < 5 ? 5 - bookmarks.length : 0,
   });
 
   return (
@@ -52,18 +49,21 @@ const NewTabPage = () => {
           '
         }
       >
-        {bookmarks.length > 0 &&
+        {<Loading isLoading={isLoading || !bookmarks} />}
+        {bookmarks &&
+          bookmarks.length > 0 &&
           bookmarks.map((bookmark, index) => (
             <Bookmark key={index} href={bookmark} />
           ))}
-        {bookmarks.length <= 5 && <AddBookmark />}
-        {extras.map((_, index) => (
-          <div
-            key={index}
-            aria-hidden
-            className={`${bookmarkBaseStyle} bg-transparent shadow-none`}
-          />
-        ))}
+        {bookmarks && bookmarks.length <= 5 && <AddBookmark />}
+        {bookmarks &&
+          extras.map((_, index) => (
+            <div
+              key={index}
+              aria-hidden
+              className={`${bookmarkBaseStyle} bg-transparent shadow-none`}
+            />
+          ))}
       </div>
     </div>
   );
