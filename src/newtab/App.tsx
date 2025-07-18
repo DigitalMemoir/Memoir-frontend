@@ -23,6 +23,7 @@ import {
 } from 'chart.js';
 import UsagePage from '../pages/usage/UsagePage';
 import { Toaster } from 'react-hot-toast';
+import NotFoundErrorPage from '../pages/404/NotFoundErrorPage';
 
 ChartJS.register(
   BarElement,
@@ -58,6 +59,7 @@ function App() {
               </Route>
               <Route element={<NoSearchbarLayout />}>
                 <Route path={'/daily-summary'} element={<Calendar />} />
+                <Route path={'*'} element={<NotFoundErrorPage />} />
               </Route>
             </Route>
             <Route path={'/onboarding'} element={<OnboardingPage />} />
