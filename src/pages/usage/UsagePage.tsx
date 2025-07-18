@@ -7,6 +7,7 @@ import TotalTimes from './TotalTimes';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { showErrorToast } from '../../components/Toast/showToast';
+import Loading from '../../components/Loading';
 
 const UsagePage = () => {
   const [data, setData] = useState<IActivityStatsResponse | null>(null);
@@ -39,29 +40,32 @@ const UsagePage = () => {
     },
   });
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div
       className={
         'flex flex-col items-center mt-[7.41vh] w-[51vw] max-w-[978px] min-w-[600px]'
       }
     >
-      <Statistics hourlyData={data.activityStats.hourlyActivityBreakdown} />
-      <div className={'flex flex-row items-center gap-6 mt-10'}>
-        {data?.activityStats.categorySummaries
-          .sort((a, b) => (a.totalTimeMinutes > b.totalTimeMinutes ? -1 : 1))
-          .slice(0, 3)
-          .map((summary) => (
-            <TotalTimes
-              key={summary.category}
-              category={summary.category}
-              minutes={summary.totalTimeMinutes}
-            />
-          ))}
-      </div>
+      <Loading isLoading={!data} />
+      {data && (
+        <>
+          <Statistics hourlyData={data.activityStats.hourlyActivityBreakdown} />
+          <div className={'flex flex-row items-center gap-6 mt-10'}>
+            {data?.activityStats.categorySummaries
+              .sort((a, b) =>
+                a.totalTimeMinutes > b.totalTimeMinutes ? -1 : 1
+              )
+              .slice(0, 3)
+              .map((summary) => (
+                <TotalTimes
+                  key={summary.category}
+                  category={summary.category}
+                  minutes={summary.totalTimeMinutes}
+                />
+              ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
