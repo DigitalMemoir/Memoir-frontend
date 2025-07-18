@@ -9,6 +9,7 @@ import type { IKeywordResponse } from '../../types/ITodaysKeywords';
 import type { IVisitedPage } from '../../types/IVisitedPages';
 import { showErrorToast } from '../../components/Toast/showToast';
 import Keyword from './Keyword';
+import Loading from '../../components/Loading';
 
 // 하나의 방문 페이지를 나타내는 인터페이스 임시!
 export interface VisitedPage {
@@ -72,54 +73,52 @@ const TodaysKeywordsPage = () => {
     );
   }
 
-  if (isLoading || !data) {
-    return (
-      <div className={'w-fit h-full box-border pt-[11.11vh]'}>
-        <p className={`${textStyles.sub1} text-text-subtle`}>
-          오늘의 키워드를 불러오는 중이에요...
-        </p>
-      </div>
-    );
-  }
-
-  console.log('오늘의 키워드:', data);
-
   return (
     <AnimatePresence>
+      <Loading isLoading={isLoading || !data} />
       <div className={'w-fit h-full box-border pt-[11.11vh]'}>
-        <motion.div
-          className={
-            'pl-9 max-w-[740px] h-full flex flex-col items-start justify-start gap-[7.41vh] box-border'
-          }
-          variants={containerVariants}
-          initial={'initial'}
-          animate={'animate'}
-          exit={'exit'}
-        >
+        {!isLoading && data && (
           <motion.div
-            variants={itemVariants}
-            className={'flex flex-col items-start justify-start gap-4 w-full'}
+            className={
+              'pl-9 max-w-[740px] h-full flex flex-col items-start justify-start gap-[7.41vh] box-border'
+            }
+            variants={containerVariants}
+            initial={'initial'}
+            animate={'animate'}
+            exit={'exit'}
           >
-            <img
-              src={SearchIcon}
-              alt={'Search Icon'}
-              className={'w-[2.5vw] h-auto aspect-square min-h-6 min-w-6'}
-            />
-            <h2 className={`${textStyles.title1} text-text-title`}>
-              오늘의 키워드
-            </h2>
-            <p className={`${textStyles.sub1} text-text-subtle`}>
-              Memoir가 사용자님의 ‘오늘의 키워드’ 를 뽑아봤어요.
-            </p>
+            <motion.div
+              variants={itemVariants}
+              className={'flex flex-col items-start justify-start gap-4 w-full'}
+            >
+              <img
+                src={SearchIcon}
+                alt={'Search Icon'}
+                className={'w-[2.5vw] h-auto aspect-square min-h-6 min-w-6'}
+              />
+              <h2 className={`${textStyles.title1} text-text-title`}>
+                오늘의 키워드
+              </h2>
+              <p className={`${textStyles.sub1} text-text-subtle`}>
+                Memoir가 사용자님의 ‘오늘의 키워드’ 를 뽑아봤어요.
+              </p>
+            </motion.div>
+            <div className={'grid grid-cols-3 gap-y-6 gap-x-4'}>
+              {data.data.keywordFrequencies?.map((keyword, idx) => (
+                <motion.div
+                  key={`${keyword.keyword}-${idx}`}
+                  variants={itemVariants}
+                >
+                  <Keyword
+                    key={`${keyword.keyword}-${idx}`}
+                    keyword={keyword.keyword}
+                    idx={idx}
+                  />
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
-          <div className={'grid grid-cols-3 gap-y-6 gap-x-4'}>
-            {data.data.keywordFrequencies?.map((keyword, idx) => (
-              <motion.div key={idx} variants={itemVariants}>
-                <Keyword keyword={keyword.keyword} idx={idx} key={idx} />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        )}
       </div>
     </AnimatePresence>
   );

@@ -30,6 +30,7 @@ import {
   showInfoToast,
   showLoadingToast,
 } from '../../components/Toast/showToast';
+import Loading from '../../components/Loading';
 
 const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
@@ -226,14 +227,6 @@ const Calendar = () => {
     enabled: !!calendarRef.current && !!title,
   });
 
-  if (isLoading) {
-    return (
-      <div className={'w-full h-full flex items-center justify-center'}>
-        Loading...
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className={'w-full h-full flex items-center justify-center'}>
@@ -249,6 +242,10 @@ const Calendar = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
     >
+      <Loading
+        isLoading={isLoading || !events}
+        className={'z-1000 fixed top-0 left-0 w-full h-full'}
+      />
       <Header goPrev={goPrev} goNext={goNext} title={title} />
       <div className={'h-full w-auto aspect-[4/3] box-border pb-30'}>
         <FullCalendar

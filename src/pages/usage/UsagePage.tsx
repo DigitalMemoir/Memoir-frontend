@@ -9,15 +9,16 @@ import { useEffect, useState } from 'react';
 import { showErrorToast } from '../../components/Toast/showToast';
 
 const UsagePage = () => {
-  const [data, setData] = useState<IActivityStatsResponse | undefined>(
-    undefined
-  );
+  const [data, setData] = useState<IActivityStatsResponse | null>(null);
 
   const getUsageData = async () => {
     const today = dayjs().format('YYYY-MM-DD');
     const browsingHistory = await getBrowsingHistory(today);
-    const response = await axiosInstance.post('/api/time', browsingHistory);
-
+    const response = await axiosInstance.post('/api/time', {
+      date: today,
+      visitedPages: browsingHistory,
+    });
+    console.log('Usage data fetched:', response);
     return response.data;
   };
 

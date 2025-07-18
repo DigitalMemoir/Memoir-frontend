@@ -37,6 +37,7 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
   const mutateAsync = useGenerateDateSummary();
 
   useEffect(() => {
+    if (!dateString || data) return;
     mutateAsync(dateString)
       .then((response) => {
         setData(response);
@@ -46,7 +47,7 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
         showErrorToast(`요약을 불러오지 못했어요.\n다시 시도해주세요.`);
         console.error('Error fetching summary:', error);
       });
-  });
+  }, []);
 
   return (
     <motion.div
