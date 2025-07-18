@@ -104,18 +104,21 @@ const TodaysKeywordsPage = () => {
               </p>
             </motion.div>
             <div className={'grid grid-cols-3 gap-y-6 gap-x-4'}>
-              {data.data.keywordFrequencies?.map((keyword, idx) => (
-                <motion.div
-                  key={`${keyword.keyword}-${idx}`}
-                  variants={itemVariants}
-                >
-                  <Keyword
+              {data.data.keywordFrequencies?.map((keyword, idx) => {
+                if (idx >= 9) return null; // 9개까지만 렌더링
+                return (
+                  <motion.div
                     key={`${keyword.keyword}-${idx}`}
-                    keyword={keyword.keyword}
-                    idx={idx}
-                  />
-                </motion.div>
-              ))}
+                    variants={itemVariants}
+                  >
+                    <Keyword
+                      key={`${keyword.keyword}-${idx}`}
+                      keyword={keyword.keyword}
+                      idx={idx}
+                    />
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
