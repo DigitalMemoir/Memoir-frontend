@@ -3,12 +3,12 @@ import SearchIcon from '../../assets/icons/search.png';
 import axiosInstance from '../../lib/axiosInstance';
 import textStyles from '../../styles/textStyles';
 import { getBrowsingHistory } from '../../utils/getBrowsingHistory';
-import Keyword from './Keyword';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import type { IKeywordResponse } from '../../types/ITodaysKeywords';
 import type { IVisitedPage } from '../../types/IVisitedPages';
 import { showErrorToast } from '../../components/Toast/showToast';
+import Keyword from './Keyword';
 
 // 하나의 방문 페이지를 나타내는 인터페이스 임시!
 export interface VisitedPage {
@@ -35,14 +35,11 @@ const TodaysKeywordsPage = () => {
     const response = await axiosInstance.post('/api/keywords/analyze', {
       visitedPages: requestBody,
     });
-    return response.data.data;
+
+    return response.data;
   };
 
-  const {
-    data: keywords,
-    isLoading,
-    error,
-  } = useQuery<IKeywordResponse>({
+  const { data, isLoading, error } = useQuery<IKeywordResponse>({
     queryKey: ['todaysKeywords', today],
     queryFn: getTodaysKeywords,
     refetchOnWindowFocus: false,
@@ -75,7 +72,7 @@ const TodaysKeywordsPage = () => {
     );
   }
 
-  if (isLoading || !keywords) {
+  if (isLoading || !data) {
     return (
       <div className={'w-fit h-full box-border pt-[11.11vh]'}>
         <p className={`${textStyles.sub1} text-text-subtle`}>
@@ -84,6 +81,8 @@ const TodaysKeywordsPage = () => {
       </div>
     );
   }
+
+  console.log('오늘의 키워드:', data);
 
   return (
     <AnimatePresence>
@@ -114,7 +113,7 @@ const TodaysKeywordsPage = () => {
             </p>
           </motion.div>
           <div className={'grid grid-cols-3 gap-y-6 gap-x-4'}>
-            {keywords.data.keywordFrequencies.map((keyword, idx) => (
+            {data.data.keywordFrequencies?.map((keyword, idx) => (
               <motion.div key={idx} variants={itemVariants}>
                 <Keyword keyword={keyword.keyword} idx={idx} key={idx} />
               </motion.div>
