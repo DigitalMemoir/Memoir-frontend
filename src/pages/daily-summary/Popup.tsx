@@ -3,10 +3,10 @@ import textStyles from '../../styles/textStyles';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import './Popup.css';
-import type { IPopupProps, ISummaryResponse } from '../../types/ICalendar';
-import { useEffect, useState } from 'react';
-import { useGenerateDateSummary } from './api/useGenerateDateSummary';
 import { showErrorToast } from '../../components/Toast/showToast';
+import axiosInstance from '../../lib/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
+import type { IPopupResponse, IPopupProps } from '../../types/IPopup';
 
 const tailYPositionClasses: Record<IPopupProps['tailYPosition'], string> = {
   top: 'arrow_box_top',
@@ -25,8 +25,6 @@ const popupVariants = {
 };
 
 const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
-  const [data, setData] = useState<ISummaryResponse | null>(null);
-  const [error, setError] = useState<boolean>(false);
   const day = dayjs(dateString);
   const formattedDate = day.format('YYYY.MM.DD (dd)');
   const tailClasses = clsx(
@@ -34,20 +32,24 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
     tailYPositionClasses[tailYPosition]
   );
 
-  const mutateAsync = useGenerateDateSummary();
+  const getPopupContent = async (date: string) => {
+    const formattedDate = dayjs(date).format('YYYY-MM-DD');
+    const response = await axiosInstance.get(
+      `/api/daily/popup/${formattedDate}`
+    );
+    return response.data;
+  };
 
-  useEffect(() => {
-    if (!dateString || data) return;
-    mutateAsync(dateString)
-      .then((response) => {
-        setData(response);
-      })
-      .catch((error) => {
-        setError(true);
-        showErrorToast(`요약을 불러오지 못했어요.\n다시 시도해주세요.`);
-        console.error('Error fetching summary:', error);
-      });
-  }, []);
+  const { data, isLoading, error } = useQuery<IPopupResponse>({
+    queryKey: ['popupData', dateString],
+    queryFn: () => getPopupContent(dateString),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  if (error) {
+    showErrorToast(`요약을 불러오지 못했어요.\n다시 시도해주세요.`);
+  }
 
   return (
     <motion.div
@@ -72,8 +74,9 @@ const Popup = ({ dateString, tailXPosition, tailYPosition }: IPopupProps) => {
           <p className={`${textStyles.text2_1} text-primary-400`}>AI 요약</p>
         </div>
         <p className={clsx(textStyles.text2, 'text-text-body')}>
-          {(data !== null && data?.data.summaryText.join(' ')) ||
-            (error ? '오류가 발생했어요.' : '요약을 불러오는 중...')}
+          {isLoading || !data
+            ? '요약을 불러오는 중...'
+            : data.data.title.join(' ')}
         </p>
       </div>
 

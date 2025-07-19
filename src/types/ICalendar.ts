@@ -6,12 +6,6 @@ export interface IEvent {
   allDay?: boolean;
 }
 
-export interface IPopupProps {
-  dateString: string;
-  tailYPosition: 'top' | 'bottom';
-  tailXPosition: 'left' | 'right';
-}
-
 export interface IDailyKeyword {
   keyword: string;
   frequency: number;

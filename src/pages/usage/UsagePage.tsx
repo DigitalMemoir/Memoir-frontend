@@ -1,9 +1,6 @@
 import dayjs from 'dayjs';
 import axiosInstance from '../../lib/axiosInstance';
-import type {
-  IActivityStats,
-  IActivityStatsResponse,
-} from '../../types/IUsage';
+import type { IActivityStats } from '../../types/IUsage';
 import { getBrowsingHistory } from '../../utils/getBrowsingHistory';
 import Statistics from './Statistics';
 import TotalTimes from './TotalTimes';
@@ -22,7 +19,6 @@ const UsagePage = () => {
       date: today,
       visitedPages: browsingHistory,
     });
-    console.log('Usage data fetched:', response.data);
     return response.data;
   };
 
