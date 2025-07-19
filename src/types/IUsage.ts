@@ -22,7 +22,9 @@ export interface IHourlyBreakdown {
 }
 
 export interface IActivityStatsResponse {
-  activityStats: IActivityStats;
+  msg: string;
+  data: IActivityStats;
+  status: number;
 }
 
 export type Category =

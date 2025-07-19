@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import axiosInstance from '../../lib/axiosInstance';
-import type { IActivityStatsResponse } from '../../types/IUsage';
+import type {
+  IActivityStats,
+  IActivityStatsResponse,
+} from '../../types/IUsage';
 import { getBrowsingHistory } from '../../utils/getBrowsingHistory';
 import Statistics from './Statistics';
 import TotalTimes from './TotalTimes';
@@ -10,7 +13,7 @@ import { showErrorToast } from '../../components/Toast/showToast';
 import Loading from '../../components/Loading';
 
 const UsagePage = () => {
-  const [data, setData] = useState<IActivityStatsResponse | null>(null);
+  const [data, setData] = useState<IActivityStats | null>(null);
 
   const getUsageData = async () => {
     const today = dayjs().format('YYYY-MM-DD');
@@ -19,7 +22,7 @@ const UsagePage = () => {
       date: today,
       visitedPages: browsingHistory,
     });
-    console.log('Usage data fetched:', response);
+    console.log('Usage data fetched:', response.data);
     return response.data;
   };
 
@@ -49,9 +52,9 @@ const UsagePage = () => {
       <Loading isLoading={!data} />
       {data && (
         <>
-          <Statistics hourlyData={data.activityStats.hourlyActivityBreakdown} />
+          <Statistics hourlyData={data.hourlyActivityBreakdown} />
           <div className={'flex flex-row items-center gap-6 mt-10'}>
-            {data?.activityStats.categorySummaries
+            {data.categorySummaries
               .sort((a, b) =>
                 a.totalTimeMinutes > b.totalTimeMinutes ? -1 : 1
               )
