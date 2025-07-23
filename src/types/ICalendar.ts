@@ -51,8 +51,7 @@ export interface ISummaryResponse {
     summaryText: Array<string>;
     activityStats: {
       totalUsageTimeMinutes: number;
-      categorySummaries: Array<ICategorySummaries>;
-      hourlyActivityBreakdown: Array<IHourlyBreakdown>;
+      activityProportions: Array<IActivityProportion>;
     };
   };
 }

@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import dayjs from 'dayjs';
 import textStyles from '../../styles/textStyles';
 import { motion } from 'framer-motion';
@@ -37,9 +37,10 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
       tailXPositionClasses[tailXPosition],
       tailYPositionClasses[tailYPosition]
     );
+    const detailRef = useRef<HTMLDivElement>(null);
 
     // 외부 클릭 감지
-    useOnClickOutside(ref as React.RefObject<HTMLDivElement>, () => {
+    useOnClickOutside(detailRef as React.RefObject<HTMLDivElement>, () => {
       if (openDetail) setOpenDetail(false);
     });
 
@@ -64,65 +65,64 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
 
     return (
       <>
-        {!openDetail && (
-          <motion.div
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={popupVariants}
-            className={clsx(
-              'relative w-[34rem] h-fit min-h-[20rem] bg-white p-6 flex flex-col gap-6',
-              tailClasses,
-              'z-[500] shadow-lg'
-            )}
-          >
-            <p className={`${textStyles.text2_2} text-text-subtle`}>
-              {formattedDate}
-            </p>
+        <motion.div
+          ref={ref}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={popupVariants}
+          className={clsx(
+            'relative w-[34rem] h-fit min-h-[20rem] bg-white p-6 flex flex-col gap-6',
+            tailClasses,
+            'z-[500] shadow-lg'
+          )}
+        >
+          <p className={`${textStyles.text2_2} text-text-subtle`}>
+            {formattedDate}
+          </p>
 
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-2.5">
-                <div
-                  aria-hidden
-                  className="w-2.5 h-2.5 bg-primary-400 rounded-full"
-                />
-                <p className={`${textStyles.text2_1} text-primary-400`}>
-                  AI 요약
-                </p>
-              </div>
-              <p className={clsx(textStyles.text2, 'text-text-body')}>
-                {isLoading || !data
-                  ? '요약을 불러오는 중...'
-                  : data.data.title.join(' ')}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2.5">
+              <div
+                aria-hidden
+                className="w-2.5 h-2.5 bg-primary-400 rounded-full"
+              />
+              <p className={`${textStyles.text2_1} text-primary-400`}>
+                AI 요약
               </p>
             </div>
+            <p className={clsx(textStyles.text2, 'text-text-body')}>
+              {isLoading || !data
+                ? '요약을 불러오는 중...'
+                : data.data.title.join(' ')}
+            </p>
+          </div>
 
-            <hr className="border-gray-200" />
+          <hr className="border-gray-200" />
 
-            <div className="flex items-center gap-4">
-              <img
-                src="https://picsum.photos/200"
-                alt="example"
-                className="w-14 h-14 object-cover rounded-full"
-              />
-              <p className={`${textStyles.text2_2} text-text-body`}>이름</p>
-            </div>
+          <div className="flex items-center gap-4">
+            <img
+              src="https://picsum.photos/200"
+              alt="example"
+              className="w-14 h-14 object-cover rounded-full"
+            />
+            <p className={`${textStyles.text2_2} text-text-body`}>이름</p>
+          </div>
 
-            <div className="flex justify-end">
-              <motion.button
-                onClick={() => setOpenDetail(true)}
-                className={`${textStyles.sub2} text-primary-400 hover:bg-primary-400/20 px-3 py-1 rounded`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                자세히보기
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
+          <div className="flex justify-end">
+            <motion.button
+              onClick={() => setOpenDetail(true)}
+              className={`${textStyles.sub2} text-primary-400 hover:bg-primary-400/20 px-3 py-1 rounded`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              자세히보기
+            </motion.button>
+          </div>
+        </motion.div>
         {openDetail && (
           <Detail
-            ref={ref as React.RefObject<HTMLDivElement>}
+            ref={detailRef as React.RefObject<HTMLDivElement>}
             dateString={day.format('YYYY-MM-DD')}
           />
         )}

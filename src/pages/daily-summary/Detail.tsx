@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 import Keywords from './Detail/Keywords';
 import Summary from './Detail/Summary';
-// import Statistics from './Detail/Statistics';
+import Statistics from './Detail/Statistics';
 import Timeline from './Detail/Timeline';
 import textStyles from '../../styles/textStyles';
 import { motion } from 'framer-motion';
@@ -18,6 +18,7 @@ const Detail = forwardRef<HTMLDivElement, DetailProps>(
   ({ dateString }, ref) => {
     const getDetailData = async (dateString: string) => {
       const response = await axiosInstance.get(`/api/daily/${dateString}`);
+      console.log('Detail data fetched:', response.data);
       return response.data;
     };
 
@@ -55,13 +56,15 @@ const Detail = forwardRef<HTMLDivElement, DetailProps>(
                 </p>
               </div>
               <div className="flex flex-col items-start justify-start gap-9 w-full">
-                <Summary summary="오늘은 React와 Storybook을 사용하여 컴포넌트를 개발하고, JavaScript와 CSS를 활용하여 스타일링을 적용했습니다. 또한, 테스트 케이스를 작성하여 코드의 안정성을 높였습니다." />
-                {/* <Statistics
+                <Summary summary={data.data.summaryText.join(' ')} />
+                <Statistics
                   totalUsageTimeMinutes={
                     data.data.activityStats.totalUsageTimeMinutes
                   }
-                  activityProportions={data.data.activityStats.categorySummaries}
-                /> */}
+                  activityProportions={
+                    data.data.activityStats.activityProportions
+                  }
+                />
                 <Timeline timelines={data.data.dailyTimeline} />
               </div>
             </div>
