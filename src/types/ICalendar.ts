@@ -1,5 +1,3 @@
-import type { IHourlyBreakdown } from './IUsage';
-
 export interface IEvent {
   title: string;
   start: Date;

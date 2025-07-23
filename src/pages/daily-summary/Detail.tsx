@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import type { ISummaryResponse } from '../../types/ICalendar';
+import { showErrorToast } from '../../components/Toast/showToast';
 
 type DetailProps = {
   dateString: string;
@@ -28,6 +29,10 @@ const Detail = forwardRef<HTMLDivElement, DetailProps>(
       refetchOnWindowFocus: false,
       retry: 1,
     });
+
+    if (error) {
+      showErrorToast('일간 요약 정보를 불러오는데 실패했습니다.');
+    }
 
     return (
       <motion.div
