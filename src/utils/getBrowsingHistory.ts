@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import type { IVisitedPage } from '../types/IVisitedPages';
 import { exampleHistoryData } from './exampleHIstoryData';
+import { showErrorToast } from '../components/Toast/showToast';
 
 export async function getBrowsingHistory(
   date: string
@@ -8,6 +9,10 @@ export async function getBrowsingHistory(
   const start = dayjs(date).startOf('day').valueOf();
   const end = dayjs(date).endOf('day').valueOf();
 
+  if (dayjs().isBefore(dayjs(date))) {
+    showErrorToast('미래의 날짜에 대한 기록은 조회할 수 없습니다.');
+    return [];
+  }
   // 확장 프로그램 여부 판단
   const isChrome = typeof chrome !== 'undefined' && !!chrome.history;
 

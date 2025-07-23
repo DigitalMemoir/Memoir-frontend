@@ -26,6 +26,11 @@ const TodaysKeywordsPage = () => {
       dayjs().format('YYYY-MM-DD')
     );
 
+    if (browsingHistory.length === 0) {
+      showErrorToast('오늘의 방문 기록이 없습니다.');
+      return { keywordFrequencies: [] };
+    }
+
     const requestBody = browsingHistory.map((page: IVisitedPage) => ({
       title: page.title,
       url: page.url,

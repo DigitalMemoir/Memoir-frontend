@@ -15,6 +15,10 @@ const UsagePage = () => {
   const getUsageData = async () => {
     const today = dayjs().format('YYYY-MM-DD');
     const browsingHistory = await getBrowsingHistory(today);
+    if (browsingHistory.length === 0) {
+      showErrorToast('오늘의 방문 기록이 없습니다.');
+      return { data: null };
+    }
     const response = await axiosInstance.post('/api/time', {
       date: today,
       visitedPages: browsingHistory,
