@@ -46,7 +46,7 @@ export interface ISummaryResponse {
   msg: string;
   data: {
     date: string;
-    topKeywords: ITopKeywords;
+    topKeywords: Array<ITopKeywords>;
     dailyTimeline: Array<IDailyKeyword>;
     summaryText: Array<string>;
     activityStats: {
