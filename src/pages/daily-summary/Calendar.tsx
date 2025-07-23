@@ -133,6 +133,16 @@ const Calendar = () => {
   const handleDateClick = useCallback(
     (info: DateClickArg) => {
       console.log('handleDateClick', info.dateStr);
+
+      // 오늘 이후 날짜 클릭 방지
+      const today = dayjs();
+      const clickedDate = dayjs(info.dateStr);
+
+      if (clickedDate.isAfter(today, 'day')) {
+        console.log('Future date clicked - ignoring');
+        return; // 미래 날짜 클릭 시 아무것도 하지 않음
+      }
+
       const api = calendarRef.current?.getApi();
       if (!api) return;
 
@@ -299,6 +309,20 @@ const Calendar = () => {
             month: 'long',
           }}
           dateClick={handleDateClick}
+          // 오늘까지만 선택 가능하도록 제한
+          validRange={{
+            end: dayjs().add(1, 'day').format('YYYY-MM-DD'), // 내일부터 비활성화
+          }}
+          // 추가적인 스타일링을 위한 dayCellClassNames
+          dayCellClassNames={(arg) => {
+            const today = dayjs();
+            const cellDate = dayjs(arg.date);
+
+            if (cellDate.isAfter(today, 'day')) {
+              return ['fc-day-disabled']; // 미래 날짜에 클래스 추가
+            }
+            return [];
+          }}
         />
       </div>
     </motion.div>
