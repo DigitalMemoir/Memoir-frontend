@@ -31,9 +31,19 @@ import {
   showLoadingToast,
 } from '../../components/Toast/showToast';
 import Loading from '../../components/Loading';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
+
+// 팝업 위치 계산 타입
+interface PopupPosition {
+  xPosition: React.CSSProperties;
+  yPosition: React.CSSProperties;
+  tailXPosition: 'left' | 'right';
+  tailYPosition: 'top' | 'bottom';
+}
 
 const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [title, setTitle] = useState<string>('');
   const eventRefs = useRef<Record<string, HTMLDivElement>>({});
   const queryClient = useQueryClient();
@@ -46,6 +56,10 @@ const Calendar = () => {
     setSelectedDateStr(null);
   }, []);
 
+  // useOnClickOutside 훅 사용
+  useOnClickOutside(popupRef, closePopup);
+
+  // 스크롤 시에도 팝업 닫기 (기존 기능 유지)
   useEffect(() => {
     window.addEventListener('scroll', closePopup);
     return () => {
@@ -53,105 +67,117 @@ const Calendar = () => {
     };
   }, [closePopup]);
 
-  // 날짜 셀 클릭 시
-  const handleDateClick = (info: DateClickArg) => {
-    console.log('handleDateClick', info.dateStr);
-    const api = calendarRef.current?.getApi();
-    if (!api) return;
+  // 팝업 위치 계산 함수
+  const calculatePopupPosition = useCallback(
+    (dateStr: string): PopupPosition | null => {
+      const el = eventRefs.current[dateStr];
+      if (!el) return null;
 
-    if (selectedDateStr === info.dateStr) {
-      closePopup();
-      return;
-    }
+      const rect = el.getBoundingClientRect();
+      const centerY = rect.top + rect.height / 2;
+      const tailYPosition = centerY < window.innerHeight / 2 ? 'top' : 'bottom';
 
-    // 그 날짜에 이벤트가 하나라도 있으면 selectedDateStr에, 없으면 null
-    const exists = api
-      .getEvents()
-      .some((ev) => ev.start!.toISOString().slice(0, 10) === info.dateStr);
+      const yPosition: React.CSSProperties =
+        tailYPosition === 'top'
+          ? { top: `${rect.bottom + rect.height + 8}px` }
+          : { bottom: `${window.innerHeight - rect.top + rect.height + 8}px` };
 
-    if (!exists) {
-      if (!loadingDateStr.includes(info.dateStr)) {
-        setLoadingDateStr((prev) => [...prev, info.dateStr]);
-        showLoadingToast({
-          loadingMsg: `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약을 생성 중입니다.`,
-          successMsg: `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약이 생성되었습니다.`,
-          errorMsg: `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약 생성에 실패했습니다.`,
+      const tailXPosition =
+        rect.left + rect.width / 2 < window.innerWidth / 2 ? 'left' : 'right';
+      const arrowOffset = 160;
+      const centerX = rect.left + rect.width / 2;
+
+      const xPosition: React.CSSProperties =
+        tailXPosition === 'left'
+          ? { left: centerX - arrowOffset + 'px' }
+          : { left: centerX - (524 - arrowOffset) + 'px' };
+
+      return { xPosition, yPosition, tailXPosition, tailYPosition };
+    },
+    []
+  );
+
+  // 날짜 요약 생성 함수
+  const generateDateSummary = useCallback(
+    async (dateStr: string) => {
+      if (loadingDateStr.includes(dateStr)) {
+        showInfoToast(
+          `${dayjs(dateStr).format('YYYY년 M월 D일')}의 요약이 이미 생성 중입니다.`
+        );
+        return;
+      }
+
+      setLoadingDateStr((prev) => [...prev, dateStr]);
+
+      try {
+        await showLoadingToast({
+          loadingMsg: `${dayjs(dateStr).format('YYYY년 M월 D일')}의 요약을 생성 중입니다.`,
+          successMsg: `${dayjs(dateStr).format('YYYY년 M월 D일')}의 요약이 생성되었습니다.`,
+          errorMsg: `${dayjs(dateStr).format('YYYY년 M월 D일')}의 요약 생성에 실패했습니다.`,
           asyncFn: async () => {
-            await mutateAsync(info.dateStr).then(() => {
-              setLoadingDateStr((prev) =>
-                prev.filter((date) => date !== info.dateStr)
-              );
-              queryClient.invalidateQueries({
-                queryKey: ['calendar', title],
-              });
-            });
+            await mutateAsync(dateStr);
           },
         });
-      } else {
-        showInfoToast(
-          `${dayjs(info.dateStr).format('YYYY년 M월 D일')}의 요약이 이미 생성 중입니다.`
-        );
+
+        queryClient.invalidateQueries({
+          queryKey: ['calendar', title],
+        });
+      } finally {
+        setLoadingDateStr((prev) => prev.filter((date) => date !== dateStr));
       }
-      closePopup();
-      return;
-    }
+    },
+    [loadingDateStr, mutateAsync, queryClient, title]
+  );
 
-    setSelectedDateStr(info.dateStr);
-  };
+  // 날짜 셀 클릭 핸들러
+  const handleDateClick = useCallback(
+    (info: DateClickArg) => {
+      console.log('handleDateClick', info.dateStr);
+      const api = calendarRef.current?.getApi();
+      if (!api) return;
 
+      // 같은 날짜 클릭 시 팝업 토글
+      if (selectedDateStr === info.dateStr) {
+        closePopup();
+        return;
+      }
+
+      // 그 날짜에 이벤트가 있는지 확인
+      const hasEvents = api
+        .getEvents()
+        .some((ev) => ev.start!.toISOString().slice(0, 10) === info.dateStr);
+
+      if (hasEvents) {
+        // 이벤트가 있으면 팝업 표시
+        setSelectedDateStr(info.dateStr);
+      } else {
+        // 이벤트가 없으면 요약 생성
+        generateDateSummary(info.dateStr);
+        closePopup();
+      }
+    },
+    [selectedDateStr, closePopup, generateDateSummary]
+  );
+
+  // 팝업 렌더링
   useLayoutEffect(() => {
     if (!selectedDateStr) return;
 
-    const el = eventRefs.current[selectedDateStr];
-    if (!el) return;
+    const position = calculatePopupPosition(selectedDateStr);
+    if (!position) return;
 
-    const rect = el.getBoundingClientRect();
     const wrapper = document.createElement('div');
-
-    // 팝업 y 위치 계산
-    const centerY = rect.top + rect.height / 2;
-    // 뷰포트 중앙과 비교
-    const tailYPosition = centerY < window.innerHeight / 2 ? 'top' : 'bottom';
-
-    const yPosition: React.CSSProperties =
-      tailYPosition === 'top'
-        ? {
-            // 화면 상단 절반: 팝업을 요소 아래에
-            top: `${rect.bottom + rect.height + 8}px`,
-          }
-        : {
-            // 화면 하단 절반: 팝업을 요소 위에
-            bottom: `${window.innerHeight - rect.top + rect.height + 8}px`,
-          };
-
-    // 팝업 x 위치 계산
-    const tailXPosition =
-      rect.left + rect.width / 2 < window.innerWidth / 2 ? 'left' : 'right';
-
-    const arrowOffset = 160;
-    const centerX = rect.left + rect.width / 2;
-    console.log('centerX', centerX);
-
-    const xPosition: React.CSSProperties =
-      tailXPosition === 'left'
-        ? {
-            left: centerX - arrowOffset + 'px',
-          }
-        : {
-            left: centerX - (524 - arrowOffset) + 'px',
-          };
-
-    console.log('window.innerWidth', window.innerWidth);
-    console.log('rect.right', rect.right);
-    console.log('xPosition', xPosition?.left);
     Object.assign(wrapper.style, {
       position: 'fixed',
       zIndex: '10000',
-      ...xPosition,
-      ...yPosition,
+      ...position.xPosition,
+      ...position.yPosition,
     });
 
     document.body.appendChild(wrapper);
+
+    // wrapper를 popupRef로 설정
+    popupRef.current = wrapper;
 
     const root = createRoot(wrapper);
     root.render(
@@ -159,8 +185,8 @@ const Calendar = () => {
         <QueryClientProvider client={queryClient}>
           <Popup
             dateString={selectedDateStr}
-            tailYPosition={tailYPosition}
-            tailXPosition={tailXPosition}
+            tailYPosition={position.tailYPosition}
+            tailXPosition={position.tailXPosition}
           />
         </QueryClientProvider>
       </AnimatePresence>
@@ -171,11 +197,16 @@ const Calendar = () => {
       setTimeout(() => {
         root.unmount();
         wrapper.remove();
+        // ref 정리
+        if (popupRef.current === wrapper) {
+          popupRef.current = null;
+        }
       }, 150);
     };
-  }, [selectedDateStr]);
+  }, [selectedDateStr, calculatePopupPosition, queryClient]);
 
-  const renderEventContent = (arg: EventContentArg) => {
+  // 이벤트 렌더링
+  const renderEventContent = useCallback((arg: EventContentArg) => {
     return (
       <Event
         ref={(el) => {
@@ -184,8 +215,9 @@ const Calendar = () => {
         {...arg}
       />
     );
-  };
+  }, []);
 
+  // 캘린더 제목 업데이트
   useEffect(() => {
     const api = calendarRef.current?.getApi();
     if (!api) return;
@@ -193,28 +225,28 @@ const Calendar = () => {
     const updateTitle = () => {
       const view = api.view;
       const currentDate = view.currentStart;
-
-      // Day.js로 포맷팅
       const formatted = dayjs(currentDate).locale('en').format('MMMM, YYYY');
-      setTitle(formatted); // "May, 2025"
+      setTitle(formatted);
     };
 
-    updateTitle(); // 최초 설정
-    api.on('datesSet', updateTitle); // 날짜 변경 시마다 title 업데이트
+    updateTitle();
+    api.on('datesSet', updateTitle);
 
     return () => {
-      api.off('datesSet', updateTitle); // cleanup
+      api.off('datesSet', updateTitle);
     };
   }, []);
 
-  const goPrev = () => {
+  // 캘린더 네비게이션
+  const goPrev = useCallback(() => {
     calendarRef.current?.getApi().prev();
-  };
+  }, []);
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     calendarRef.current?.getApi().next();
-  };
+  }, []);
 
+  // 캘린더 데이터 조회
   const {
     data: events,
     isLoading,
