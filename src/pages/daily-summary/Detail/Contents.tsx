@@ -11,7 +11,11 @@ const Contents = ({
   children: React.ReactNode;
 }) => {
   return (
-    <section className={'flex flex-col items-start justify-start gap-6 w-full'}>
+    <section
+      className={
+        'flex flex-col items-start justify-start gap-6 w-full max-w-full'
+      }
+    >
       <div className={'flex flex-row items-center justify-start gap-4'}>
         <img
           src={icon}
