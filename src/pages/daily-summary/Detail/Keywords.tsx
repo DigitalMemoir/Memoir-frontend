@@ -1,4 +1,4 @@
-import type { IDailyKeyword } from '../../../types/ICalendar';
+import type { ITopKeywords } from '../../../types/ICalendar';
 import Contents from './Contents';
 import SearchImage from '../../../assets/icons/search.png';
 import textStyles from '../../../styles/textStyles';
@@ -25,7 +25,7 @@ const Keywords = ({
   keywords,
 }: {
   date: string;
-  keywords: Array<IDailyKeyword>;
+  keywords: Array<ITopKeywords>;
 }) => {
   return (
     <Contents icon={SearchImage} title={`${date}일의 키워드`}>

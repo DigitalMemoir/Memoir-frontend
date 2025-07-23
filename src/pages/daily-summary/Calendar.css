@@ -19,6 +19,11 @@
   height: 1.375rem !important;
 }
 
+.fc-daygrid-day-frame:hover {
+  background-color: rgba(107, 114, 128, 0.2);
+  cursor: pointer;
+}
+
 .fc .fc-event {
   background: transparent !important;
   border: none !important;
