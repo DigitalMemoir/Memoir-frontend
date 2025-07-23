@@ -11,6 +11,7 @@ import type { IPopupResponse, IPopupProps } from '../../types/IPopup';
 import Detail from './Detail';
 import { useState } from 'react';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
+import { useProfile } from '../../states/useProfile';
 
 const tailYPositionClasses: Record<IPopupProps['tailYPosition'], string> = {
   top: 'arrow_box_top',
@@ -38,6 +39,8 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
       tailYPositionClasses[tailYPosition]
     );
     const detailRef = useRef<HTMLDivElement>(null);
+
+    const { profile } = useProfile();
 
     // 외부 클릭 감지
     useOnClickOutside(detailRef as React.RefObject<HTMLDivElement>, () => {
@@ -102,11 +105,14 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
 
           <div className="flex items-center gap-4">
             <img
-              src="https://picsum.photos/200"
+              src={profile?.profileUrl || 'https://picsum.photos/80'}
               alt="example"
+              referrerPolicy="no-referrer"
               className="w-14 h-14 object-cover rounded-full"
             />
-            <p className={`${textStyles.text2_2} text-text-body`}>이름</p>
+            <p className={`${textStyles.text2_2} text-text-body`}>
+              {profile?.name}
+            </p>
           </div>
 
           <div className="flex justify-end">
