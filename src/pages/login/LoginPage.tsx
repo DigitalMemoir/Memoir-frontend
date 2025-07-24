@@ -2,10 +2,48 @@ import clsx from 'clsx';
 import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
 import { motion } from 'framer-motion';
+import { useAuthStore } from '../../states/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const handleLogin = () =>
-    (window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`);
+  const { login } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    // const popup =
+    window.open(
+      `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`,
+      'oauth',
+      'width=500,height=600,scrollbars=yes,resizable=yes'
+    );
+
+    // 메시지 리스너
+    const messageListener = (event: MessageEvent) => {
+      if (event.origin !== 'https://yourdomain.com') return;
+
+      if (event.data.type === 'oauth-success') {
+        localStorage.setItem('authToken', event.data.token);
+
+        login();
+
+        // 리스너 제거
+        window.removeEventListener('message', messageListener);
+
+        if (event.data.newUser) {
+          navigate('/onboarding');
+        } else {
+          navigate('/');
+        }
+      }
+
+      if (event.data.type === 'oauth-error') {
+        console.error('OAuth Error:', event.data.error);
+        window.removeEventListener('message', messageListener);
+      }
+    };
+
+    window.addEventListener('message', messageListener);
+  };
 
   return (
     <div
