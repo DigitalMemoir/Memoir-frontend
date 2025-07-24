@@ -5,7 +5,7 @@ import Summary from './Detail/Summary';
 import Statistics from './Detail/Statistics';
 import Timeline from './Detail/Timeline';
 import textStyles from '../../styles/textStyles';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import type { ISummaryResponse } from '../../types/ICalendar';
