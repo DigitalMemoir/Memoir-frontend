@@ -21,7 +21,9 @@ const Statistics = ({
         <span className={clsx(textStyles.text2_1, 'text-text-body col-span-3')}>
           {formatMinutesToTime(totalUsageTimeMinutes)}
         </span>
-        <span className={clsx(textStyles.text2, 'text-text-body')}>
+        <span
+          className={clsx(textStyles.text2, 'text-text-body whitespace-nowrap')}
+        >
           정보 탐색 성향:
         </span>
         <span className={clsx(textStyles.text2_1, 'text-text-body col-span-3')}>

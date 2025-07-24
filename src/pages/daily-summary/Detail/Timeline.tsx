@@ -12,13 +12,21 @@ const Timeline = ({ timelines }: { timelines: Array<ITimeLine> }) => {
           <>
             <span
               key={item.time}
-              className={clsx(textStyles.text2_1, 'text-text-body')}
+              className={clsx(
+                textStyles.text2_1,
+                'text-text-body',
+                'cursor-default'
+              )}
             >
               {item.time}
             </span>
             <span
               key={item.description}
-              className={clsx(textStyles.text2, 'text-text-body col-span-3')}
+              className={clsx(
+                textStyles.text2,
+                'cursor-default',
+                'text-text-body col-span-3 truncate'
+              )}
             >
               {item.description}
             </span>
