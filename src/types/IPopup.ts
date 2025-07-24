@@ -13,4 +13,5 @@ export interface IPopupProps {
   dateString: string;
   tailYPosition: 'top' | 'bottom';
   tailXPosition: 'left' | 'right';
+  openDetail: () => void;
 }

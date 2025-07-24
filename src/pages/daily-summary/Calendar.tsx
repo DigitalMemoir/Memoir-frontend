@@ -32,6 +32,7 @@ import {
 } from '../../components/Toast/showToast';
 import Loading from '../../components/Loading';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
+import Detail from './Detail';
 
 // 팝업 위치 계산 타입
 interface PopupPosition {
@@ -44,20 +45,32 @@ interface PopupPosition {
 const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const detailRef = useRef<HTMLDivElement | null>(null);
   const [title, setTitle] = useState<string>('');
   const eventRefs = useRef<Record<string, HTMLDivElement>>({});
   const queryClient = useQueryClient();
-
+  const [openDetail, setOpenDetail] = useState<boolean>(false);
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [selectedDateStr, setSelectedDateStr] = useState<string | null>(null);
   const [loadingDateStr, setLoadingDateStr] = useState<Array<string>>([]);
   const mutateAsync = useGenerateDateSummary();
 
+  // const closePopup = useCallback(() => {
+  //   setSelectedDateStr(null);
+  // }, []);
+
   const closePopup = useCallback(() => {
+    setOpenPopup(false);
+  }, []);
+
+  const closeDetail = useCallback(() => {
+    setOpenDetail(false);
     setSelectedDateStr(null);
   }, []);
 
   // useOnClickOutside 훅 사용
   useOnClickOutside(popupRef, closePopup);
+  useOnClickOutside(detailRef, closeDetail);
 
   // 스크롤 시에도 팝업 닫기 (기존 기능 유지)
   useEffect(() => {
@@ -148,6 +161,7 @@ const Calendar = () => {
 
       // 같은 날짜 클릭 시 팝업 토글
       if (selectedDateStr === info.dateStr) {
+        setSelectedDateStr(null);
         closePopup();
         return;
       }
@@ -160,6 +174,7 @@ const Calendar = () => {
       if (hasEvents) {
         // 이벤트가 있으면 팝업 표시
         setSelectedDateStr(info.dateStr);
+        setOpenPopup(true);
       } else {
         // 이벤트가 없으면 요약 생성
         generateDateSummary(info.dateStr);
@@ -171,7 +186,7 @@ const Calendar = () => {
 
   // 팝업 렌더링
   useLayoutEffect(() => {
-    if (!selectedDateStr) return;
+    if (!selectedDateStr || !openPopup) return;
 
     const position = calculatePopupPosition(selectedDateStr);
     if (!position) return;
@@ -197,6 +212,10 @@ const Calendar = () => {
             dateString={selectedDateStr}
             tailYPosition={position.tailYPosition}
             tailXPosition={position.tailXPosition}
+            openDetail={() => {
+              setOpenDetail(true);
+              closePopup();
+            }}
           />
         </QueryClientProvider>
       </AnimatePresence>
@@ -213,7 +232,13 @@ const Calendar = () => {
         }
       }, 150);
     };
-  }, [selectedDateStr, calculatePopupPosition, queryClient]);
+  }, [
+    selectedDateStr,
+    calculatePopupPosition,
+    queryClient,
+    openPopup,
+    closePopup,
+  ]);
 
   // 이벤트 렌더링
   const renderEventContent = useCallback((arg: EventContentArg) => {
@@ -278,54 +303,62 @@ const Calendar = () => {
   }
 
   return (
-    <motion.div
-      className={'w-full h-full flex flex-col items-center'}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-    >
-      <Loading
-        isLoading={isLoading || !events}
-        className={'z-1000 fixed top-0 left-0 w-full h-full'}
-      />
-      <Header goPrev={goPrev} goNext={goNext} title={title} />
-      <div className={'h-full w-auto aspect-[4/3] box-border pb-30'}>
-        <FullCalendar
-          height={'100%'}
-          ref={calendarRef}
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView={'dayGridMonth'}
-          timeZone={'Asia/Seoul'}
-          dayHeaders={false}
-          headerToolbar={false}
-          showNonCurrentDates={false}
-          fixedWeekCount={false}
-          dayCellContent={Day}
-          events={events}
-          eventDisplay={'block'}
-          eventContent={renderEventContent}
-          titleFormat={{
-            year: 'numeric',
-            month: 'long',
-          }}
-          dateClick={handleDateClick}
-          // 오늘까지만 선택 가능하도록 제한
-          validRange={{
-            end: dayjs().add(1, 'day').format('YYYY-MM-DD'), // 내일부터 비활성화
-          }}
-          // 추가적인 스타일링을 위한 dayCellClassNames
-          dayCellClassNames={(arg) => {
-            const today = dayjs();
-            const cellDate = dayjs(arg.date);
-
-            if (cellDate.isAfter(today, 'day')) {
-              return ['fc-day-disabled']; // 미래 날짜에 클래스 추가
-            }
-            return [];
-          }}
+    <>
+      <motion.div
+        className={'w-full h-full flex flex-col items-center'}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+      >
+        <Loading
+          isLoading={isLoading || !events}
+          className={'z-1000 fixed top-0 left-0 w-full h-full'}
         />
-      </div>
-    </motion.div>
+        <Header goPrev={goPrev} goNext={goNext} title={title} />
+        <div className={'h-full w-auto aspect-[4/3] box-border pb-30'}>
+          <FullCalendar
+            height={'100%'}
+            ref={calendarRef}
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView={'dayGridMonth'}
+            timeZone={'Asia/Seoul'}
+            dayHeaders={false}
+            headerToolbar={false}
+            showNonCurrentDates={false}
+            fixedWeekCount={false}
+            dayCellContent={Day}
+            events={events}
+            eventDisplay={'block'}
+            eventContent={renderEventContent}
+            titleFormat={{
+              year: 'numeric',
+              month: 'long',
+            }}
+            dateClick={handleDateClick}
+            // 오늘까지만 선택 가능하도록 제한
+            validRange={{
+              end: dayjs().add(1, 'day').format('YYYY-MM-DD'), // 내일부터 비활성화
+            }}
+            // 추가적인 스타일링을 위한 dayCellClassNames
+            dayCellClassNames={(arg) => {
+              const today = dayjs();
+              const cellDate = dayjs(arg.date);
+
+              if (cellDate.isAfter(today, 'day')) {
+                return ['fc-day-disabled']; // 미래 날짜에 클래스 추가
+              }
+              return [];
+            }}
+          />
+        </div>
+      </motion.div>
+      {openDetail && selectedDateStr && (
+        <Detail
+          ref={detailRef as React.RefObject<HTMLDivElement>}
+          dateString={dayjs(selectedDateStr).format('YYYY-MM-DD')}
+        />
+      )}
+    </>
   );
 };
 

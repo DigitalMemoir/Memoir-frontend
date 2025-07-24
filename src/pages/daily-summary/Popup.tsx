@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react';
+import { forwardRef } from 'react';
 import dayjs from 'dayjs';
 import textStyles from '../../styles/textStyles';
 import { motion } from 'framer-motion';
@@ -8,9 +8,6 @@ import { showErrorToast } from '../../components/Toast/showToast';
 import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import type { IPopupResponse, IPopupProps } from '../../types/IPopup';
-import Detail from './Detail';
-import { useState } from 'react';
-import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { useProfile } from '../../states/useProfile';
 
 const tailYPositionClasses: Record<IPopupProps['tailYPosition'], string> = {
@@ -30,22 +27,15 @@ const popupVariants = {
 };
 
 const Popup = forwardRef<HTMLDivElement, IPopupProps>(
-  ({ dateString, tailXPosition, tailYPosition }, ref) => {
-    const [openDetail, setOpenDetail] = useState<boolean>(false);
+  ({ dateString, tailXPosition, tailYPosition, openDetail }, ref) => {
     const day = dayjs(dateString);
     const formattedDate = day.format('YYYY.MM.DD (dd)');
     const tailClasses = clsx(
       tailXPositionClasses[tailXPosition],
       tailYPositionClasses[tailYPosition]
     );
-    const detailRef = useRef<HTMLDivElement>(null);
 
     const { profile } = useProfile();
-
-    // 외부 클릭 감지
-    useOnClickOutside(detailRef as React.RefObject<HTMLDivElement>, () => {
-      if (openDetail) setOpenDetail(false);
-    });
 
     const getPopupContent = async (date: string) => {
       const formatted = dayjs(date).format('YYYY-MM-DD');
@@ -106,7 +96,7 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
           <div className="flex items-center gap-4">
             <img
               src={profile?.profileUrl || 'https://picsum.photos/80'}
-              alt="example"
+              alt="프로필 이미지"
               referrerPolicy="no-referrer"
               className="w-14 h-14 object-cover rounded-full"
             />
@@ -117,7 +107,7 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
 
           <div className="flex justify-end">
             <motion.button
-              onClick={() => setOpenDetail(true)}
+              onClick={openDetail}
               className={`${textStyles.sub2} text-primary-400 hover:bg-primary-400/20 px-3 py-1 rounded`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -126,12 +116,6 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
             </motion.button>
           </div>
         </motion.div>
-        {openDetail && (
-          <Detail
-            ref={detailRef as React.RefObject<HTMLDivElement>}
-            dateString={day.format('YYYY-MM-DD')}
-          />
-        )}
       </>
     );
   }
