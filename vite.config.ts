@@ -31,6 +31,9 @@ export default defineConfig(({ mode }) => {
         ],
       }),
     ],
+    rollupOptions: {
+      external: [/\.stories\.(js|jsx|ts|tsx)$/],
+    },
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'),

@@ -13,7 +13,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const data: IActivityStatsResponse = {
-  activityStats: {
+  status: 200,
+  msg: '활동 통계 조회 성공',
+  data: {
     totalUsageTimeMinutes: 185,
     categorySummaries: [
       {
@@ -97,6 +99,6 @@ const data: IActivityStatsResponse = {
 
 export const Primary: Story = {
   args: {
-    hourlyData: data.activityStats.hourlyActivityBreakdown,
+    hourlyData: data.data.hourlyActivityBreakdown,
   },
 };
