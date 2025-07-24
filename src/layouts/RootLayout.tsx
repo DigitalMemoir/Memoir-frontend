@@ -16,7 +16,6 @@ const RootLayout = () => {
   const getProfile = async () => {
     const response = await axiosInstance.get('/api/users/profile');
 
-    console.log('Profile data fetched:', response.data);
     setProfile(response.data.data);
 
     return response.data.data;
@@ -36,16 +35,22 @@ const RootLayout = () => {
     >
       <Drawer isOpen={isOpen} onOpen={openDrawer} onClose={closeDrawer} />
       <div
-        className={'absolute top-13 right-9 flex flex-row items-center gap-10'}
+        className={
+          'absolute top-13 right-5 lg:right-9 flex flex-row items-center gap-6 lg:gap-10'
+        }
       >
         <img
           src={BellIcon}
-          className={'w-[2.08vw] h-[4.07vh] px-0.5 text-gray-3'}
+          className={
+            'w-[2.08vw] h-[4.07vh] px-0.5 text-gray-3 min-w-8 min-h-8 max-w-10 max-h-10'
+          }
         />
         <img
           referrerPolicy="no-referrer"
           src={data?.profileUrl}
-          className={'w-[4.17vw] h-auto aspect-square rounded-full'}
+          className={
+            'w-[4.17vw] h-auto aspect-square rounded-full min-w-14 min-h-14 max-w-20 max-h-20'
+          }
         />
       </div>
       <Outlet />
