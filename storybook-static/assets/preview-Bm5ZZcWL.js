@@ -1,1 +1,0 @@
-import{j as e}from"./jsx-runtime-D_zvdyIk.js";const s={parameters:{controls:{matchers:{color:/(background|color)$/i,date:/Date$/i}},viewport:{viewports:{desktopFHD:{name:"Desktop FHD",styles:{width:"1920px",height:"1080px"},type:"desktop"}}}},decorators:[t=>e.jsx("div",{className:"bg-white",children:e.jsx(t,{})})]};export{s as default};
