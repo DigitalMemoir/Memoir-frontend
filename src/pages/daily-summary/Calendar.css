@@ -1,0 +1,73 @@
+.fc .fc-daygrid-day-top {
+  flex-direction: row !important;
+  width: 100% !important;
+  padding-top: 1rem;
+  padding-left: 1.25rem;
+}
+
+.fc-day-today {
+  background-color: transparent !important;
+}
+
+.fc .fc-daygrid-day-events {
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 1rem;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  height: 1.375rem !important;
+}
+
+/* 일반 날짜 hover - disabled가 아닌 경우에만 적용 */
+.fc-daygrid-day-frame:hover:not(.fc-day-disabled):not(.fc-cell-shaded) {
+  background-color: rgba(107, 114, 128, 0.2);
+  cursor: pointer;
+}
+
+.fc .fc-event {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  height: 1.375rem !important;
+  border-radius: 0.25rem !important;
+}
+
+.fc-event-main {
+  height: 1.375rem !important;
+}
+
+/* FullCalendar의 기본 비활성화 스타일과 우리 커스텀 disabled 스타일 */
+.fc .fc-cell-shaded,
+.fc-day-disabled {
+  background-color: white !important;
+  color: #d1d5db !important;
+  cursor: default !important;
+  opacity: 0.7 !important;
+}
+
+/* disabled 날짜의 hover 효과 완전히 제거 */
+.fc-day-disabled:hover,
+.fc .fc-cell-shaded:hover {
+  background-color: white !important;
+  cursor: default !important;
+  /* 기존 hover 효과 무력화 */
+}
+
+/* disabled 날짜 내부 요소들도 비활성화 */
+.fc-day-disabled .fc-daygrid-day-top,
+.fc .fc-cell-shaded .fc-daygrid-day-top {
+  pointer-events: none;
+}
+
+.fc-day-other {
+  opacity: 0.3;
+}
+
+/* 더 구체적인 선택자로 우선순위 높이기 */
+.fc .fc-daygrid-day.fc-day-disabled .fc-daygrid-day-frame:hover {
+  background-color: white !important;
+  cursor: default !important;
+}

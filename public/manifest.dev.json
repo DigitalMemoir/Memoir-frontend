@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Memoir (Dev)",
+  "version": "1.0.0-dev",
+  "description": "Dev build – Vite HMR 활성화",
+  "background": { "service_worker": "background.js" },
+  "action": {},
+  "chrome_url_overrides": {
+    "newtab": "http://localhost:3000/newtab.html"
+  },
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["____API_URL__/*"],
+  "web_accessible_resources": [
+    {
+      "resources": ["index.html"],
+      "matches": ["*://localhost:3000/*"]
+    }
+  ],
+  "action": {
+    "default_popup": "http://localhost:3000/popup.html"
+  }
+}
