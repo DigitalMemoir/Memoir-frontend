@@ -3,11 +3,11 @@ import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../../states/useAuthStore';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const { login } = useAuthStore();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogin = () => {
     // const popup =
@@ -19,10 +19,10 @@ const LoginPage = () => {
 
     // 메시지 리스너
     const messageListener = (event: MessageEvent) => {
-      if (event.origin !== 'https://yourdomain.com') return;
+      if (event.origin !== 'https://digitalmemoir.github.io') return;
 
       if (event.data.type === 'oauth-success') {
-        localStorage.setItem('authToken', event.data.token);
+        localStorage.setItem('accessToken', event.data.token);
 
         login();
 
@@ -30,9 +30,9 @@ const LoginPage = () => {
         window.removeEventListener('message', messageListener);
 
         if (event.data.newUser) {
-          navigate('/onboarding');
+          window.location.hash = '/onboarding';
         } else {
-          navigate('/');
+          window.location.hash = '/';
         }
       }
 
