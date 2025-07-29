@@ -28,6 +28,13 @@ export default defineConfig(({ mode }) => {
             transform: (content) =>
               content.toString().replace(/__API_URL__/g, API_URL),
           },
+          {
+            src: resolve(__dirname, 'public', 'background.js'),
+            dest: '.',
+            rename: 'background.js',
+            transform: (content) =>
+              content.toString().replace(/__API_URL__/g, API_URL),
+          },
         ],
       }),
     ],

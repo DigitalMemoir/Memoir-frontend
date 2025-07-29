@@ -3,30 +3,35 @@ import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../../states/useAuthStore';
-// import { useNavigate } from 'react-router-dom';
+import { ChromeAuth } from '../../utils/ChromeAuth';
 
 const LoginPage = () => {
   const { login } = useAuthStore();
-  // const navigate = useNavigate();
 
   const handleLogin = () => {
-    // const popup =
     window.open(
       `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`,
       'oauth',
       'width=500,height=600,scrollbars=yes,resizable=yes'
     );
 
-    // 메시지 리스너
-    const messageListener = (event: MessageEvent) => {
-      if (event.origin !== 'https://digitalmemoir.github.io') return;
+    const messageListener = async (event: MessageEvent) => {
+      console.log('OAuth message received:', event.data);
+      console.log('Expected origin:', import.meta.env.VITE_CALLBACK_ORIGIN);
+      console.log('Event origin:', event.origin);
+      if (event.origin !== import.meta.env.VITE_CALLBACK_ORIGIN) return;
 
+      localStorage.setItem('accessToken', event.data.accessToken);
+      localStorage.setItem('refreshToken', event.data.refreshToken);
       if (event.data.type === 'oauth-success') {
-        localStorage.setItem('accessToken', event.data.token);
+        // background.js(토큰 매니저)에 저장 요청
+        await ChromeAuth.saveTokens({
+          accessToken: event.data.accessToken,
+          refreshToken: event.data.refreshToken,
+        });
 
         login();
 
-        // 리스너 제거
         window.removeEventListener('message', messageListener);
 
         if (event.data.newUser) {
