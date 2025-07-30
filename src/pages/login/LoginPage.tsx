@@ -2,12 +2,9 @@ import clsx from 'clsx';
 import textStyles from '../../styles/textStyles';
 import googleIcon from '../../assets/icons/googleIcon.svg';
 import { motion } from 'framer-motion';
-import { useAuthStore } from '../../states/useAuthStore';
 import { ChromeAuth } from '../../utils/ChromeAuth';
 
 const LoginPage = () => {
-  const { login } = useAuthStore();
-
   const handleLogin = () => {
     window.open(
       `${import.meta.env.VITE_API_URL}/oauth2/authorization/google`,
@@ -29,8 +26,6 @@ const LoginPage = () => {
           accessToken: event.data.accessToken,
           refreshToken: event.data.refreshToken,
         });
-
-        login();
 
         window.removeEventListener('message', messageListener);
 

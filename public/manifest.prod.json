@@ -9,7 +9,13 @@
   "action": {
     "default_popup": "popup/index.html"
   },
-  "permissions": ["storage", "alarms", "scripting", "clipboardWrite", "history"],
+  "permissions": [
+    "storage",
+    "alarms",
+    "scripting",
+    "clipboardWrite",
+    "history"
+  ],
   "host_permissions": ["__API_URL__/*"],
   "web_accessible_resources": [
     {
