@@ -19,10 +19,11 @@ const UsagePage = () => {
       showErrorToast('오늘의 방문 기록이 없습니다.');
       return { data: null };
     }
-    const response = await axiosInstance.post('/api/time', {
+    const body = {
       date: today,
       visitedPages: browsingHistory,
-    });
+    };
+    const response = await axiosInstance.post('/api/time', body);
     return response.data;
   };
 
