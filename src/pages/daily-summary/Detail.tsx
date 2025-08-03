@@ -68,13 +68,14 @@ const Detail = forwardRef<HTMLDivElement, DetailProps>(
           isScrollable && 'overflow-hidden'
         )}
       >
-        <div
+        <div // 18
           ref={containerRef}
           className={clsx(
             'flex flex-col items-start justify-start gap-12 flex-1 w-full',
-            'pl-15 lg:pl-20 pt-18 lg:pt-24 pr-8 pb-6',
+            'pl-15 lg:pl-20 pt-18 lg:pt-24 pr-8',
             isScrollable && 'flex-1 overflow-y-auto overflow-x-visible',
-            'hide-scrollbar'
+            'hide-scrollbar',
+            isOverflowing ? 'pb-24' : 'pb-6'
           )}
         >
           {!isLoading && data && (
