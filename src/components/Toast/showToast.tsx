@@ -94,17 +94,5 @@ export const showInfoToast = (msg: string) =>
         {msg}
       </CustomToastMessage>
     ),
-    {
-      ...toastOption,
-      duration: 3000,
-      style: {
-        width: 'fit-content',
-        height: 'fit-content',
-        margin: '0',
-        boxShadow: 'none',
-        maxWidth: '352px',
-        backgroundColor: 'transparent',
-      },
-      icon: null,
-    }
+    toastOption
   );
