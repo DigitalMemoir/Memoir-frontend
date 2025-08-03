@@ -13,19 +13,12 @@ export const showLoadingToast = ({
   successMsg: string;
   asyncFn: () => Promise<unknown>;
 }) => {
-  // const id = toast.loading(<></>, {
-  //   ...toastOption,
-  //   duration: Infinity,
-  //   style: { display: 'none' },
-  // });
-
   return toast.promise(
     asyncFn(),
     {
       loading: (
         <CustomToastMessage
           toastType={'loading'}
-          // onDismiss={() => toast.dismiss(id)}
           onDismiss={() => toast.dismiss()}
         >
           {loadingMsg}
@@ -34,7 +27,6 @@ export const showLoadingToast = ({
       success: (
         <CustomToastMessage
           toastType={'success'}
-          // onDismiss={() => toast.dismiss(id)}
           onDismiss={() => toast.dismiss()}
         >
           {successMsg}
@@ -43,7 +35,6 @@ export const showLoadingToast = ({
       error: (
         <CustomToastMessage
           toastType={'loading'}
-          // onDismiss={() => toast.dismiss(id)}
           onDismiss={() => toast.dismiss()}
         >
           {errorMsg}

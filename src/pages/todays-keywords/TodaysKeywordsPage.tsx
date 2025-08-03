@@ -10,6 +10,7 @@ import type { IVisitedPage } from '../../types/IVisitedPages';
 import { showErrorToast } from '../../components/Toast/showToast';
 import Keyword from './Keyword';
 import Loading from '../../components/Loading';
+import clsx from 'clsx';
 
 // 하나의 방문 페이지를 나타내는 인터페이스 임시!
 export interface VisitedPage {
@@ -80,8 +81,15 @@ const TodaysKeywordsPage = () => {
 
   return (
     <AnimatePresence>
-      <Loading isLoading={isLoading || !data} />
-      <div className={'w-fit h-full box-border pt-[11.11vh]'}>
+      <div
+        className={clsx(
+          'flex flex-col items-center justify-start w-full pt-[11.11vh]'
+        )}
+      >
+        <Loading isLoading={isLoading || !data} />
+      </div>
+
+      <div className={'w-fit h-full box-border'}>
         {!isLoading && data && (
           <motion.div
             className={
