@@ -13,19 +13,13 @@ export const showLoadingToast = ({
   successMsg: string;
   asyncFn: () => Promise<unknown>;
 }) => {
-  const id = toast.loading(<></>, {
-    ...toastOption,
-    duration: Infinity,
-    style: { display: 'none' },
-  });
-
   return toast.promise(
     asyncFn(),
     {
       loading: (
         <CustomToastMessage
           toastType={'loading'}
-          onDismiss={() => toast.dismiss(id)}
+          onDismiss={() => toast.dismiss()}
         >
           {loadingMsg}
         </CustomToastMessage>
@@ -33,7 +27,7 @@ export const showLoadingToast = ({
       success: (
         <CustomToastMessage
           toastType={'success'}
-          onDismiss={() => toast.dismiss(id)}
+          onDismiss={() => toast.dismiss()}
         >
           {successMsg}
         </CustomToastMessage>
@@ -41,22 +35,15 @@ export const showLoadingToast = ({
       error: (
         <CustomToastMessage
           toastType={'loading'}
-          onDismiss={() => toast.dismiss(id)}
+          onDismiss={() => toast.dismiss()}
         >
           {errorMsg}
         </CustomToastMessage>
       ),
     },
     {
-      position: 'top-right',
-      style: {
-        width: 'fit-content',
-        height: 'fit-content',
-        margin: '0',
-        boxShadow: 'none',
-        maxWidth: '352px',
-        backgroundColor: 'transparent',
-      },
+      position: toastOption.position,
+      style: toastOption.style,
       icon: null,
     }
   );
@@ -98,17 +85,5 @@ export const showInfoToast = (msg: string) =>
         {msg}
       </CustomToastMessage>
     ),
-    {
-      ...toastOption,
-      duration: 3000,
-      style: {
-        width: 'fit-content',
-        height: 'fit-content',
-        margin: '0',
-        boxShadow: 'none',
-        maxWidth: '352px',
-        backgroundColor: 'transparent',
-      },
-      icon: null,
-    }
+    toastOption
   );

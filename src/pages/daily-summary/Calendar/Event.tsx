@@ -38,7 +38,8 @@ const Event = React.forwardRef<HTMLDivElement, IEventProps>(
           'text-text-body',
           'cursor-default',
           'absolute',
-          isPopupOpen ? 'z-[10]' : 'z-[1]'
+          isPopupOpen ? 'z-[10]' : 'z-[1]',
+          'truncate'
         )}
       >
         {title}

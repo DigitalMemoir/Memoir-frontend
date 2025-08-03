@@ -18,5 +18,9 @@
   ],
   "action": {
     "default_popup": "http://localhost:3000/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
   }
 }

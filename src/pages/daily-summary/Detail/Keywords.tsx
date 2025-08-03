@@ -10,14 +10,14 @@ const Keyword = ({ keyword }: { keyword: string }) => {
     <div
       className={clsx(
         'flex flex-row items-center justify-center',
-        'w-30 h-12 py-3 border border-text-subtle rounded-lg',
+        'w-30 h-12 px-3 py-3 border border-text-subtle rounded-lg',
         'flex-shrink-0'
       )}
     >
       <span
         className={clsx(
           textStyles.text1,
-          'text-text-subtle',
+          'text-text-subtle truncate',
           'cursor-default select-none'
         )}
       >

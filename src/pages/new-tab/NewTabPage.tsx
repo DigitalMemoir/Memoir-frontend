@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import AddBookmark from './AddBookmark';
 import Bookmark from './Bookmark';
-import { useAuthStore } from '../../states/useAuthStore';
 import axiosInstance from '../../lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import { bookmarkBaseStyle } from './BookmarkStyle.module';
@@ -9,8 +7,6 @@ import { showErrorToast } from '../../components/Toast/showToast';
 import Loading from '../../components/Loading';
 
 const NewTabPage = () => {
-  const { login } = useAuthStore();
-
   const getBookmarks = async (): Promise<Array<string>> => {
     const res = await axiosInstance.get('/api/bookmarks');
     return res.data.data;
@@ -25,10 +21,6 @@ const NewTabPage = () => {
     queryFn: getBookmarks,
     refetchOnWindowFocus: false,
   });
-
-  useEffect(() => {
-    login();
-  }, []);
 
   if (error) {
     console.error('Error fetching bookmarks:', error);

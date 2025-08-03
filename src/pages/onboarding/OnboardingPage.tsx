@@ -4,9 +4,8 @@ import KeywordList from './KeywordList';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import axiosInstance from '../../lib/axiosInstance';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useAuthStore } from '../../states/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import {
   showErrorToast,
@@ -15,12 +14,7 @@ import {
 
 const OnboardingPage = () => {
   const [selected, setSelected] = useState<Array<string>>([]);
-  const { login } = useAuthStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    login();
-  }, []);
 
   const handleSetKeywords = async () => {
     await axiosInstance.post('/api/users/category', {
