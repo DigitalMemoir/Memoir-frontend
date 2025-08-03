@@ -39,9 +39,7 @@ const Popup = forwardRef<HTMLDivElement, IPopupProps>(
 
     const getPopupContent = async (date: string) => {
       const formatted = dayjs(date).format('YYYY-MM-DD');
-      const response = await axiosInstance.get<IPopupResponse>(
-        `/api/daily/popup/${formatted}`
-      );
+      const response = await axiosInstance.get(`/api/daily/popup/${formatted}`);
       return response.data;
     };
 
