@@ -366,6 +366,13 @@ class TokenManager {
       ]);
       console.log('로그아웃 완료 - 토큰 삭제됨');
 
+      await fetch('__API_URL__/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       // 프론트엔드에 로그아웃 알림
       this.notifyLogout();
     } catch (error) {
