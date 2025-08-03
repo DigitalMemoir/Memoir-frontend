@@ -22,8 +22,6 @@ const AddBookmark = () => {
     'hover:cursor-pointer',
     textStyles.text1
   );
-  const linkValidationRegex =
-    /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w- ./?%&=]*)?$/;
 
   const handleSubmit = async () => {
     await axiosInstance.post('/api/bookmarks', {
@@ -55,7 +53,7 @@ const AddBookmark = () => {
   });
 
   const validateLink = (url: string) => {
-    if (linkValidationRegex.test(url) && url.length <= 300 && url.length > 0) {
+    if (url.length <= 300 && url.length > 0) {
       return true;
     }
     return false;
