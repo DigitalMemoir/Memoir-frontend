@@ -28,6 +28,10 @@ function isSimilarPage(
   );
 }
 
+function isOAuthUrl(url: string): boolean {
+  return url.toLowerCase().includes('oauth');
+}
+
 function calculateDuration(
   allItems: HistoryItemWithVisits[],
   currentIndex: number
@@ -113,7 +117,7 @@ export async function getBrowsingHistory(
 
           await Promise.all(
             items.map(async (item) => {
-              if (!item.url) return;
+              if (!item.url || isOAuthUrl(item.url)) return; // OAuth URL 필터링
 
               const visits = await new Promise<any[]>((res) =>
                 chrome.history.getVisits({ url: item.url! }, res)
@@ -144,5 +148,10 @@ export async function getBrowsingHistory(
     });
   }
 
-  return exampleHistoryData.visitedPages.slice(0, 30);
+  // 예제 데이터에서도 OAuth URL 필터링
+  const filteredExampleData = exampleHistoryData.visitedPages
+    .filter((page) => !isOAuthUrl(page.url))
+    .slice(0, 30);
+
+  return filteredExampleData;
 }
