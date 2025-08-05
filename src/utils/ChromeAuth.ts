@@ -33,7 +33,7 @@ export class ChromeAuth {
   }
 
   private static async _performInitialization(): Promise<boolean> {
-    console.log('ChromeAuth 초기화 시작...');
+    // console.log('ChromeAuth 초기화 시작...');
 
     if (!this.isChromeExtension()) {
       console.warn('Chrome Extension 환경이 아닙니다.');
@@ -45,7 +45,7 @@ export class ChromeAuth {
     this.isInitialized = true;
 
     if (isReady) {
-      console.log('ChromeAuth 초기화 완료');
+      // console.log('ChromeAuth 초기화 완료');
     } else {
       console.warn('Background script 연결 실패했지만 초기화 완료로 처리');
     }
@@ -58,15 +58,15 @@ export class ChromeAuth {
     maxRetries = 5,
     baseDelay = 300
   ): Promise<boolean> {
-    console.log('Background script 연결 대기 중...');
+    // console.log('Background script 연결 대기 중...');
 
     for (let i = 0; i < maxRetries; i++) {
       try {
-        console.log(`Background script 연결 시도 ${i + 1}/${maxRetries}`);
+        // console.log(`Background script 연결 시도 ${i + 1}/${maxRetries}`);
 
         const isReady = await new Promise<boolean>((resolve) => {
           const timeout = setTimeout(() => {
-            console.log(`연결 시도 ${i + 1} 타임아웃`);
+            // console.log(`연결 시도 ${i + 1} 타임아웃`);
             resolve(false);
           }, 2000);
 
@@ -77,13 +77,13 @@ export class ChromeAuth {
                 clearTimeout(timeout);
 
                 if (chrome.runtime.lastError) {
-                  console.log(
-                    `연결 시도 ${i + 1} 실패:`,
-                    chrome.runtime.lastError.message
-                  );
+                  // console.log(
+                  // `연결 시도 ${i + 1} 실패:`,
+                  //   chrome.runtime.lastError.message
+                  // );
                   resolve(false);
                 } else {
-                  console.log(`연결 시도 ${i + 1} 응답:`, response);
+                  // console.log(`연결 시도 ${i + 1} 응답:`, response);
                   const isValid =
                     response &&
                     response.success === true &&
@@ -94,23 +94,23 @@ export class ChromeAuth {
             );
           } catch (error) {
             clearTimeout(timeout);
-            console.log(`연결 시도 ${i + 1} 예외:`, error);
+            // console.log(`연결 시도 ${i + 1} 예외:`, error);
             resolve(false);
           }
         });
 
         if (isReady) {
-          console.log('Background script 연결 성공');
+          // console.log('Background script 연결 성공');
           return true;
         }
       } catch (error) {
-        console.log(`Background script 연결 시도 ${i + 1} 오류:`, error);
+        // console.log(`Background script 연결 시도 ${i + 1} 오류:`, error);
       }
 
       // 마지막 시도가 아니면 대기
       if (i < maxRetries - 1) {
         const delay = baseDelay * (i + 1);
-        console.log(`${delay}ms 후 재시도...`);
+        // console.log(`${delay}ms 후 재시도...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
@@ -138,13 +138,13 @@ export class ChromeAuth {
       return null;
     }
 
-    console.log('메시지 전송 시작:', message.type);
+    // console.log('메시지 전송 시작:', message.type);
 
     for (let i = 0; i < maxRetries; i++) {
       try {
         const result = await new Promise<T | null>((resolve) => {
           const timeout = setTimeout(() => {
-            console.log(`메시지 전송 타임아웃 (시도 ${i + 1}/${maxRetries})`);
+            // console.log(`메시지 전송 타임아웃 (시도 ${i + 1}/${maxRetries})`);
             resolve(null);
           }, 3000);
 
@@ -155,16 +155,16 @@ export class ChromeAuth {
                 clearTimeout(timeout);
 
                 if (chrome.runtime.lastError) {
-                  console.log(
-                    `메시지 전송 실패 (시도 ${i + 1}/${maxRetries}):`,
-                    chrome.runtime.lastError.message
-                  );
+                  // console.log(
+                  //   `메시지 전송 실패 (시도 ${i + 1}/${maxRetries}):`,
+                  //   chrome.runtime.lastError.message
+                  // );
                   resolve(null);
                 } else {
-                  console.log(
-                    `메시지 전송 성공 (시도 ${i + 1}/${maxRetries}):`,
-                    response
-                  );
+                  // console.log(
+                  //   `메시지 전송 성공 (시도 ${i + 1}/${maxRetries}):`,
+                  //   response
+                  // );
 
                   // 응답 검증
                   if (!response) {
@@ -200,7 +200,7 @@ export class ChromeAuth {
       // 마지막 시도가 아니면 대기
       if (i < maxRetries - 1) {
         const delay = baseDelay * Math.pow(2, i); // 지수 백오프
-        console.log(`${delay}ms 후 재시도...`);
+        // console.log(`${delay}ms 후 재시도...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
@@ -212,7 +212,7 @@ export class ChromeAuth {
   // Background에게 "토큰 줘" 요청
   static async getToken(): Promise<string | null> {
     try {
-      console.log('토큰 요청 시작');
+      // console.log('토큰 요청 시작');
 
       const response = await this.sendMessageSafely<ChromeResponse>({
         type: 'GET_TOKEN',
@@ -220,7 +220,7 @@ export class ChromeAuth {
 
       if (response && response.success) {
         const token = response.token || null;
-        console.log('토큰 요청 완료:', token ? '토큰 있음' : '토큰 없음');
+        // console.log('토큰 요청 완료:', token ? '토큰 있음' : '토큰 없음');
         return token;
       }
 
@@ -235,7 +235,7 @@ export class ChromeAuth {
   // Background에게 "토큰 저장해줘" 요청
   static async saveTokens(tokens: TokenPair): Promise<boolean> {
     try {
-      console.log('토큰 저장 요청 시작');
+      // console.log('토큰 저장 요청 시작');
 
       // 토큰 데이터 검증
       if (!tokens || !tokens.accessToken || !tokens.refreshToken) {
@@ -249,7 +249,7 @@ export class ChromeAuth {
       });
 
       if (response && response.success) {
-        console.log('토큰 저장 완료');
+        // console.log('토큰 저장 완료');
         return true;
       }
 
@@ -264,14 +264,14 @@ export class ChromeAuth {
   // Background에게 "로그아웃해줘" 요청
   static async logout(): Promise<boolean> {
     try {
-      console.log('로그아웃 요청 시작');
+      // console.log('로그아웃 요청 시작');
 
       const response = await this.sendMessageSafely<ChromeResponse>({
         type: 'LOGOUT',
       });
 
       if (response && response.success) {
-        console.log('로그아웃 완료');
+        // console.log('로그아웃 완료');
         return true;
       }
 
@@ -286,14 +286,14 @@ export class ChromeAuth {
   // Background에게 "상태 알려줘" 요청
   static async getStatus(): Promise<TokenStatus> {
     try {
-      console.log('상태 확인 요청 시작');
+      // console.log('상태 확인 요청 시작');
 
       const response = await this.sendMessageSafely<ChromeResponse>({
         type: 'CHECK_STATUS',
       });
 
       if (response && response.success && response.status) {
-        console.log('상태 확인 완료:', response.status);
+        // console.log('상태 확인 완료:', response.status);
         return response.status;
       }
 
@@ -328,6 +328,6 @@ export class ChromeAuth {
   static resetInitialization(): void {
     this.isInitialized = false;
     this.initializationPromise = null;
-    console.log('ChromeAuth 초기화 상태 리셋');
+    // console.log('ChromeAuth 초기화 상태 리셋');
   }
 }

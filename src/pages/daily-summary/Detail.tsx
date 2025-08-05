@@ -23,7 +23,7 @@ const Detail = forwardRef<HTMLDivElement, DetailProps>(
 
     const getDetailData = async (dateString: string) => {
       const response = await axiosInstance.get(`/api/daily/${dateString}`);
-      console.log('Detail data fetched:', response.data);
+      // console.log('Detail data fetched:', response.data);
       return response.data;
     };
 
@@ -42,7 +42,7 @@ const Detail = forwardRef<HTMLDivElement, DetailProps>(
     useEffect(() => {
       const el = containerRef.current;
       if (el) {
-        console.log('Checking overflow:', el.scrollHeight, el.clientHeight);
+        // console.log('Checking overflow:', el.scrollHeight, el.clientHeight);
         setIsOverflowing(el.scrollHeight >= el.clientHeight);
       }
     }, [data]);

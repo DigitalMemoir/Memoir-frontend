@@ -3,61 +3,149 @@ import type { IVisitedPage } from '../types/IVisitedPages';
 import { exampleHistoryData } from './exampleHIstoryData';
 import { showErrorToast } from '../components/Toast/showToast';
 
-interface HistoryItemWithVisits {
+interface IHistoryItemWithVisits {
   title: string;
   url: string;
   visitTime: number;
 }
 
-function extractDomain(url: string): string {
+const extractDomain = (url: string): string => {
   try {
     return new URL(url).hostname;
   } catch {
     return url;
   }
-}
+};
 
-function isSimilarPage(
-  item1: HistoryItemWithVisits,
-  item2: HistoryItemWithVisits
-): boolean {
+const isSimilarPage = (
+  item1: IHistoryItemWithVisits,
+  item2: IHistoryItemWithVisits
+): boolean => {
   // 도메인이 같고 제목이 같으면 같은 페이지로 간주
   return (
     extractDomain(item1.url) === extractDomain(item2.url) &&
     item1.title === item2.title
   );
-}
+};
 
-function isOAuthUrl(url: string): boolean {
+const isOAuthUrl = (url: string): boolean => {
   return url.toLowerCase().includes('oauth');
-}
+};
 
-function calculateDuration(
-  allItems: HistoryItemWithVisits[],
+// 활성 세션인지 판단 (5분 이내에 2개 이상 방문이 있으면 활성)
+const isActiveSession = (
+  allItems: IHistoryItemWithVisits[],
+  currentIndex: number,
+  lookAheadCount: number = 3
+): boolean => {
+  const currentItem = allItems[currentIndex];
+  let recentVisits = 0;
+
+  // 앞으로 3개 항목을 확인하여 5분 이내에 방문이 있는지 확인
+  for (
+    let i = currentIndex + 1;
+    i < Math.min(allItems.length, currentIndex + 1 + lookAheadCount);
+    i++
+  ) {
+    const item = allItems[i];
+    const timeDiff = (currentItem.visitTime - item.visitTime) / 1000;
+
+    // 5분 이내의 방문이 있으면 활성 세션으로 판단
+    if (timeDiff <= 5 * 60) {
+      recentVisits++;
+    } else {
+      break; // 5분을 넘어가면 확인 중단
+    }
+  }
+
+  // 5분 이내에 2개 이상의 방문이 있으면 활성 세션
+  return recentVisits >= 2;
+};
+
+// 활성 세션에서의 사용 시간 계산
+const calculateActiveSessionDuration = (
+  allItems: IHistoryItemWithVisits[],
   currentIndex: number
-): number {
+): number => {
+  const currentItem = allItems[currentIndex];
+  const nextItem = allItems[currentIndex + 1];
+
+  if (!nextItem) return 0;
+
+  const timeDiff = (currentItem.visitTime - nextItem.visitTime) / 1000;
+
+  // 활성 세션에서는 실제 시간 차이를 사용하되, 최대 10분으로 제한
+  return Math.min(timeDiff, 10 * 60);
+};
+
+const calculateDuration = (
+  allItems: IHistoryItemWithVisits[],
+  currentIndex: number
+): number => {
   const currentItem = allItems[currentIndex];
   const nextItem = allItems[currentIndex + 1];
 
   if (!nextItem) {
-    // 마지막 항목인 경우, 이전 항목들과의 평균 간격을 사용하거나 기본값 사용
-    return 60; // 기본 1분
+    // 마지막 항목인 경우 기본값 사용
+    return 60;
   }
 
-  // 다음 항목이 다른 페이지면 그 차이를 duration으로 사용
-  if (!isSimilarPage(currentItem, nextItem)) {
-    return Math.floor((currentItem.visitTime - nextItem.visitTime) / 1000);
+  // 다음 항목이 같은 페이지면 연속 방문으로 처리
+  if (isSimilarPage(currentItem, nextItem)) {
+    return 0;
   }
 
-  // 같은 페이지면 0 (연속 방문으로 처리)
-  return 0;
-}
+  // 시간 차이 계산 (초 단위)
+  const timeDiffSeconds = Math.floor(
+    (currentItem.visitTime - nextItem.visitTime) / 1000
+  );
 
-function aggregateVisitedPages(items: HistoryItemWithVisits[]): IVisitedPage[] {
+  // 활성 세션 확인
+  if (isActiveSession(allItems, currentIndex)) {
+    const activeDuration = calculateActiveSessionDuration(
+      allItems,
+      currentIndex
+    );
+    if (activeDuration > 0) {
+      return activeDuration;
+    }
+
+    // 활성 세션이지만 계산된 duration이 없으면 더 관대한 기본값 사용
+    if (timeDiffSeconds <= 10 * 60) {
+      // 10분 이내
+      return Math.min(timeDiffSeconds, 5 * 60); // 최대 5분
+    }
+  }
+
+  // 비활성 세션의 경우 기존 로직 사용
+  const MAX_DURATION = 30 * 60; // 30분
+
+  if (timeDiffSeconds > MAX_DURATION) {
+    // 시간 차이에 따른 적응적 기본값
+    if (timeDiffSeconds > 4 * 60 * 60) {
+      // 4시간 이상 차이
+      return 60; // 1분
+    } else if (timeDiffSeconds > 2 * 60 * 60) {
+      // 2시간 이상 차이
+      return 120; // 2분
+    } else if (timeDiffSeconds > 60 * 60) {
+      // 1시간 이상 차이
+      return 300; // 5분
+    } else {
+      return 600; // 10분
+    }
+  }
+
+  return Math.max(timeDiffSeconds, 0);
+};
+
+const aggregateVisitedPages = (
+  items: IHistoryItemWithVisits[]
+): IVisitedPage[] => {
   const result: IVisitedPage[] = [];
   const processedIndices = new Set<number>();
 
-  for (let i = 0; i < items.length && result.length < 10; i++) {
+  for (let i = 0; i < items.length && result.length < 30; i++) {
     if (processedIndices.has(i)) continue;
 
     const currentItem = items[i];
@@ -91,11 +179,11 @@ function aggregateVisitedPages(items: HistoryItemWithVisits[]): IVisitedPage[] {
   }
 
   return result;
-}
+};
 
-export async function getBrowsingHistory(
+export const getBrowsingHistory = async (
   date: string
-): Promise<IVisitedPage[]> {
+): Promise<IVisitedPage[]> => {
   const start = dayjs(date).startOf('day').valueOf();
   const end = dayjs(date).endOf('day').valueOf();
 
@@ -113,7 +201,7 @@ export async function getBrowsingHistory(
         { text: '', startTime: start, endTime: end, maxResults: 500 }, // 더 많은 데이터를 가져와서 필터링
         async (items) => {
           // 모든 방문 기록을 평탄화하여 시간순으로 정렬
-          const allVisits: HistoryItemWithVisits[] = [];
+          const allVisits: IHistoryItemWithVisits[] = [];
 
           await Promise.all(
             items.map(async (item) => {
@@ -154,4 +242,4 @@ export async function getBrowsingHistory(
     .slice(0, 30);
 
   return filteredExampleData;
-}
+};

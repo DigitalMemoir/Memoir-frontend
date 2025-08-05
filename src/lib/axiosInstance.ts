@@ -15,27 +15,27 @@ class AxiosManager {
   private responseInterceptorId: number | null = null;
 
   private constructor() {
-    console.log('=== AxiosManager 생성자 호출 ===');
+    // console.log('=== AxiosManager 생성자 호출 ===');
     this.initializeAxios();
   }
 
   static getInstance(): AxiosManager {
     if (!AxiosManager.instance) {
-      console.log('=== 새 AxiosManager 인스턴스 생성 ===');
+      // console.log('=== 새 AxiosManager 인스턴스 생성 ===');
       AxiosManager.instance = new AxiosManager();
     } else {
-      console.log('=== 기존 AxiosManager 인스턴스 반환 ===');
+      // console.log('=== 기존 AxiosManager 인스턴스 반환 ===');
     }
     return AxiosManager.instance;
   }
 
   private initializeAxios() {
     if (this.isInitialized) {
-      console.log('=== Axios 이미 초기화됨 - 스킵 ===');
+      // console.log('=== Axios 이미 초기화됨 - 스킵 ===');
       return;
     }
 
-    console.log('=== Axios 인스턴스 초기화 시작 ===');
+    // console.log('=== Axios 인스턴스 초기화 시작 ===');
 
     // 기본 axios 인스턴스 생성
     this.axiosInstance = axios.create({
@@ -62,9 +62,9 @@ class AxiosManager {
         const requestId = Math.random().toString(36).substr(2, 9);
         config.headers['X-Request-ID'] = requestId;
 
-        console.log(
-          `=== [${requestId}] API 요청 시작: ${config.method?.toUpperCase()} ${config.url} ===`
-        );
+        // console.log(
+        //   `=== [${requestId}] API 요청 시작: ${config.method?.toUpperCase()} ${config.url} ===`
+        // );
 
         try {
           // Background script 연결 대기
@@ -81,9 +81,9 @@ class AxiosManager {
           );
 
           if (!isPublicPath) {
-            console.log(
-              `[${requestId}] 토큰이 필요한 요청 - 토큰 가져오기 시도`
-            );
+            // console.log(
+            //   `[${requestId}] 토큰이 필요한 요청 - 토큰 가져오기 시도`
+            // );
 
             try {
               const token = await ChromeAuth.getToken();
@@ -98,7 +98,7 @@ class AxiosManager {
 
               if (config.headers) {
                 config.headers.Authorization = `Bearer ${token}`;
-                console.log(`[${requestId}] 토큰 헤더 추가 완료`);
+                // console.log(`[${requestId}] 토큰 헤더 추가 완료`);
               }
             } catch (error) {
               console.error(`[${requestId}] 토큰 가져오기 실패:`, error);
@@ -106,10 +106,10 @@ class AxiosManager {
               return Promise.reject(error);
             }
           } else {
-            console.log(`[${requestId}] 공개 경로 요청 - 토큰 불필요`);
+            // console.log(`[${requestId}] 공개 경로 요청 - 토큰 불필요`);
           }
 
-          console.log(`[${requestId}] 요청 준비 완료`);
+          // console.log(`[${requestId}] 요청 준비 완료`);
           return config;
         } catch (error) {
           console.error(`[${requestId}] 요청 인터셉터 오류:`, error);
@@ -125,10 +125,10 @@ class AxiosManager {
     // 응답 인터셉터 등록
     this.responseInterceptorId = this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => {
-        const requestId = response.config.headers['X-Request-ID'];
-        console.log(
-          `=== [${requestId}] API 응답 성공: ${response.status} ${response.config.url} ===`
-        );
+        // const requestId = response.config.headers['X-Request-ID'];
+        // console.log(
+        //   `=== [${requestId}] API 응답 성공: ${response.status} ${response.config.url} ===`
+        // );
         return response;
       },
       async (error: AxiosError) => {
@@ -137,9 +137,9 @@ class AxiosManager {
         };
         const requestId = originalRequest?.headers['X-Request-ID'];
 
-        console.log(
-          `=== [${requestId}] API 응답 오류: ${error.response?.status} ${originalRequest?.url} ===`
-        );
+        // console.log(
+        //   `=== [${requestId}] API 응답 오류: ${error.response?.status} ${originalRequest?.url} ===`
+        // );
 
         // 401 오류이고 재시도하지 않은 요청인 경우
         if (
@@ -149,22 +149,22 @@ class AxiosManager {
         ) {
           originalRequest._retry = true;
 
-          console.log(`[${requestId}] 401 오류 감지 - 토큰 갱신 시도...`);
+          // console.log(`[${requestId}] 401 오류 감지 - 토큰 갱신 시도...`);
 
           try {
-            console.log(`[${requestId}] 토큰 갱신 대기 중...`);
+            // console.log(`[${requestId}] 토큰 갱신 대기 중...`);
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             const newToken = await ChromeAuth.getToken();
 
             if (newToken && originalRequest.headers) {
-              console.log(`[${requestId}] 새 토큰으로 재시도`);
+              // console.log(`[${requestId}] 새 토큰으로 재시도`);
               originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
               // 원래 요청 재시도
               return this.axiosInstance(originalRequest);
             } else {
-              console.log(`[${requestId}] 토큰 갱신 실패 - 자동 로그아웃`);
+              // console.log(`[${requestId}] 토큰 갱신 실패 - 자동 로그아웃`);
               handleAutoLogout();
             }
           } catch (refreshError) {
@@ -195,7 +195,7 @@ class AxiosManager {
     );
 
     this.isInitialized = true;
-    console.log('=== Axios 인스턴스 초기화 완료 ===');
+    // console.log('=== Axios 인스턴스 초기화 완료 ===');
   }
 
   getAxiosInstance() {
@@ -235,10 +235,10 @@ class AxiosInitializer {
   }
 
   private static async _waitForBackground(): Promise<void> {
-    console.log('=== Axios Background 연결 시작 ===');
+    // console.log('=== Axios Background 연결 시작 ===');
 
     if (typeof chrome === 'undefined' || !chrome.runtime) {
-      console.log('Chrome Extension 환경이 아님 - 스킵');
+      // console.log('Chrome Extension 환경이 아님 - 스킵');
       this.isBackgroundReady = true;
       return;
     }
@@ -250,7 +250,7 @@ class AxiosInitializer {
         ChromeAuth.checkConnection(),
         new Promise<boolean>((resolve) => {
           setTimeout(() => {
-            console.log('Background 연결 타임아웃');
+            // console.log('Background 연결 타임아웃');
             resolve(false);
           }, this.maxInitializationTime);
         }),
@@ -259,7 +259,7 @@ class AxiosInitializer {
       const elapsed = Date.now() - startTime;
 
       if (isConnected) {
-        console.log(`Background 연결 성공 (${elapsed}ms)`);
+        // console.log(`Background 연결 성공 (${elapsed}ms)`);
         this.isBackgroundReady = true;
       } else {
         console.warn(`Background 연결 실패 (${elapsed}ms) - 계속 진행`);
@@ -271,19 +271,19 @@ class AxiosInitializer {
       this.isBackgroundReady = true;
     }
 
-    console.log('=== Axios Background 연결 완료 ===');
+    // console.log('=== Axios Background 연결 완료 ===');
   }
 
   static resetInitialization(): void {
     this.isBackgroundReady = false;
     this.initializationPromise = null;
-    console.log('AxiosInitializer 상태 리셋');
+    // console.log('AxiosInitializer 상태 리셋');
   }
 }
 
 // 자동 로그아웃 처리
 function handleAutoLogout(): void {
-  console.log('=== 자동 로그아웃 처리 시작 ===');
+  // console.log('=== 자동 로그아웃 처리 시작 ===');
 
   try {
     ChromeAuth.logout().catch((error) => {
@@ -300,7 +300,7 @@ function handleAutoLogout(): void {
     );
 
     setTimeout(() => {
-      console.log('로그인 페이지로 리다이렉트');
+      // console.log('로그인 페이지로 리다이렉트');
       window.location.hash = '/login';
     }, 100);
   } catch (error) {
@@ -310,7 +310,7 @@ function handleAutoLogout(): void {
     }, 500);
   }
 
-  console.log('=== 자동 로그아웃 처리 완료 ===');
+  // console.log('=== 자동 로그아웃 처리 완료 ===');
 }
 
 // 싱글톤 인스턴스 가져오기

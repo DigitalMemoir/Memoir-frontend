@@ -145,14 +145,14 @@ const Calendar = () => {
   // 날짜 셀 클릭 핸들러
   const handleDateClick = useCallback(
     (info: DateClickArg) => {
-      console.log('handleDateClick', info.dateStr);
+      // console.log('handleDateClick', info.dateStr);
 
       // 오늘 이후 날짜 클릭 방지
       const today = dayjs();
       const clickedDate = dayjs(info.dateStr);
 
       if (clickedDate.isAfter(today, 'day')) {
-        console.log('Future date clicked - ignoring');
+        // console.log('Future date clicked - ignoring');
         return; // 미래 날짜 클릭 시 아무것도 하지 않음
       } else if (clickedDate.isSame(today, 'day') && today.hour() < 22) {
         showInfoToast('오후 11시 이후에 요약을 생성할 수 있습니다.');

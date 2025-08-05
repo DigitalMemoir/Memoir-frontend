@@ -28,9 +28,8 @@ const Keyword = ({ idx, keyword }: { idx: number; keyword: string }) => {
       className={clsx(
         'flex flex-row items-center justify-center w-[11.67vw] h-auto min-w-[180px] aspect-[7/2] box-border',
         'border rounded-2xl',
-        'text-ellipsis overflow-hidden whitespace-nowrap',
         textStyles.title3,
-        'py-4 px-2 rounded-2xl cursor-default',
+        'py-4 px-2 rounded-2xl cursor-default truncate',
         colorClasses
       )}
     >
