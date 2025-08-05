@@ -13,9 +13,9 @@ const LoginPage = () => {
     );
 
     const messageListener = async (event: MessageEvent) => {
-      console.log('OAuth message received:', event.data);
-      console.log('Expected origin:', import.meta.env.VITE_CALLBACK_ORIGIN);
-      console.log('Event origin:', event.origin);
+      // console.log('OAuth message received:', event.data);
+      // console.log('Expected origin:', import.meta.env.VITE_CALLBACK_ORIGIN);
+      // console.log('Event origin:', event.origin);
       if (event.origin !== import.meta.env.VITE_CALLBACK_ORIGIN) return;
 
       localStorage.setItem('accessToken', event.data.accessToken);

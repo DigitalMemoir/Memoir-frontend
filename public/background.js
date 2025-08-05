@@ -13,14 +13,14 @@ class TokenManager {
     this.initializationInProgress = true;
 
     try {
-      console.log('TokenManager 초기화 시작...');
+      // console.log('TokenManager 초기화 시작...');
 
       // Extension 시작시 한 번 체크
       await this.checkAndRefreshTokens();
 
       // 초기화 완료 표시
       this.isReady = true;
-      console.log('TokenManager 초기화 완료');
+      // console.log('TokenManager 초기화 완료');
 
       // 메시지 리스너 등록 (한 번만)
       if (!chrome.runtime.onMessage.hasListeners()) {
@@ -30,7 +30,7 @@ class TokenManager {
             return true; // 비동기 응답을 위해 필요
           }
         );
-        console.log('메시지 리스너 등록 완료');
+        // console.log('메시지 리스너 등록 완료');
       }
 
       // 24시간마다 체크하는 알람 설정
@@ -38,7 +38,7 @@ class TokenManager {
         // 기존 알람 제거 후 새로 생성
         chrome.alarms.clear('dailyTokenCheck', () => {
           chrome.alarms.create('dailyTokenCheck', { periodInMinutes: 1440 });
-          console.log('토큰 체크 알람 설정 완료');
+          // console.log('토큰 체크 알람 설정 완료');
         });
       }
 
@@ -46,7 +46,7 @@ class TokenManager {
       if (!chrome.alarms.onAlarm.hasListeners()) {
         chrome.alarms.onAlarm.addListener((alarm) => {
           if (alarm.name === 'dailyTokenCheck') {
-            console.log('일일 토큰 체크 실행');
+            // console.log('일일 토큰 체크 실행');
             this.checkAndRefreshTokens();
           }
         });
@@ -61,9 +61,9 @@ class TokenManager {
 
   async handleMessage(message, sendResponse) {
     try {
-      console.log('=== 메시지 수신 ===');
-      console.log('타입:', message.type);
-      console.log('데이터:', message);
+      // console.log('=== 메시지 수신 ===');
+      // console.log('타입:', message.type);
+      // console.log('데이터:', message);
 
       // 메시지 타입 검증
       if (!message || typeof message.type !== 'string') {
@@ -77,7 +77,7 @@ class TokenManager {
 
       // PING 메시지 처리 (연결 확인용) - 최우선 처리
       if (message.type === 'PING') {
-        console.log('PING 응답, isReady:', this.isReady);
+        // console.log('PING 응답, isReady:', this.isReady);
         sendResponse({
           success: true,
           ready: this.isReady,
@@ -88,7 +88,7 @@ class TokenManager {
 
       // 아직 초기화가 완료되지 않았다면 대기
       if (!this.isReady) {
-        console.log('초기화 대기 중...');
+        // console.log('초기화 대기 중...');
 
         // 최대 10초 대기
         const maxWaitTime = 10000;
@@ -111,10 +111,10 @@ class TokenManager {
       // 메시지 타입별 처리
       switch (message.type) {
         case 'GET_TOKEN':
-          console.log('토큰 요청 처리 시작');
+          // console.log('토큰 요청 처리 시작');
           try {
             const token = await this.getValidToken();
-            console.log('토큰 요청 완료:', token ? '토큰 있음' : '토큰 없음');
+            // console.log('토큰 요청 완료:', token ? '토큰 있음' : '토큰 없음');
             sendResponse({
               success: true,
               token: token || null,
@@ -130,7 +130,7 @@ class TokenManager {
           break;
 
         case 'SAVE_TOKENS':
-          console.log('토큰 저장 요청 처리');
+          // console.log('토큰 저장 요청 처리');
           try {
             if (
               !message.tokens ||
@@ -140,7 +140,7 @@ class TokenManager {
               throw new Error('잘못된 토큰 데이터');
             }
             await this.saveTokens(message.tokens);
-            console.log('토큰 저장 완료');
+            // console.log('토큰 저장 완료');
             sendResponse({ success: true });
           } catch (error) {
             console.error('토큰 저장 중 오류:', error);
@@ -152,10 +152,10 @@ class TokenManager {
           break;
 
         case 'LOGOUT':
-          console.log('로그아웃 요청 처리');
+          // console.log('로그아웃 요청 처리');
           try {
             await this.logout();
-            console.log('로그아웃 완료');
+            // console.log('로그아웃 완료');
             sendResponse({ success: true });
           } catch (error) {
             console.error('로그아웃 중 오류:', error);
@@ -167,10 +167,10 @@ class TokenManager {
           break;
 
         case 'CHECK_STATUS':
-          console.log('상태 확인 요청 처리');
+          // console.log('상태 확인 요청 처리');
           try {
             const status = await this.getTokenStatus();
-            console.log('상태 확인 완료:', status);
+            // console.log('상태 확인 완료:', status);
             sendResponse({
               success: true,
               status: status,
@@ -204,7 +204,7 @@ class TokenManager {
   // 핵심: 토큰 체크 및 갱신 로직
   async checkAndRefreshTokens() {
     try {
-      console.log('토큰 체크 시작...');
+      // console.log('토큰 체크 시작...');
 
       const result = await chrome.storage.local.get([
         'accessToken',
@@ -214,19 +214,19 @@ class TokenManager {
       const { accessToken, refreshToken } = result;
 
       if (!accessToken || !refreshToken) {
-        console.log('저장된 토큰이 없습니다.');
+        // console.log('저장된 토큰이 없습니다.');
         return;
       }
 
       const daysLeft = this.getDaysUntilExpiry(accessToken);
-      console.log(`토큰 만료까지 ${daysLeft}일 남음`);
+      // console.log(`토큰 만료까지 ${daysLeft}일 남음`);
 
       // 1일 이내 만료 예정이면 갱신
       if (daysLeft <= 1) {
-        console.log('토큰 갱신 필요 - 갱신 시작');
+        // console.log('토큰 갱신 필요 - 갱신 시작');
         await this.refreshTokens(refreshToken);
       } else {
-        console.log('토큰 갱신 불필요');
+        // console.log('토큰 갱신 불필요');
       }
     } catch (error) {
       console.error('토큰 체크 중 오류:', error);
@@ -268,7 +268,7 @@ class TokenManager {
   // 토큰 갱신
   async refreshTokens(refreshToken) {
     try {
-      console.log('토큰 갱신 요청 중...');
+      // console.log('토큰 갱신 요청 중...');
 
       const response = await fetch('__API_URL__/api/auth/refresh', {
         method: 'POST',
@@ -286,7 +286,7 @@ class TokenManager {
             accessToken: data.accessToken,
             refreshToken: data.refreshToken,
           });
-          console.log('토큰 갱신 성공');
+          // console.log('토큰 갱신 성공');
 
           // 프론트엔드에 갱신 알림
           this.notifyTokenRefresh();
@@ -295,7 +295,7 @@ class TokenManager {
         }
       } else {
         const errorText = await response.text();
-        console.log('토큰 갱신 실패:', response.status, errorText);
+        // console.log('토큰 갱신 실패:', response.status, errorText);
         await this.logout();
       }
     } catch (error) {
@@ -315,16 +315,16 @@ class TokenManager {
       const { accessToken, refreshToken } = result;
 
       if (!accessToken) {
-        console.log('저장된 access token이 없음');
+        // console.log('저장된 access token이 없음');
         return null;
       }
 
       const daysLeft = this.getDaysUntilExpiry(accessToken);
-      console.log('토큰 만료까지:', daysLeft, '일');
+      // console.log('토큰 만료까지:', daysLeft, '일');
 
       // 만료되었으면 즉시 갱신 시도
       if (daysLeft <= 0) {
-        console.log('토큰 만료됨 - 갱신 시도');
+        // console.log('토큰 만료됨 - 갱신 시도');
         if (refreshToken) {
           await this.refreshTokens(refreshToken);
 
@@ -332,7 +332,7 @@ class TokenManager {
           const newResult = await chrome.storage.local.get(['accessToken']);
           return newResult.accessToken || null;
         }
-        console.log('refresh token도 없음');
+        // console.log('refresh token도 없음');
         return null;
       }
 
@@ -350,7 +350,7 @@ class TokenManager {
         refreshToken,
         savedAt: Date.now(),
       });
-      console.log('토큰 저장 완료');
+      // console.log('토큰 저장 완료');
     } catch (error) {
       console.error('토큰 저장 실패:', error);
       throw error;
@@ -364,7 +364,7 @@ class TokenManager {
         'refreshToken',
         'savedAt',
       ]);
-      console.log('로그아웃 완료 - 토큰 삭제됨');
+      // console.log('로그아웃 완료 - 토큰 삭제됨');
 
       await fetch('__API_URL__/api/auth/logout', {
         method: 'POST',
@@ -419,7 +419,7 @@ class TokenManager {
             })
             .catch((error) => {
               // 탭이 없거나 메시지 수신 불가시 무시
-              console.log('토큰 갱신 알림 전송 실패:', tab.id, error.message);
+              // console.log('토큰 갱신 알림 전송 실패:', tab.id, error.message);
             });
         }
       });
@@ -437,11 +437,11 @@ class TokenManager {
             })
             .catch((error) => {
               // 탭이 없거나 메시지 수신 불가시 무시
-              console.log(
-                '자동 로그아웃 알림 전송 실패:',
-                tab.id,
-                error.message
-              );
+              // console.log(
+              //   '자동 로그아웃 알림 전송 실패:',
+              //   tab.id,
+              //   error.message
+              // );
             });
         }
       });
@@ -450,7 +450,7 @@ class TokenManager {
 }
 
 // TokenManager 인스턴스 생성
-console.log('Background script 시작...');
+// console.log('Background script 시작...');
 const tokenManager = new TokenManager();
 
 // 전역 오류 처리
@@ -462,4 +462,4 @@ self.addEventListener('unhandledrejection', (event) => {
   console.error('Background script 처리되지 않은 Promise 거부:', event.reason);
 });
 
-console.log('Background script 로드 완료');
+// console.log('Background script 로드 완료');
