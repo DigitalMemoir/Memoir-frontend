@@ -34,7 +34,7 @@ export const showLoadingToast = ({
       ),
       error: (
         <CustomToastMessage
-          toastType={'loading'}
+          toastType={'error'}
           onDismiss={() => toast.dismiss()}
         >
           {errorMsg}

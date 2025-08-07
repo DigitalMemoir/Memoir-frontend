@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
     publicDir: resolve(__dirname, 'public'),
     build: {
       emptyOutDir: true,
-      outDir: resolve(__dirname, 'build'),
+      outDir: resolve(__dirname, 'memoir-extension'),
       rollupOptions: {
         input: {
           newtab: resolve(__dirname, 'src/newtab/index.html'),
