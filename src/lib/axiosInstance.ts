@@ -40,7 +40,7 @@ class AxiosManager {
     // 기본 axios 인스턴스 생성
     this.axiosInstance = axios.create({
       baseURL: `${import.meta.env.VITE_API_URL}`,
-      timeout: 15000,
+      timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
       },
