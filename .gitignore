@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 build
+memoir-extension
 
 # Editor directories and files
 .vscode/*
